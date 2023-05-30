@@ -1,8 +1,7 @@
+import networkx as nx
 import numpy as np
 import scipy.sparse as sp
-import networkx as nx
-from scipy.sparse import lil_matrix
-from scipy.sparse import csr_matrix
+from scipy.sparse import csr_matrix, lil_matrix
 
 
 def make_dict(sc):

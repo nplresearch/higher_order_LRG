@@ -1,9 +1,9 @@
-import numpy as np
-import networkx as nx
-from scipy.sparse import csgraph
-from scipy.sparse import csr_matrix
-from Functions import support
 from collections import defaultdict
+
+import networkx as nx
+import numpy as np
+from Functions import support
+from scipy.sparse import csgraph, csr_matrix
 
 
 def renormalize_simplicial_VARIANTS(
@@ -82,10 +82,10 @@ def renormalize_simplicial_VARIANTS(
 
         ones = np.ones(len(zeta), np.uint32)
         zeta = tuple(zip(*zeta))
-        if len(zeta) != 0: 
+        if len(zeta) != 0:
             zeta = csr_matrix((ones, (zeta[0], zeta[1])), shape=(nk, nk))
         else:
-            zeta = csr_matrix((nk,nk))
+            zeta = csr_matrix((nk, nk))
         # Sparsify
         if SPARSIFY:
             ii, jj = zeta.nonzero()

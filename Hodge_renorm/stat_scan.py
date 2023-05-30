@@ -1,31 +1,31 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import networkx as nx
-from scipy.stats import t
-from scipy.signal import find_peaks
-from scipy.sparse.linalg import eigsh
-from scipy.io import savemat
-from Functions import scomplex
-from Functions import plotting
-from Functions import renormalize
 import os
 import pickle
+import sys
 
+import matplotlib.pyplot as plt
+import networkx as nx
+import numpy as np
+from Functions import renormalize, scomplex
+from scipy.io import savemat
+from scipy.signal import find_peaks
+from scipy.sparse.linalg import eigsh
 
-METHOD = "representative"
-SPARSIFY = False
-TRUE_CONNECTIONS = True
-N = 2000  # 1000
-n_tau = 30  # 100
-rep = 10#10  # 5
-d = 1
+# Pass arguments from command line:  N, d, n_tau, rep, METHOD, SPARSIFY, TRUE_CONNECTIONS
+
+N = int(sys.argv[1])  # 2000
+d = int(sys.argv[2])  # 1
+n_tau = int(sys.argv[3])  # 100
+rep = int(sys.argv[4])  # 10
+METHOD = sys.argv[5]  # {"representative","closest"}
+SPARSIFY = bool(sys.argv[6])  # False
+TRUE_CONNECTIONS = bool(sys.argv[7])  # True
+
 s = 1
 beta = 0.1
 factor = 1
 
-pref = "d" + str(d) + "s" + str(s)
+pref = f"d{d}s{s}"
 
-#n_dims = [rep, d+1, d,n_tau]
 deg_dist = []
 
 for r in range(rep):
@@ -67,7 +67,7 @@ for r in range(rep):
         L2 = (B2.T) @ B2 + B3 @ (B3.T)
         L2 = L2.asfptype()
         Na = sc["n2"] - 1
-        D2, U2 = eigsh(L2, k=Na, sigma = 0.0, which="LM")
+        D2, U2 = eigsh(L2, k=Na, sigma=0.0, which="LM")
         D2 = np.concatenate((D2, 10000 * np.ones(sc["n2"] - Na)))
         U2 = np.concatenate((U2, np.zeros((sc["n2"], sc["n2"] - Na))), axis=1)
         [specific_heat, tau_space] = renormalize.compute_heat(D2, -2, 1, 200)
@@ -89,7 +89,16 @@ for r in range(rep):
 
     for t in range(n_tau):
         rowt = []
-        print("rep: " + str(r+1) + "/" + str(rep) + " ,t: " + str(t+1) + "/" + str(n_tau))
+        print(
+            "rep: "
+            + str(r + 1)
+            + "/"
+            + str(rep)
+            + " ,t: "
+            + str(t + 1)
+            + "/"
+            + str(n_tau)
+        )
         for i in range(d + 1):
             rowi = []
             order = i
@@ -130,34 +139,10 @@ for r in range(rep):
     deg_dist.append(rowr)
 
 
+path = f"Tests/Experiments_{METHOD}_{SPARSIFY}_{TRUE_CONNECTIONS}/{pref}"
 
-
-path = "/Tests/Experiments_"+ str(METHOD)+ "_"+ str(SPARSIFY)+ "_"+ str(TRUE_CONNECTIONS)+"/"+pref
 if not os.path.exists(path):
-     os.makedirs(path)
+    os.makedirs(path)
 
-with open(path+'/deg_dist.pkl', 'wb') as f:
+with open(path + "/deg_dist.pkl", "wb") as f:
     pickle.dump(deg_dist, f)
-
-# savemat(
-#     "../Tests/Experiments"
-#     + str(METHOD)
-#     + "_"
-#     + str(SPARSIFY)
-#     + "_"
-#     + str(TRUE_CONNECTIONS)
-#     + pref
-#     + "/Ns.mat",
-#     Ns,
-# )
-# savemat(
-#     "../Tests/Experiments"
-#     + str(METHOD)
-#     + "_"
-#     + str(SPARSIFY)
-#     + "_"
-#     + str(TRUE_CONNECTIONS)
-#     + pref
-#     + "/deg_dist.mat",
-#     deg_dist,
-# )
