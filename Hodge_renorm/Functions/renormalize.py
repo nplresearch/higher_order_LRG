@@ -190,43 +190,43 @@ def renormalize_simplicial_VARIANTS(
         if node1 != node2:
             new_edges.append([node1, node2])
     if len(new_edges) != 0:
-        new_sc["edges"] = np.unique(np.sort(np.array(new_edges), axis=1), axis=0)
+        new_sc["edges"] = np.unique(np.sort(np.array(new_edges,dtype = int), axis=1), axis=0)
         new_sc["n1"] = new_sc["edges"].shape[0]
     else:
-        new_sc["edges"] = np.zeros((0, 2))
+        new_sc["edges"] = np.zeros((0, 2),dtype = int)
         new_sc["n1"] = 0
 
     # Connect supernodes with faces
     new_faces = []
     for i in range(sc["n2"]):
-        node1 = mapnodes[sc["faces"][i, 0]]
-        node2 = mapnodes[sc["faces"][i, 1]]
-        node3 = mapnodes[sc["faces"][i, 2]]
+        node1 = mapnodes[sc["faces"][i][0]]
+        node2 = mapnodes[sc["faces"][i][1]]
+        node3 = mapnodes[sc["faces"][i][2]]
         if len(np.unique([node1, node2, node3])) == 3:
             new_faces.append([node1, node2, node3])
     if len(new_faces) != 0:
-        new_sc["faces"] = np.unique(np.sort(np.array(new_faces), axis=1), axis=0)
+        new_sc["faces"] = np.unique(np.sort(np.array(new_faces,dtype = int), axis=1), axis=0)
         new_sc["n2"] = new_sc["faces"].shape[0]
     else:
-        new_sc["faces"] = np.zeros((0, 3))
+        new_sc["faces"] = np.zeros((0, 3),dtype = int)
         new_sc["n2"] = 0
 
     # Connect supernodes with tetrahedra
     new_tetrahedra = []
     for i in range(sc["n3"]):
-        node1 = mapnodes[sc["tetrahedra"][i, 0]]
-        node2 = mapnodes[sc["tetrahedra"][i, 1]]
-        node3 = mapnodes[sc["tetrahedra"][i, 2]]
-        node4 = mapnodes[sc["tetrahedra"][i, 3]]
+        node1 = mapnodes[sc["tetrahedra"][i][0]]
+        node2 = mapnodes[sc["tetrahedra"][i][1]]
+        node3 = mapnodes[sc["tetrahedra"][i][2]]
+        node4 = mapnodes[sc["tetrahedra"][i][3]]
         if len(np.unique([node1, node2, node3, node4])) == 4:
             new_tetrahedra.append([node1, node2, node3, node4])
     if len(new_tetrahedra) != 0:
         new_sc["tetrahedra"] = np.unique(
-            np.sort(np.array(new_tetrahedra), axis=1), axis=0
+            np.sort(np.array(new_tetrahedra,dtype = int), axis=1), axis=0
         )
         new_sc["n3"] = new_sc["tetrahedra"].shape[0]
     else:
-        new_sc["tetrahedra"] = np.zeros((0, 4))
+        new_sc["tetrahedra"] = np.zeros((0, 4),dtype = int)
         new_sc["n3"] = 0
 
     return new_sc, mapnodes, comp, nodesclusters

@@ -94,17 +94,17 @@ def generalized_degree(sc, edge_dict, face_dict, d):
             deg[0][tet[1]] += 1
             deg[0][tet[2]] += 1
             deg[0][tet[3]] += 1
-            deg[1][edge_dict[tuple((face[0], face[1]))]] += 1
-            deg[1][edge_dict[tuple((face[0], face[2]))]] += 1
-            deg[1][edge_dict[tuple((face[0], face[3]))]] += 1
-            deg[1][edge_dict[tuple((face[1], face[2]))]] += 1
-            deg[1][edge_dict[tuple((face[1], face[3]))]] += 1
-            deg[1][edge_dict[tuple((face[2], face[3]))]] += 1
+            deg[1][edge_dict[tuple((tet[0], tet[1]))]] += 1
+            deg[1][edge_dict[tuple((tet[0], tet[2]))]] += 1
+            deg[1][edge_dict[tuple((tet[0], tet[3]))]] += 1
+            deg[1][edge_dict[tuple((tet[1], tet[2]))]] += 1
+            deg[1][edge_dict[tuple((tet[1], tet[3]))]] += 1
+            deg[1][edge_dict[tuple((tet[2], tet[3]))]] += 1
 
-            deg[2][face_dict[tuple((face[0], face[1], face[2]))]] += 1
-            deg[2][face_dict[tuple((face[0], face[1], face[3]))]] += 1
-            deg[2][face_dict[tuple((face[0], face[2], face[3]))]] += 1
-            deg[2][face_dict[tuple((face[1], face[2], face[3]))]] += 1
+            deg[2][face_dict[tuple((tet[0], tet[1], tet[2]))]] += 1
+            deg[2][face_dict[tuple((tet[0], tet[1], tet[3]))]] += 1
+            deg[2][face_dict[tuple((tet[0], tet[2], tet[3]))]] += 1
+            deg[2][face_dict[tuple((tet[1], tet[2], tet[3]))]] += 1
 
     return deg
 
@@ -160,9 +160,9 @@ def NGF_d1(N, s, beta):
     G = nx.from_numpy_matrix(a)
     sc = {
         "nodes": np.arange(0, N),
-        "edges": np.array(list(G.edges())),
-        "faces": np.array([]),
-        "tetrahedra": np.array([]),
+        "edges": np.array(list(G.edges()),dtype = int),
+        "faces": np.array([],dtype = int),
+        "tetrahedra": np.array([],dtype = int),
     }
     sc["n0"] = N
     sc["n1"] = sc["edges"].shape[0]
@@ -185,9 +185,9 @@ def NGF_d2(N, s, beta):
     a_occ2 = csr_matrix((N, N))
     sc = {
         "nodes": np.arange(0, N),
-        "edges": np.array([]),
-        "faces": np.array([]),
-        "tetrahedra": np.array([]),
+        "edges": np.array([],dtype = int),
+        "faces": np.array([],dtype = int),
+        "tetrahedra": np.array([],dtype = int),
     }
 
     # Assign energies to the nodes
@@ -300,9 +300,9 @@ def NGF_d3(N, s, beta):
     a_occ3 = np.zeros((0))
     sc = {
         "nodes": np.arange(0, N),
-        "edges": np.array([]),
-        "faces": np.zeros((0, 3)),
-        "tetrahedra": np.array([]),
+        "edges": np.array([],dtype = int),
+        "faces": np.zeros((0, 3),dtype = int),
+        "tetrahedra": np.array([],dtype = int),
     }
 
     # Assign energies to the nodes
