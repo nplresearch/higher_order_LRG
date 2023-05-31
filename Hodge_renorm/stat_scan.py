@@ -17,8 +17,9 @@ d = int(sys.argv[2])  # 1
 n_tau = int(sys.argv[3])  # 100
 rep = int(sys.argv[4])  # 10
 METHOD = sys.argv[5]  # {"representative","closest"}
-SPARSIFY = bool(sys.argv[6])  # False
-TRUE_CONNECTIONS = bool(sys.argv[7])  # True
+SPARSIFY = sys.argv[6] == "True"  # False
+TRUE_CONNECTIONS = sys.argv[7] == "True" # True
+
 
 s = 1
 beta = 0.1
