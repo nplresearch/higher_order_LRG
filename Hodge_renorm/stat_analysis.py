@@ -1,4 +1,5 @@
 import pickle
+import sys
 
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -19,14 +20,16 @@ palette = np.array(
 )
 
 
-N = 100
-n_tau = 30  # 100
-rep = 2  # 10#5
-d = 1
+
+N = int(sys.argv[1])  # 2000
+d = int(sys.argv[2])  # 1
+n_tau = int(sys.argv[3])  # 100
+rep = int(sys.argv[4])  # 10
+METHOD = sys.argv[5]  # {"representative","closest"}
+SPARSIFY = bool(sys.argv[6])  # False
+TRUE_CONNECTIONS = bool(sys.argv[7])  # True
+
 s = 1
-METHOD = "representative"
-SPARSIFY = False
-TRUE_CONNECTIONS = True
 beta = 0.1
 ls = True  # logscale
 
@@ -48,8 +51,6 @@ def plot_mean(Ns, data, col, logscale, ax, lab):
         ax.plot(xq, np.mean(dataq, axis=0), linewidth=2, color=col, label=lab)
 
 
-# with open(path+'/Ns.pkl', 'rb') as f:
-#    Ns = pickle.load(f)
 with open(path + "/deg_dist.pkl", "rb") as f:
     deg_dist = pickle.load(f)
 
@@ -133,3 +134,4 @@ for i in range(d):
     ax.set_xlim([0, 0.8])
 
 plt.show()
+plt.savefig(path+"/deg_errors.pdf", format="pdf", bbox_inches="tight")
