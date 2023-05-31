@@ -58,7 +58,7 @@ for r in range(rep):
         D1, U1 = eigsh(L1, k=Na, which="SM")
         D1 = np.concatenate((D1, 10000 * np.ones(sc["n1"] - Na)))
         U1 = np.concatenate((U1, np.zeros((sc["n1"], sc["n1"] - Na))), axis=1)
-        [specific_heat, tau_space] = renormalize.compute_heat(D1, -2, 1, 200)
+        [specific_heat, tau_space] = renormalize.compute_heat(D1, -2, 2, 200)
         id, __ = find_peaks(specific_heat)
         tau_max1 = tau_space[id[0]] / factor
         tau_space1 = np.linspace(0, tau_max1, n_tau)
@@ -70,7 +70,7 @@ for r in range(rep):
         D2, U2 = eigsh(L2, k=Na, sigma=0.0, which="LM")
         D2 = np.concatenate((D2, 10000 * np.ones(sc["n2"] - Na)))
         U2 = np.concatenate((U2, np.zeros((sc["n2"], sc["n2"] - Na))), axis=1)
-        [specific_heat, tau_space] = renormalize.compute_heat(D2, -2, 1, 200)
+        [specific_heat, tau_space] = renormalize.compute_heat(D2, -2, 2, 200)
         id, __ = find_peaks(specific_heat)
         tau_max2 = tau_space[id[0]] / factor
         tau_space2 = np.linspace(0, tau_max2, n_tau)
@@ -82,7 +82,7 @@ for r in range(rep):
         D3, U3 = eigsh(L3, k=Na, which="SM")
         D3 = np.concatenate((D3, 10000 * np.ones(sc["n3"] - Na)))
         U3 = np.concatenate((U3, np.zeros((sc["n3"], sc["n3"] - Na))), axis=1)
-        [specific_heat, tau_space] = renormalize.compute_heat(D3, -2, 1, 200)
+        [specific_heat, tau_space] = renormalize.compute_heat(D3, -2, 2, 200)
         id, __ = find_peaks(specific_heat)
         tau_max3 = tau_space[id[0]] / factor
         tau_space3 = np.linspace(0, tau_max3, n_tau)
