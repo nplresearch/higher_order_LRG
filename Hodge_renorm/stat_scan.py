@@ -10,7 +10,9 @@ from scipy.io import savemat
 from scipy.signal import find_peaks
 from scipy.sparse.linalg import eigsh
 
-# Pass arguments from command line:  N, d, n_tau, rep, METHOD, SPARSIFY, TRUE_CONNECTIONS
+# Pass arguments from command line:  
+# python stat_scan.py N d n_tau rep METHOD SPARSIFY TRUE_CONNECTIONS factor0 factor1 factor2 factor3
+# It is advised to have factor0 = factor1 = factor2 = 1 and factor3 = 2 or 2.5
 
 N = int(sys.argv[1])  # 2000
 d = int(sys.argv[2])  # 1
@@ -19,11 +21,13 @@ rep = int(sys.argv[4])  # 10
 METHOD = sys.argv[5]  # {"representative","closest"}
 SPARSIFY = sys.argv[6] == "True"  # False
 TRUE_CONNECTIONS = sys.argv[7] == "True" # True
-
+factor0 = int(sys.argv[8])
+factor1 = int(sys.argv[9])
+factor2 = int(sys.argv[10])
+factor3 = int(sys.argv[11])
 
 s = 1
 beta = 0.1
-factor = 1
 
 pref = f"d{d}s{s}"
 
@@ -49,7 +53,7 @@ for r in range(rep):
     U0 = np.concatenate((U0, np.zeros((sc["n0"], sc["n0"] - Na))), axis=1)
     [specific_heat, tau_space] = renormalize.compute_heat(D0, -2, 1, 200)
     id, __ = find_peaks(specific_heat)
-    tau_max0 = tau_space[id[0]] / factor
+    tau_max0 = tau_space[id[0]] / factor0
     tau_space0 = np.linspace(0, tau_max0, n_tau)
 
     if sc["n1"] != 0:
@@ -61,7 +65,7 @@ for r in range(rep):
         U1 = np.concatenate((U1, np.zeros((sc["n1"], sc["n1"] - Na))), axis=1)
         [specific_heat, tau_space] = renormalize.compute_heat(D1, -2, 2, 200)
         id, __ = find_peaks(specific_heat)
-        tau_max1 = tau_space[id[0]] / factor
+        tau_max1 = tau_space[id[0]] / factor1
         tau_space1 = np.linspace(0, tau_max1, n_tau)
 
     if sc["n2"] != 0:
@@ -73,7 +77,7 @@ for r in range(rep):
         U2 = np.concatenate((U2, np.zeros((sc["n2"], sc["n2"] - Na))), axis=1)
         [specific_heat, tau_space] = renormalize.compute_heat(D2, -2, 2, 200)
         id, __ = find_peaks(specific_heat)
-        tau_max2 = tau_space[id[0]] / factor
+        tau_max2 = tau_space[id[0]] / factor2
         tau_space2 = np.linspace(0, tau_max2, n_tau)
 
     if sc["n3"] != 0:
@@ -85,7 +89,7 @@ for r in range(rep):
         U3 = np.concatenate((U3, np.zeros((sc["n3"], sc["n3"] - Na))), axis=1)
         [specific_heat, tau_space] = renormalize.compute_heat(D3, -2, 2, 200)
         id, __ = find_peaks(specific_heat)
-        tau_max3 = tau_space[id[0]] / factor
+        tau_max3 = tau_space[id[0]] / factor3
         tau_space3 = np.linspace(0, tau_max3, n_tau)
 
     for t in range(n_tau):
