@@ -155,21 +155,21 @@ def renormalize_simplicial_VARIANTS(
                     cluster_representatives[list(nodesclusters[i])[0]]
                 ]  # Collapse node i to the representative
     elif METHOD == "closest":
-        G = nx.Graph(sc["edges"])
-        graph_dist = nx.algorithms.shortest_path_length(G)
+        G = nx.Graph()
+        G.add_edges_from([(e[0],e[1]) for e in sc["edges"]])  # using a list of edge tuples
         for i in range(sc["n0"]):
             if len(nodesclusters[i]) == 1:  # The node is not an interface
                 if (
-                    cluster_representatives[nodesclusters[i]] == -1
+                    cluster_representatives[list(nodesclusters[i])[0]] == -1
                 ):  # If there is no representative in the cluster of node i
                     setint = clusternodesinterface[
                         nodesclusters[i]
                     ]  # Set of interfaces in the cluster of node i
                 else:
-                    setint = clusternodesinterface[nodesclusters[i]] + [
-                        cluster_representatives[nodesclusters[i]]
+                    setint = clusternodesinterface[list(nodesclusters[i])[0]] + [
+                        cluster_representatives[list(nodesclusters[i])[0]]
                     ]
-                dist = [graph_dist[i][x] for x in setint]
+                dist = [ nx.algorithms.shortest_path_length(G,source = i,target = x) for x in setint]
                 id = np.argmin(dist)
                 mapnodes[i] = mapnodes[
                     setint[id]
