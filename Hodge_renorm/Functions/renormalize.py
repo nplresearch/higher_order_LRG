@@ -156,7 +156,9 @@ def renormalize_simplicial_VARIANTS(
                 ]  # Collapse node i to the representative
     elif METHOD == "closest":
         G = nx.Graph()
-        G.add_edges_from([(e[0],e[1]) for e in sc["edges"]])  # using a list of edge tuples
+        G.add_edges_from(
+            [(e[0], e[1]) for e in sc["edges"]]
+        )  # using a list of edge tuples
         for i in range(sc["n0"]):
             if len(nodesclusters[i]) == 1:  # The node is not an interface
                 if (
@@ -169,7 +171,10 @@ def renormalize_simplicial_VARIANTS(
                     setint = clusternodesinterface[list(nodesclusters[i])[0]] + [
                         cluster_representatives[list(nodesclusters[i])[0]]
                     ]
-                dist = [ nx.algorithms.shortest_path_length(G,source = i,target = x) for x in setint]
+                dist = [
+                    nx.algorithms.shortest_path_length(G, source=i, target=x)
+                    for x in setint
+                ]
                 id = np.argmin(dist)
                 mapnodes[i] = mapnodes[
                     setint[id]
@@ -190,10 +195,12 @@ def renormalize_simplicial_VARIANTS(
         if node1 != node2:
             new_edges.append([node1, node2])
     if len(new_edges) != 0:
-        new_sc["edges"] = np.unique(np.sort(np.array(new_edges,dtype = int), axis=1), axis=0)
+        new_sc["edges"] = np.unique(
+            np.sort(np.array(new_edges, dtype=int), axis=1), axis=0
+        )
         new_sc["n1"] = new_sc["edges"].shape[0]
     else:
-        new_sc["edges"] = np.zeros((0, 2),dtype = int)
+        new_sc["edges"] = np.zeros((0, 2), dtype=int)
         new_sc["n1"] = 0
 
     # Connect supernodes with faces
@@ -205,10 +212,12 @@ def renormalize_simplicial_VARIANTS(
         if len(np.unique([node1, node2, node3])) == 3:
             new_faces.append([node1, node2, node3])
     if len(new_faces) != 0:
-        new_sc["faces"] = np.unique(np.sort(np.array(new_faces,dtype = int), axis=1), axis=0)
+        new_sc["faces"] = np.unique(
+            np.sort(np.array(new_faces, dtype=int), axis=1), axis=0
+        )
         new_sc["n2"] = new_sc["faces"].shape[0]
     else:
-        new_sc["faces"] = np.zeros((0, 3),dtype = int)
+        new_sc["faces"] = np.zeros((0, 3), dtype=int)
         new_sc["n2"] = 0
 
     # Connect supernodes with tetrahedra
@@ -222,11 +231,11 @@ def renormalize_simplicial_VARIANTS(
             new_tetrahedra.append([node1, node2, node3, node4])
     if len(new_tetrahedra) != 0:
         new_sc["tetrahedra"] = np.unique(
-            np.sort(np.array(new_tetrahedra,dtype = int), axis=1), axis=0
+            np.sort(np.array(new_tetrahedra, dtype=int), axis=1), axis=0
         )
         new_sc["n3"] = new_sc["tetrahedra"].shape[0]
     else:
-        new_sc["tetrahedra"] = np.zeros((0, 4),dtype = int)
+        new_sc["tetrahedra"] = np.zeros((0, 4), dtype=int)
         new_sc["n3"] = 0
 
     return new_sc, mapnodes, comp, nodesclusters

@@ -26,7 +26,7 @@ n_tau = int(sys.argv[3])  # 100
 rep = int(sys.argv[4])  # 10
 METHOD = sys.argv[5]  # {"representative","closest"}
 SPARSIFY = sys.argv[6] == "True"  # False
-TRUE_CONNECTIONS = sys.argv[7] == "True" # True
+TRUE_CONNECTIONS = sys.argv[7] == "True"  # True
 
 s = 1
 beta = 0.1
@@ -133,4 +133,4 @@ for i in range(d):
     ax.set_xlim([0, 0.8])
 
 plt.show()
-plt.savefig(path+"/deg_errors.pdf", format="pdf", bbox_inches="tight")
+plt.savefig(path + "/deg_errors.pdf", format="pdf", bbox_inches="tight")

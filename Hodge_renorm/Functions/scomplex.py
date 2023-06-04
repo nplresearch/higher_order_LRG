@@ -160,9 +160,9 @@ def NGF_d1(N, s, beta):
     G = nx.from_numpy_matrix(a)
     sc = {
         "nodes": np.arange(0, N),
-        "edges": np.array(list(G.edges()),dtype = int),
-        "faces": np.array([],dtype = int),
-        "tetrahedra": np.array([],dtype = int),
+        "edges": np.array(list(G.edges()), dtype=int),
+        "faces": np.array([], dtype=int),
+        "tetrahedra": np.array([], dtype=int),
     }
     sc["n0"] = N
     sc["n1"] = sc["edges"].shape[0]
@@ -185,9 +185,9 @@ def NGF_d2(N, s, beta):
     a_occ2 = csr_matrix((N, N))
     sc = {
         "nodes": np.arange(0, N),
-        "edges": np.array([],dtype = int),
-        "faces": np.array([],dtype = int),
-        "tetrahedra": np.array([],dtype = int),
+        "edges": np.array([], dtype=int),
+        "faces": np.array([], dtype=int),
+        "tetrahedra": np.array([], dtype=int),
     }
 
     # Assign energies to the nodes
@@ -300,9 +300,9 @@ def NGF_d3(N, s, beta):
     a_occ3 = np.zeros((0))
     sc = {
         "nodes": np.arange(0, N),
-        "edges": np.array([],dtype = int),
-        "faces": np.zeros((0, 3),dtype = int),
-        "tetrahedra": np.array([],dtype = int),
+        "edges": np.array([], dtype=int),
+        "faces": np.zeros((0, 3), dtype=int),
+        "tetrahedra": np.array([], dtype=int),
     }
 
     # Assign energies to the nodes
