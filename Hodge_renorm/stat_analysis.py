@@ -53,7 +53,6 @@ def plot_mean(Ns, data, col, logscale, ax, lab):
 with open(path + "/deg_dist.pkl", "rb") as f:
     deg_dist = pickle.load(f)
 
-
 Ns = np.zeros((rep, d + 1, n_tau), dtype=int)
 for r in range(rep):
     for i in range(d + 1):
@@ -106,14 +105,14 @@ for i in range(d):
     ax = axv[i]
     for j in range(d + 1):
         lab = "L" + str(j)
-        plot_mean(
-            1 - Ns[:, j, :] / N, deg_distance[:, j, i, :], palette[j, :], ls, ax, lab
-        )
+        #plot_mean(
+        #    1 - Ns[:, j, :] / N, deg_distance[:, j, i, :], palette[j, :], ls, ax, lab
+        #)
         if ls:
             for r in range(rep):
                 ax.semilogy(
-                    1 - Ns[r, j, :] / N,
-                    deg_distance[r, j, i, :],
+                    np.squeeze(1 - Ns[r, j, :]/N),
+                    np.squeeze(deg_distance[r, j, i, :]),
                     linewidth=1,
                     color=palette[j, :],
                     alpha=0.3,
@@ -130,7 +129,7 @@ for i in range(d):
 
     ax.legend()
     ax.set_title(r"\textbf{" + names[i] + "-" + names[d] + "}", fontsize=14)
-    ax.set_xlim([0, 0.8])
+    #ax.set_xlim([0, 0.8])
 
 plt.show()
 plt.savefig(path + "/deg_errors.pdf", format="pdf", bbox_inches="tight")

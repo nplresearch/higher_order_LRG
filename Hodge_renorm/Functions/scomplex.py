@@ -1,7 +1,7 @@
 import networkx as nx
 import numpy as np
 import scipy.sparse as sp
-from scipy.sparse import csr_matrix, lil_matrix
+from scipy.sparse import csr_matrix, lil_matrix, tril
 
 
 def make_dict(sc):
@@ -196,15 +196,15 @@ def NGF_d2(N, s, beta):
 
     # Initial condition at time t=1 including a single triangle between nodes 1, 2, 3
     L = 0
-    for i1 in range(1, 4):
-        for i2 in range(i1 + 1, 4):
+    for i1 in range(3):
+        for i2 in range(i1 + 1,3):
             L += 1
-            a[i1 - 1, i2 - 1] = np.exp(-beta * (epsilon[i1 - 1] + epsilon[i2 - 1]))
-            a[i2 - 1, i1 - 1] = np.exp(-beta * (epsilon[i1 - 1] + epsilon[i2 - 1]))
-            a_occ[i1 - 1, i2 - 1] = 1
-            a_occ[i2 - 1, i1 - 1] = 1
-            a_occ2[i1 - 1, i2 - 1] = 1
-            a_occ2[i2 - 1, i1 - 1] = 1
+            a[i1, i2] = np.exp(-beta * (epsilon[i1] + epsilon[i2]))
+            a[i2, i1] = np.exp(-beta * (epsilon[i1] + epsilon[i2]))
+            a_occ[i1, i2] = 1
+            a_occ[i2, i1] = 1
+            a_occ2[i1, i2] = 1
+            a_occ2[i2, i1] = 1
 
     nt = 1
     sc["faces"] = np.array([[0, 1, 2]])
@@ -220,9 +220,10 @@ def NGF_d2(N, s, beta):
         theta[i] = i / 3
 
     # At each time t=in-2 we attach a new triangle
-    for in_ in range(3 + 1, N + 1):
+    for in_ in range(3, N):
         # Choose edge (l1,l2) to which we will attach the new triangle
-        mat = csr_matrix(a.multiply(a_occ))
+        
+        mat = tril(a.multiply(a_occ),format = "csr")
         I, J = mat.nonzero()
         V = np.squeeze(mat[mat.nonzero()])
         norm = np.sum(V)
@@ -236,17 +237,17 @@ def NGF_d2(N, s, beta):
             l1 = I[nj]
             l2 = J[nj]
 
-            d_N[in_ - 1] = min(d_N[l1], d_N[l2]) + 1
-            D[in_ - 1] = max(d_N)
-            r[in_ - 1, :] = r[l1, :] + r[l2, :]
-            r[in_ - 1, :] /= np.sqrt(r[in_ - 1, 0] ** 2 + r[in_ - 1, 1] ** 2)
-            theta[in_ - 1] = min(theta[l1], theta[l2]) + 0.5 * abs(
+            d_N[in_] = min(d_N[l1], d_N[l2]) + 1
+            D[in_] = max(d_N)
+            r[in_, :] = r[l1, :] + r[l2, :]
+            r[in_ , :] /= np.sqrt(r[in_ , 0] ** 2 + r[in_ , 1] ** 2)
+            theta[in_] = min(theta[l1], theta[l2]) + 0.5 * abs(
                 theta[l1] - theta[l2]
             )
             if theta[l1] == 0 and theta[l2] >= 2 / 3:
-                theta[in_ - 1] = theta[l2] + 0.5 * (1 - theta[l2])
+                theta[in_] = theta[l2] + 0.5 * (1 - theta[l2])
             if theta[l2] == 0 and theta[l1] >= 2 / 3:
-                theta[in_ - 1] = theta[l1] + 0.5 * (1 - theta[l1])
+                theta[in_] = theta[l1] + 0.5 * (1 - theta[l1])
 
             a_occ[l1, l2] += s
             a_occ[l2, l1] += s
@@ -254,27 +255,27 @@ def NGF_d2(N, s, beta):
             a_occ2[l2, l1] += 1
 
             nt += 1
-            sc["faces"] = np.concatenate((sc["faces"], np.array([[in_ - 1, l1, l2]])))
+            sc["faces"] = np.concatenate((sc["faces"], np.array([[in_, l1, l2]])))
 
             # Attach the new node in to the node l1
             L += 1
-            a[in_ - 1, l1] = np.exp(-beta * (epsilon[l1] + epsilon[in_ - 1]))
-            a[l1, in_ - 1] = np.exp(-beta * (epsilon[l1] + epsilon[in_ - 1]))
-            a_occ[in_ - 1, l1] = 1
-            a_occ[l1, in_ - 1] = 1
-            a_occ2[in_ - 1, l1] = 1
-            a_occ2[l1, in_ - 1] = 1
+            a[in_, l1] = np.exp(-beta * (epsilon[l1] + epsilon[in_]))
+            a[l1, in_] = np.exp(-beta * (epsilon[l1] + epsilon[in_]))
+            a_occ[in_, l1] = 1
+            a_occ[l1, in_] = 1
+            a_occ2[in_, l1] = 1
+            a_occ2[l1, in_] = 1
 
             # Attach the new node in to the node l2
             L += 1
-            a[in_ - 1, l2] = np.exp(-beta * (epsilon[l2] + epsilon[in_ - 1]))
-            a[l2, in_ - 1] = np.exp(-beta * (epsilon[l2] + epsilon[in_ - 1]))
-            a_occ[in_ - 1, l2] = 1
-            a_occ[l2, in_ - 1] = 1
-            a_occ2[in_ - 1, l2] = 1
-            a_occ2[l2, in_ - 1] = 1
+            a[in_, l2] = np.exp(-beta * (epsilon[l2] + epsilon[in_]))
+            a[l2, in_] = np.exp(-beta * (epsilon[l2] + epsilon[in_]))
+            a_occ[in_, l2] = 1
+            a_occ[l2, in_] = 1
+            a_occ2[in_, l2] = 1
+            a_occ2[l2, in_] = 1
 
-    I, J = csr_matrix(a).nonzero()
+    I, J = tril(a,format = "csr").nonzero()
     sc["edges"] = np.column_stack((I, J))
 
     sc["edges"] = np.unique(np.sort(sc["edges"], axis=1), axis=0)
