@@ -8,6 +8,8 @@ import powerlaw as pwl
 import scipy
 from Functions import plotting, scomplex
 from scipy.stats import t
+import seaborn as sns
+import pandas as pd
 
 plt.rcParams["text.usetex"] = True
 palette = np.array(
@@ -34,20 +36,6 @@ ls = True  # logscale
 
 pref = f"d{d}s{s}"
 path = f"Tests/Experiments_{METHOD}_{SPARSIFY}_{TRUE_CONNECTIONS}/{pref}"
-
-
-def plot_mean(Ns, data, col, logscale, ax, lab):
-    Nmin = np.min(np.min(Ns))
-    Nmax = np.max(np.max(Ns))
-    xq = np.linspace(Nmin, Nmax, 100)
-    dataq = np.zeros((Ns.shape[0], 100))
-    for r in range(Ns.shape[0]):
-        uNs, uid = np.unique(Ns[r, :], return_index=True)
-        dataq[r, :] = np.interp(xq, uNs, data[r, uid], left=0, right=0)
-    if logscale:
-        ax.semilogy(xq, np.mean(dataq, axis=0), linewidth=2, color=col, label=lab)
-    else:
-        ax.plot(xq, np.mean(dataq, axis=0), linewidth=2, color=col, label=lab)
 
 
 with open(path + "/deg_dist.pkl", "rb") as f:
@@ -82,7 +70,7 @@ for r in range(rep):
                 # deg_distance[r, norml, degg, tau] = fit_function.power_law.D
 
 
-fig = plt.figure()
+fig = plt.figure(figsize=(10,6))
 
 gs = fig.add_gridspec(d, 2)
 ax1 = fig.add_subplot(gs[:, 0])
@@ -90,46 +78,30 @@ axv = []
 for i in range(d):
     ax = fig.add_subplot(gs[i, 1])
     axv = axv + [ax]
-fig.tight_layout()
+fig.tight_layout(pad = 3)
 
-if d == 1:
-    sc = scomplex.NGF_d1(100, s, beta)
-elif d == 2:
-    sc = scomplex.NGF_d2(100, s, beta)
-elif d == 3:
-    sc = scomplex.NGF_d3(100, s, beta)
+sc = scomplex.NGF(d, 100, s, beta)
+
 
 plotting.plot_complex(sc, ax1)
 ax1.set_title(r"\textbf{NGF d = " + str(d) + ", s = " + str(s) + "}", fontsize=14)
+
+
+bin = np.linspace(0,1,num = 10)
 for i in range(d):
     ax = axv[i]
-    for j in range(d + 1):
-        lab = "L" + str(j)
-        #plot_mean(
-        #    1 - Ns[:, j, :] / N, deg_distance[:, j, i, :], palette[j, :], ls, ax, lab
-        #)
-        if ls:
-            for r in range(rep):
-                ax.semilogy(
-                    np.squeeze(1 - Ns[r, j, :]/N),
-                    np.squeeze(deg_distance[r, j, i, :]),
-                    linewidth=1,
-                    color=palette[j, :],
-                    alpha=0.3,
-                )
-        else:
-            for r in range(rep):
-                ax.plot(
-                    1 - Ns[r, j, :] / N,
-                    deg_distance[r, j, i, :],
-                    linewidth=1,
-                    color=palette[j, :],
-                    alpha=0.3,
-                )
+    data = {"Compression rate": bin[np.digitize(1- (Ns[:,:,:].flatten())/N,bin,right = True)-1],
+            "KS distance": deg_distance[:,:,i,:].flatten(),
+            'type': np.array([[["$L_" + str(j)+"$" for _ in range(n_tau)] for j in range(d+1)] for _ in range(rep)]).flatten()}
+    # Creates pandas DataFrame.
+    df = pd.DataFrame(data)
+    if ls:
+        ax.set_yscale("log")
+    sns.lineplot(x="Compression rate",y="KS distance", hue = 'type', data=df, ax = ax, palette=palette, legend = 'brief')
 
-    ax.legend()
+    ax.legend(loc = 'upper left')
     ax.set_title(r"\textbf{" + names[i] + "-" + names[d] + "}", fontsize=14)
-    #ax.set_xlim([0, 0.8])
+    ax.set_xlim([0, 0.5])
 
-plt.show()
-plt.savefig(path + "/deg_errors.pdf", format="pdf", bbox_inches="tight")
+#plt.show()
+plt.savefig(path + "/deg_errors.pdf", format="pdf")#, bbox_inches="tight")

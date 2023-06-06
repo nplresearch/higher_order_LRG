@@ -21,10 +21,10 @@ palette = np.array(
 
 
 N = 2000
-d =2
+d = 2
 n_tau = 50
 rep = 10
-METHOD = 'representative'
+METHOD = "representative"
 SPARSIFY = False
 TRUE_CONNECTIONS = False
 
@@ -48,7 +48,6 @@ def plot_mean(Ns, data, col, logscale, ax, lab):
         ax.semilogy(xq, np.mean(dataq, axis=0), linewidth=2, color=col, label=lab)
     else:
         ax.plot(xq, np.mean(dataq, axis=0), linewidth=2, color=col, label=lab)
-
 
 
 with open(path + "/deg_dist.pkl", "rb") as f:
@@ -108,13 +107,13 @@ for i in range(d):
     ax = axv[i]
     for j in range(d + 1):
         lab = "L" + str(j)
-        #plot_mean(
+        # plot_mean(
         #    1 - Ns[:, j, :] / N, deg_distance[:, j, i, :], palette[j, :], ls, ax, lab
-        #)
+        # )
         if ls:
             for r in range(rep):
                 ax.semilogy(
-                    np.squeeze(1 - Ns[r, j, :]/N),
+                    np.squeeze(1 - Ns[r, j, :] / N),
                     np.squeeze(deg_distance[r, j, i, :]),
                     linewidth=1,
                     color=palette[j, :],
@@ -132,7 +131,7 @@ for i in range(d):
 
     ax.legend()
     ax.set_title(r"\textbf{" + names[i] + "-" + names[d] + "}", fontsize=14)
-    #ax.set_xlim([0, 0.8])
+    # ax.set_xlim([0, 0.8])
 
 plt.show()
 plt.savefig(path + "/deg_errors.pdf", format="pdf", bbox_inches="tight")

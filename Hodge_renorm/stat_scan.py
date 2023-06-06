@@ -23,6 +23,8 @@ METHOD = sys.argv[5]  # {"representative","closest"}
 SPARSIFY = sys.argv[6] == "True"  # False
 TRUE_CONNECTIONS = sys.argv[7] == "True"  # True
 
+threshold = 0.8
+
 if len(sys.argv) > 8:
     factor0 = int(sys.argv[8])
     factor1 = int(sys.argv[9])
@@ -43,12 +45,7 @@ deg_dist = []
 
 for r in range(rep):
     rowr = []
-    if d == 1:
-        sc = scomplex.NGF_d1(N, s, beta)
-    elif d == 2:
-        sc = scomplex.NGF_d2(N, s, beta)
-    elif d == 3:
-        sc = scomplex.NGF_d3(N, s, beta)
+    sc = scomplex.NGF(d, N, s, beta)
 
     B1, B2, B3, edge_dict, face_dict = scomplex.boundary_matrices_3(sc)
 
@@ -56,9 +53,9 @@ for r in range(rep):
     L0 = B1 @ (B1.T)
 
     L0 = L0.asfptype()
-    Na = sc["n0"]-1
-    #D0,U0 = scipy.linalg.eig(L0.todense())
-    D0, U0 = eigsh(L0, k=Na, sigma = 0, which="LM")
+    Na = sc["n0"] - 1
+    # D0,U0 = scipy.linalg.eig(L0.todense())
+    D0, U0 = eigsh(L0, k=Na, sigma=0, which="LM")
     D0 = np.concatenate((D0, 10000 * np.ones(sc["n0"] - Na)))
     U0 = np.concatenate((U0, np.zeros((sc["n0"], sc["n0"] - Na))), axis=1)
     [specific_heat, tau_space] = renormalize.compute_heat(D0, -2, 1.5, 200)
@@ -110,7 +107,7 @@ for r in range(rep):
             + str(r + 1)
             + "/"
             + str(rep)
-            + " ,t: "
+            + ", t: "
             + str(t + 1)
             + "/"
             + str(n_tau)
@@ -139,8 +136,17 @@ for r in range(rep):
                 D = D3
                 L = L3
 
-            new_sc, mapnodes, comp, __ = renormalize.renormalize_simplicial_VARIANTS_cut(
-                sc, order, L, U, D, tau_space[t], METHOD, SPARSIFY, TRUE_CONNECTIONS
+            new_sc, mapnodes, comp, __ = renormalize.renormalize_simplicial_VARIANTS(
+                sc,
+                order,
+                L,
+                U,
+                D,
+                tau_space[t],
+                METHOD,
+                SPARSIFY,
+                TRUE_CONNECTIONS,
+                threshold,
             )
             new_edge_dict, new_face_dict = scomplex.make_dict(new_sc)
 
