@@ -7,7 +7,7 @@ from scipy.sparse import csgraph, csr_matrix
 
 
 def renormalize_simplicial_VARIANTS(
-    sc, order, L, U, D, tau, METHOD, SPARSIFY, TRUE_CONNECTIONS, threshold=1
+    sc, order, L, U, D, tau, METHOD, SPARSIFY, TRUE_CONNECTIONS, threshold = 1
 ):
     # Perform a simplicial renormalization step
     # Inputs:
@@ -20,22 +20,17 @@ def renormalize_simplicial_VARIANTS(
     # SPARSIFY - {True,False}
     # TRUE_CONNECTIONS - {True,False}
 
-    # ren_simplices: simplices on which to perform the clustering
     if order == 0:
         nk = sc["n0"]
-        ren_simplices = np.reshape(sc["nodes"], (nk, 1))
         assert len(D) == nk
     elif order == 1:
         nk = sc["n1"]
-        ren_simplices = sc["edges"]
         assert len(D) == nk
     elif order == 2:
         nk = sc["n2"]
-        ren_simplices = sc["faces"]
         assert len(D) == nk
     elif order == 3:
         nk = sc["n3"]
-        ren_simplices = sc["tetrahedra"]
         assert len(D) == nk
     else:
         raise ValueError("Order must be 0, 1, 2, or 3")
@@ -48,18 +43,28 @@ def renormalize_simplicial_VARIANTS(
     Dtilde = np.zeros(nk)
     for i in range(nk):
         Dtilde[i] = 1 / np.sum(np.exp(-tau * (D - D[i])))
+
     rho = U @ np.diag(Dtilde) @ U.T  # Normalized Heat Kernel
-    rho = np.abs(np.triu(rho))  # Take its absolute value to neglect orientations
+    rho = np.abs(np.triu(rho))  # Take its absolute value to ignore orientations
 
     ncut = np.sum(D > 1 / tau)  # Number of simplices to remove
 
-    # Aggregate simplices using the values of rho until ncut are removed
+    ncomp, comp = cluster_simplices(nk,ncut,rho,threshold,TRUE_CONNECTIONS,L,SPARSIFY)
+
+    # STEP II: Perform the reduction
+
+    new_sc, mapnodes, nodesclusters = coarse_grain(sc,order,comp,ncomp, METHOD)
+
+    return new_sc, mapnodes, comp, nodesclusters
+
+
+def cluster_simplices(nk,ncut,rho,threshold = 1,TRUE_CONNECTIONS = False, L = None, SPARSIFY = False):
+    # Aggregate simplices by sorting the values of rho until ncut are removed
     if ncut >= threshold * nk:
         comp = np.ones(nk, dtype=int)
         ncomp = nk
     else:
-        if TRUE_CONNECTIONS:
-            # ONLY REAL CONNECTIONS
+        if TRUE_CONNECTIONS: # Only adjacent simplices can be clustered together
             rho = rho * (np.abs(L) > 10**-7)
 
         idx = np.argsort(rho.ravel())[::-1]
@@ -75,7 +80,6 @@ def renormalize_simplicial_VARIANTS(
                 zip(*np.unravel_index(idx[k : k + nc - (nk - ncut)], sh, order="C"))
             )
             zeta = zeta + new_zeta
-
             uf.add_edges(new_zeta)
             k = k + nc - (nk - ncut)
             nc = uf.connected_components()
@@ -98,13 +102,30 @@ def renormalize_simplicial_VARIANTS(
             zeta, directed=True, connection="weak"
         )  # Clusters assigned to the simplices
 
-    # STEP II: Perform the reduction
+        return ncomp, comp
 
-    nodesclusters = [set() for _ in range(sc["n0"])]  # Mape node to its clusters
 
+
+def coarse_grain(sc,order,comp,ncomp, METHOD):
+    name = f"n{order}"
+    nk = sc[name]
+
+    if order == 0:
+        simplices = "nodes"
+    elif order == 1:
+        simplices = "edges"
+    elif order == 2:
+        simplices = "faces"
+    elif order == 3:
+        simplices = "tetrahedra"
+    else:
+        raise ValueError("Order must be 0, 1, 2, or 3")
+
+
+    nodesclusters = [set() for _ in range(sc["n0"])]  # Map nodes to their clusters
     # Assign labels to nodes
     for i in range(nk):
-        nodes = ren_simplices[i, :]  # Nodes in simplex i
+        nodes = sc[simplices][i, :]  # Nodes in simplex i
         for j in range(order + 1):
             nodesclusters[nodes[j]] = nodesclusters[nodes[j]].union({comp[i]})
 
@@ -182,10 +203,18 @@ def renormalize_simplicial_VARIANTS(
     else:
         raise ValueError("METHOD must be 'closest' or 'representative'")
 
+    new_sc = induce_simplices(sc,mapnodes)
+
+    return new_sc, mapnodes, nodesclusters
+
+
+def induce_simplices(sc,mapnodes):
+    
     new_sc = {
         "nodes": np.sort(np.unique(mapnodes)),
     }
     new_sc["n0"] = len(new_sc["nodes"])
+    new_sc["nodes"] = np.reshape(new_sc["nodes"], (new_sc["n0"],1))
 
     # Connect supernodes with edges
     new_edges = []
@@ -238,8 +267,7 @@ def renormalize_simplicial_VARIANTS(
         new_sc["tetrahedra"] = np.zeros((0, 4), dtype=int)
         new_sc["n3"] = 0
 
-    return new_sc, mapnodes, comp, nodesclusters
-
+    return new_sc
 
 def compute_heat(D, exm, exM, n_t):
     N = len(D)

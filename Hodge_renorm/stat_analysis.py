@@ -65,9 +65,6 @@ for r in range(rep):
                 # KS Distance
                 test = scipy.stats.kstest(deg1, deg2)
                 deg_distance[r, norml, degg, tau] = test.statistic
-                # Powerlaw
-                # fit_function = pwl.Fit(deg2)
-                # deg_distance[r, norml, degg, tau] = fit_function.power_law.D
 
 
 fig = plt.figure(figsize=(10,6))

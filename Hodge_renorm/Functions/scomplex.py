@@ -159,7 +159,7 @@ def NGF(d, N, s, beta):
         a = a > 0
         G = nx.from_numpy_matrix(a)
         sc = {
-            "nodes": np.arange(0, N),
+            "nodes": np.reshape(np.arange(0, N),(N,1)),
             "edges": np.array(list(G.edges()), dtype=int),
             "faces": np.array([], dtype=int),
             "tetrahedra": np.array([], dtype=int),
@@ -176,7 +176,7 @@ def NGF(d, N, s, beta):
         a_occ = csr_matrix((N, N))
         a_occ2 = csr_matrix((N, N))
         sc = {
-            "nodes": np.arange(0, N),
+            "nodes": np.reshape(np.arange(0, N),(N,1)),
             "edges": np.array([], dtype=int),
             "faces": np.array([], dtype=int),
             "tetrahedra": np.array([], dtype=int),
@@ -286,7 +286,7 @@ def NGF(d, N, s, beta):
         a_occ = np.zeros((0))
         a_occ3 = np.zeros((0))
         sc = {
-            "nodes": np.arange(0, N),
+            "nodes": np.reshape(np.arange(0, N), (N,1)),
             "edges": np.array([], dtype=int),
             "faces": np.zeros((0, 3), dtype=int),
             "tetrahedra": np.array([], dtype=int),

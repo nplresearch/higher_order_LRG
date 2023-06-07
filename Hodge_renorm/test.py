@@ -9,129 +9,45 @@ import scipy
 from Functions import plotting, scomplex
 from scipy.stats import t
 
-plt.rcParams["text.usetex"] = True
-palette = np.array(
-    [
-        [0.3647, 0.2824, 0.1059],
-        [0.8549, 0.6314, 0.3294],
-        [0.4745, 0.5843, 0.5373],
-        [0.4745, 0.3843, 0.7373],
-    ]
-)
+def coarsest_cover(U, V):
+    subsets_U = generate_subsets(U)
+    subsets_V = generate_subsets(V)
+
+    # Find the coarsest cover
+    coarsest_cover = []
+    for subset_U in subsets_U:
+        for subset_V in subsets_V:
+            if is_cover_finer(subset_U, U) and is_cover_finer(subset_V, V):
+                # Check if the current subsets form a coarser cover
+                if not exists_coarser_cover(subset_U, subset_V, coarsest_cover):
+                    coarsest_cover = subset_U + subset_V
+
+    return coarsest_cover
 
 
-N = 2000
-d = 2
-n_tau = 50
-rep = 10
-METHOD = "representative"
-SPARSIFY = False
-TRUE_CONNECTIONS = False
-
-s = 1
-beta = 0.1
-ls = True  # logscale
-
-pref = f"d{d}s{s}"
-path = f"hodge_renormalization/Hodge_renorm/Tests/Experiments_{METHOD}_{SPARSIFY}_{TRUE_CONNECTIONS}/{pref}"
+def generate_subsets(cover):
+    subsets = [[]]
+    for subset_cover in cover:
+        subsets += [subset + [element] for subset in subsets for element in subset_cover]
+    return subsets
 
 
-def plot_mean(Ns, data, col, logscale, ax, lab):
-    Nmin = np.min(np.min(Ns))
-    Nmax = np.max(np.max(Ns))
-    xq = np.linspace(Nmin, Nmax, 100)
-    dataq = np.zeros((Ns.shape[0], 100))
-    for r in range(Ns.shape[0]):
-        uNs, uid = np.unique(Ns[r, :], return_index=True)
-        dataq[r, :] = np.interp(xq, uNs, data[r, uid], left=0, right=0)
-    if logscale:
-        ax.semilogy(xq, np.mean(dataq, axis=0), linewidth=2, color=col, label=lab)
-    else:
-        ax.plot(xq, np.mean(dataq, axis=0), linewidth=2, color=col, label=lab)
+def is_cover_finer(subset, cover):
+    return all(any(set(subset_element).issubset(set(element)) for element in cover_subset) for subset_element in subset for cover_subset in cover)
 
 
-with open(path + "/deg_dist.pkl", "rb") as f:
-    deg_dist = pickle.load(f)
-
-print([len(deg_dist[0][t][0][0]) for t in range(50)])
-exit()
-Ns = np.zeros((rep, d + 1, n_tau), dtype=int)
-for r in range(rep):
-    for i in range(d + 1):
-        for t in range(n_tau):
-            Ns[r, i, t] = len(deg_dist[r][t][i][0])
-
-# Ns = sp.io.loadmat(path + '/Ns.mat')['Ns']
-# deg_dist = sp.io.loadmat(fpath pref + '/deg_dist.mat')['deg_dist']
-
-names = ["Node", "Link", "Face", "Tetrahedron"]
+def exists_coarser_cover(subset_U, subset_V, coarsest_cover):
+    return any(set(subset_U).issubset(set(existing_subset_U)) and set(subset_V).issubset(set(existing_subset_V)) for existing_subset_U, existing_subset_V in coarsest_cover)
 
 
-deg_distance = np.zeros((rep, d + 1, d, n_tau))
-for r in range(rep):
-    for norml in range(d + 1):
-        for degg in range(d):
-            deg1 = deg_dist[r][0][0][degg]
-            for tau in range(n_tau):
-                deg2 = deg_dist[r][tau][norml][degg]
-                if len(deg2) == 0:
-                    deg2 = [0]
-                # KS Distance
-                test = scipy.stats.kstest(deg1, deg2)
-                deg_distance[r, norml, degg, tau] = test.statistic
-                # Powerlaw
-                # fit_function = pwl.Fit(deg2)
-                # deg_distance[r, norml, degg, tau] = fit_function.power_law.D
+U = [[1, 2, 3, 4], [4,5,6,1]]
+V = [[6,1,2,3],[3,4,5,6]]
+
+coarsest = coarsest_cover(U, V)
+print(coarsest)
 
 
-fig = plt.figure()
 
-gs = fig.add_gridspec(d, 2)
-ax1 = fig.add_subplot(gs[:, 0])
-axv = []
-for i in range(d):
-    ax = fig.add_subplot(gs[i, 1])
-    axv = axv + [ax]
-fig.tight_layout()
 
-if d == 1:
-    sc = scomplex.NGF_d1(100, s, beta)
-elif d == 2:
-    sc = scomplex.NGF_d2(100, s, beta)
-elif d == 3:
-    sc = scomplex.NGF_d3(100, s, beta)
 
-plotting.plot_complex(sc, ax1)
-ax1.set_title(r"\textbf{NGF d = " + str(d) + ", s = " + str(s) + "}", fontsize=14)
-for i in range(d):
-    ax = axv[i]
-    for j in range(d + 1):
-        lab = "L" + str(j)
-        # plot_mean(
-        #    1 - Ns[:, j, :] / N, deg_distance[:, j, i, :], palette[j, :], ls, ax, lab
-        # )
-        if ls:
-            for r in range(rep):
-                ax.semilogy(
-                    np.squeeze(1 - Ns[r, j, :] / N),
-                    np.squeeze(deg_distance[r, j, i, :]),
-                    linewidth=1,
-                    color=palette[j, :],
-                    alpha=0.3,
-                )
-        else:
-            for r in range(rep):
-                ax.plot(
-                    1 - Ns[r, j, :] / N,
-                    deg_distance[r, j, i, :],
-                    linewidth=1,
-                    color=palette[j, :],
-                    alpha=0.3,
-                )
 
-    ax.legend()
-    ax.set_title(r"\textbf{" + names[i] + "-" + names[d] + "}", fontsize=14)
-    # ax.set_xlim([0, 0.8])
-
-plt.show()
-plt.savefig(path + "/deg_errors.pdf", format="pdf", bbox_inches="tight")
