@@ -15,13 +15,13 @@ import scipy
 # python stat_scan.py N d n_tau rep METHOD SPARSIFY TRUE_CONNECTIONS factor0 factor1 factor2 factor3
 # It is advised to have factor0 = factor1 = factor2 = 1 and factor3 = 2 or 2.5
 
-N = int(sys.argv[1])  # 2000
-d = int(sys.argv[2])  # 1
-n_tau = int(sys.argv[3])  # 100
-rep = int(sys.argv[4])  # 10
+N = int(sys.argv[1])
+d = int(sys.argv[2])
+n_tau = int(sys.argv[3])
+rep = int(sys.argv[4])
 METHOD = sys.argv[5]  # {"representative","closest"}
-SPARSIFY = sys.argv[6] == "True"  # False
-TRUE_CONNECTIONS = sys.argv[7] == "True"  # True
+SPARSIFY = sys.argv[6] == "True"
+TRUE_CONNECTIONS = sys.argv[7] == "True"
 
 threshold = 0.8
 

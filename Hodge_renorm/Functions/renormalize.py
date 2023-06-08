@@ -7,7 +7,16 @@ from scipy.sparse import csgraph, csr_matrix
 
 
 def renormalize_simplicial_VARIANTS(
-    sc, order, L, U, D, tau, METHOD, SPARSIFY, TRUE_CONNECTIONS, threshold = 1
+    sc,
+    order,
+    L,
+    U,
+    D,
+    tau,
+    METHOD="representative",
+    SPARSIFY=False,
+    TRUE_CONNECTIONS=False,
+    threshold=1,
 ):
     # Perform a simplicial renormalization step
     # Inputs:
@@ -49,22 +58,26 @@ def renormalize_simplicial_VARIANTS(
 
     ncut = np.sum(D > 1 / tau)  # Number of simplices to remove
 
-    ncomp, comp = cluster_simplices(nk,ncut,rho,threshold,TRUE_CONNECTIONS,L,SPARSIFY)
+    ncomp, comp = cluster_simplices(
+        nk, ncut, rho, threshold, TRUE_CONNECTIONS, L, SPARSIFY
+    )
 
     # STEP II: Perform the reduction
 
-    new_sc, mapnodes, nodesclusters = coarse_grain(sc,order,comp,ncomp, METHOD)
+    new_sc, mapnodes, nodesclusters = coarse_grain(sc, order, comp, ncomp, METHOD)
 
     return new_sc, mapnodes, comp, nodesclusters
 
 
-def cluster_simplices(nk,ncut,rho,threshold = 1,TRUE_CONNECTIONS = False, L = None, SPARSIFY = False):
+def cluster_simplices(
+    nk, ncut, rho, threshold=1, TRUE_CONNECTIONS=False, L=None, SPARSIFY=False
+):
     # Aggregate simplices by sorting the values of rho until ncut are removed
     if ncut >= threshold * nk:
         comp = np.ones(nk, dtype=int)
         ncomp = nk
     else:
-        if TRUE_CONNECTIONS: # Only adjacent simplices can be clustered together
+        if TRUE_CONNECTIONS:  # Only adjacent simplices can be clustered together
             rho = rho * (np.abs(L) > 10**-7)
 
         idx = np.argsort(rho.ravel())[::-1]
@@ -105,8 +118,7 @@ def cluster_simplices(nk,ncut,rho,threshold = 1,TRUE_CONNECTIONS = False, L = No
         return ncomp, comp
 
 
-
-def coarse_grain(sc,order,comp,ncomp, METHOD):
+def coarse_grain(sc, order, comp, ncomp, METHOD="representative"):
     name = f"n{order}"
     nk = sc[name]
 
@@ -120,7 +132,6 @@ def coarse_grain(sc,order,comp,ncomp, METHOD):
         simplices = "tetrahedra"
     else:
         raise ValueError("Order must be 0, 1, 2, or 3")
-
 
     nodesclusters = [set() for _ in range(sc["n0"])]  # Map nodes to their clusters
     # Assign labels to nodes
@@ -203,18 +214,17 @@ def coarse_grain(sc,order,comp,ncomp, METHOD):
     else:
         raise ValueError("METHOD must be 'closest' or 'representative'")
 
-    new_sc = induce_simplices(sc,mapnodes)
+    new_sc = induce_simplices(sc, mapnodes)
 
     return new_sc, mapnodes, nodesclusters
 
 
-def induce_simplices(sc,mapnodes):
-    
+def induce_simplices(sc, mapnodes):
     new_sc = {
         "nodes": np.sort(np.unique(mapnodes)),
     }
     new_sc["n0"] = len(new_sc["nodes"])
-    new_sc["nodes"] = np.reshape(new_sc["nodes"], (new_sc["n0"],1))
+    new_sc["nodes"] = np.reshape(new_sc["nodes"], (new_sc["n0"], 1))
 
     # Connect supernodes with edges
     new_edges = []
@@ -268,6 +278,7 @@ def induce_simplices(sc,mapnodes):
         new_sc["n3"] = 0
 
     return new_sc
+
 
 def compute_heat(D, exm, exM, n_t):
     N = len(D)

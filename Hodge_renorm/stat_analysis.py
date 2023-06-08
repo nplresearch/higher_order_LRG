@@ -2,12 +2,10 @@ import pickle
 import sys
 
 import matplotlib.pyplot as plt
-import networkx as nx
 import numpy as np
 import powerlaw as pwl
 import scipy
 from Functions import plotting, scomplex
-from scipy.stats import t
 import seaborn as sns
 import pandas as pd
 
@@ -22,13 +20,13 @@ palette = np.array(
 )
 
 
-N = int(sys.argv[1])  # 2000
-d = int(sys.argv[2])  # 1
-n_tau = int(sys.argv[3])  # 100
-rep = int(sys.argv[4])  # 10
+N = int(sys.argv[1])
+d = int(sys.argv[2])
+n_tau = int(sys.argv[3])
+rep = int(sys.argv[4])
 METHOD = sys.argv[5]  # {"representative","closest"}
-SPARSIFY = sys.argv[6] == "True"  # False
-TRUE_CONNECTIONS = sys.argv[7] == "True"  # True
+SPARSIFY = sys.argv[6] == "True"
+TRUE_CONNECTIONS = sys.argv[7] == "True"
 
 s = 1
 beta = 0.1
@@ -67,7 +65,7 @@ for r in range(rep):
                 deg_distance[r, norml, degg, tau] = test.statistic
 
 
-fig = plt.figure(figsize=(10,6))
+fig = plt.figure(figsize=(10, 6))
 
 gs = fig.add_gridspec(d, 2)
 ax1 = fig.add_subplot(gs[:, 0])
@@ -75,7 +73,7 @@ axv = []
 for i in range(d):
     ax = fig.add_subplot(gs[i, 1])
     axv = axv + [ax]
-fig.tight_layout(pad = 3)
+fig.tight_layout(pad=3)
 
 sc = scomplex.NGF(d, 100, s, beta)
 
@@ -84,21 +82,38 @@ plotting.plot_complex(sc, ax1)
 ax1.set_title(r"\textbf{NGF d = " + str(d) + ", s = " + str(s) + "}", fontsize=14)
 
 
-bin = np.linspace(0,1,num = 10)
+bin = np.linspace(0, 1, num=10)
 for i in range(d):
     ax = axv[i]
-    data = {"Compression rate": bin[np.digitize(1- (Ns[:,:,:].flatten())/N,bin,right = True)-1],
-            "KS distance": deg_distance[:,:,i,:].flatten(),
-            'type': np.array([[["$L_" + str(j)+"$" for _ in range(n_tau)] for j in range(d+1)] for _ in range(rep)]).flatten()}
+    data = {
+        "Compression rate": bin[
+            np.digitize(1 - (Ns[:, :, :].flatten()) / N, bin, right=True) - 1
+        ],
+        "KS distance": deg_distance[:, :, i, :].flatten(),
+        "type": np.array(
+            [
+                [["$L_" + str(j) + "$" for _ in range(n_tau)] for j in range(d + 1)]
+                for _ in range(rep)
+            ]
+        ).flatten(),
+    }
     # Creates pandas DataFrame.
     df = pd.DataFrame(data)
     if ls:
         ax.set_yscale("log")
-    sns.lineplot(x="Compression rate",y="KS distance", hue = 'type', data=df, ax = ax, palette=palette, legend = 'brief')
+    sns.lineplot(
+        x="Compression rate",
+        y="KS distance",
+        hue="type",
+        data=df,
+        ax=ax,
+        palette=palette,
+        legend="brief",
+    )
 
-    ax.legend(loc = 'upper left')
+    ax.legend(loc="upper left")
     ax.set_title(r"\textbf{" + names[i] + "-" + names[d] + "}", fontsize=14)
     ax.set_xlim([0, 0.5])
 
-#plt.show()
-plt.savefig(path + "/deg_errors.pdf", format="pdf")#, bbox_inches="tight")
+# plt.show()
+plt.savefig(path + "/deg_errors.pdf", format="pdf")  # , bbox_inches="tight")
