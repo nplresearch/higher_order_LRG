@@ -48,7 +48,7 @@ for r in range(rep):
 # Ns = sp.io.loadmat(path + '/Ns.mat')['Ns']
 # deg_dist = sp.io.loadmat(fpath pref + '/deg_dist.mat')['deg_dist']
 
-names = ["Node", "Link", "Face", "Tetrahedron"]
+names = ["Node", "Link", "Face", "Tetrahedron", "4_Simplex"]
 
 
 deg_distance = np.zeros((rep, d + 1, d, n_tau))
