@@ -118,7 +118,7 @@ def cluster_simplices(
             zeta, directed=True, connection="weak"
         )  # Clusters assigned to the simplices
 
-        return ncomp, comp
+    return ncomp, comp
 
 
 def coarse_grain(sc, order, comp, ncomp, METHOD="representative"):
@@ -133,8 +133,10 @@ def coarse_grain(sc, order, comp, ncomp, METHOD="representative"):
         simplices = "faces"
     elif order == 3:
         simplices = "tetrahedra"
+    elif order == 4:
+        simplices = "4-simplices"
     else:
-        raise ValueError("Order must be 0, 1, 2, or 3")
+        raise ValueError("Order must be 0, 1, 2, 3 or 4")
 
     nodesclusters = [set() for _ in range(sc["n0"])]  # Map nodes to their clusters
     # Assign labels to nodes
