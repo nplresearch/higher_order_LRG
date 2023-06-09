@@ -155,7 +155,7 @@ for r in range(rep):
             new_edge_dict, new_face_dict, new_tet_dict = scomplex.make_dict(new_sc)
 
             new_deg = scomplex.generalized_degree(
-                new_sc, new_edge_dict, new_face_dict, d
+                new_sc, new_edge_dict, new_face_dict, new_tet_dict, d
             )
             # repetitions x Lk x deg type x tau
             for j in range(d):

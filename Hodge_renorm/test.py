@@ -19,7 +19,7 @@ beta = 0.1
 sc = scomplex.NGF(d, N, s, beta)
 B1, B2, B3, B4, edge_dict, face_dict, tet_dict = scomplex.boundary_matrices_3(sc)
 
-L0 = (B4.T)@B4
+L0 = (B4.T) @ B4
 # print(B1.todense())
 # exit()
 L0 = L0.asfptype()

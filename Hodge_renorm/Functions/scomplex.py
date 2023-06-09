@@ -91,15 +91,16 @@ def boundary_matrices_3(sc):
     return B1, B2, B3, B4, edge_dict, face_dict, tet_dict
 
 
-def generalized_degree(sc, edge_dict, face_dict, d):
+def generalized_degree(sc, edge_dict, face_dict, tet_dict, d):
     if d == 1:
-        deg = [np.zeros(sc["n0"])]
+        deg = [np.zeros(sc["n" + str(l)]) for l in range(d)]
         for i in range(sc["n1"]):
             edge = sc["edges"][i]
             deg[0][edge[0]] += 1
             deg[0][edge[1]] += 1
+
     elif d == 2:
-        deg = [np.zeros(sc["n0"]), np.zeros(sc["n1"])]
+        deg = [np.zeros(sc["n" + str(l)]) for l in range(d)]
         for i in range(sc["n2"]):
             face = sc["faces"][i]
             deg[0][face[0]] += 1
@@ -108,25 +109,59 @@ def generalized_degree(sc, edge_dict, face_dict, d):
             deg[1][edge_dict[tuple((face[0], face[1]))]] += 1
             deg[1][edge_dict[tuple((face[0], face[2]))]] += 1
             deg[1][edge_dict[tuple((face[1], face[2]))]] += 1
-    elif d == 3:
-        deg = [np.zeros(sc["n0"]), np.zeros(sc["n1"]), np.zeros(sc["n2"])]
-        for i in range(sc["n3"]):
-            tet = sc["tetrahedra"][i]
-            deg[0][tet[0]] += 1
-            deg[0][tet[1]] += 1
-            deg[0][tet[2]] += 1
-            deg[0][tet[3]] += 1
-            deg[1][edge_dict[tuple((tet[0], tet[1]))]] += 1
-            deg[1][edge_dict[tuple((tet[0], tet[2]))]] += 1
-            deg[1][edge_dict[tuple((tet[0], tet[3]))]] += 1
-            deg[1][edge_dict[tuple((tet[1], tet[2]))]] += 1
-            deg[1][edge_dict[tuple((tet[1], tet[3]))]] += 1
-            deg[1][edge_dict[tuple((tet[2], tet[3]))]] += 1
 
-            deg[2][face_dict[tuple((tet[0], tet[1], tet[2]))]] += 1
-            deg[2][face_dict[tuple((tet[0], tet[1], tet[3]))]] += 1
-            deg[2][face_dict[tuple((tet[0], tet[2], tet[3]))]] += 1
-            deg[2][face_dict[tuple((tet[1], tet[2], tet[3]))]] += 1
+    elif d == 3:
+        deg = [np.zeros(sc["n" + str(l)]) for l in range(d)]
+        for i in range(sc["n3"]):
+            tet = sc["tetrahedra"][i, :]
+
+            for j in range(d + 1):
+                deg[0][tet[j]] += 1
+
+            for j in range(d + 1):
+                for k in range(j + 1, d + 1):
+                    deg[1][edge_dict[tuple((tet[j], tet[k]))]] += 1
+
+            for j in range(d + 1):
+                for k in range(j + 1, d + 1):
+                    for l in range(k + 1, d + 1):
+                        deg[2][face_dict[tuple((tet[j], tet[k], tet[l]))]] += 1
+
+    elif d == 4:
+        deg = [np.zeros(sc["n" + str(l)]) for l in range(d)]
+
+        for i in range(sc["n4"]):
+            four_simp = sc["4-simplices"][i, :]
+            for j in range(d + 1):
+                deg[0][four_simp[j]] += 1
+
+            for j in range(d + 1):
+                for k in range(j + 1, d + 1):
+                    deg[1][edge_dict[tuple((four_simp[j], four_simp[k]))]] += 1
+
+            for j in range(d + 1):
+                for k in range(j + 1, d + 1):
+                    for l in range(k + 1, d + 1):
+                        deg[2][
+                            face_dict[tuple((four_simp[j], four_simp[k], four_simp[l]))]
+                        ] += 1
+
+            for j in range(d + 1):
+                for k in range(j + 1, d + 1):
+                    for l in range(k + 1, d + 1):
+                        for m in range(l + 1, d + 1):
+                            deg[3][
+                                tet_dict[
+                                    tuple(
+                                        (
+                                            four_simp[j],
+                                            four_simp[k],
+                                            four_simp[l],
+                                            four_simp[m],
+                                        )
+                                    )
+                                ]
+                            ] += 1
 
     return deg
 
