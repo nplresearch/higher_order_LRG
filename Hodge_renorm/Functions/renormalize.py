@@ -41,8 +41,11 @@ def renormalize_simplicial_VARIANTS(
     elif order == 3:
         nk = sc["n3"]
         assert len(D) == nk
+    elif order == 4:
+        nk = sc["n4"]
+        assert len(D) == nk
     else:
-        raise ValueError("Order must be 0, 1, 2, or 3")
+        raise ValueError("Order must be 0, 1, 2, 3 or 4")
 
     D = np.abs(D)  # Ensure eigenvalues are non-negative
 
@@ -276,6 +279,20 @@ def induce_simplices(sc, mapnodes):
     else:
         new_sc["tetrahedra"] = np.zeros((0, 4), dtype=int)
         new_sc["n3"] = 0
+
+    new_4_simplices = []
+    for i in range(sc["n4"]):
+        nodes = mapnodes[sc["4-simplices"][i, :]]
+        if len(np.unique(nodes)) == 5:
+            new_4_simplices.append(nodes)
+    if len(new_4_simplices) != 0:
+        new_sc["4-simplices"] = np.unique(
+            np.sort(np.array(new_4_simplices, dtype=int), axis=1), axis=0
+        )
+        new_sc["n4"] = new_sc["4-simplices"].shape[0]
+    else:
+        new_sc["4-simplices"] = np.zeros((0, 5), dtype=int)
+        new_sc["n4"] = 0
 
     return new_sc
 

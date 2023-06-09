@@ -14,12 +14,19 @@ def make_dict(sc):
 
     face_dict = {}
     for i, face in enumerate(sc["faces"]):
-        # Create a tuple to represent the edge (order doesn't matter)
+        # Create a tuple to represent the face (order doesn't matter)
         face_key = tuple(sorted(face))
         # Store the edge index in the dictionary
         face_dict[face_key] = i
 
-    return edge_dict, face_dict
+    tet_dict = {}
+    for i, tetrahedron in enumerate(sc["tetrahedra"]):
+        # Create a tuple to represent the tetrahedron (order doesn't matter)
+        tet_key = tuple(sorted(tetrahedron))
+        # Store the edge index in the dictionary
+        tet_dict[tet_key] = i
+
+    return edge_dict, face_dict, tet_dict
 
 
 def boundary_matrices_3(sc):
@@ -27,12 +34,14 @@ def boundary_matrices_3(sc):
     n1 = sc["n1"]
     n2 = sc["n2"]
     n3 = sc["n3"]
+    n4 = sc["n4"]
 
     B1 = lil_matrix((n0, n1), dtype=np.int8)
     B2 = lil_matrix((n1, n2), dtype=np.int8)
     B3 = lil_matrix((n2, n3), dtype=np.int8)
+    B4 = lil_matrix((n3, n4), dtype=np.int8)
 
-    edge_dict, face_dict = make_dict(sc)
+    edge_dict, face_dict, tet_dict = make_dict(sc)
 
     for e in range(n1):
         nodes = sc["edges"][e, :]
@@ -62,11 +71,24 @@ def boundary_matrices_3(sc):
             # Set the appropriate entry in `boundary_3`
             B3[face_idx, tetra_idx] = (-1) ** i
 
+    for four_simp_idx, four_simplex in enumerate(sc["4-simplices"]):
+        # Iterate over the four tetrahedra of the 4-simplex
+        for i in range(5):
+            # Determine the four nodes of the tetrahedron
+            tetrahedron = four_simplex[np.arange(5) != i]
+
+            # Find the corresponding tetrahedron index in the tetrahedra list
+            tet_idx = tet_dict[tuple(sorted(tetrahedron))]
+
+            # Set the appropriate entry in `boundary_3`
+            B4[tet_idx, four_simp_idx] = (-1) ** i
+
     B1 = B1.tocsc()
     B2 = B2.tocsc()
     B3 = B3.tocsc()
+    B4 = B4.tocsc()
 
-    return B1, B2, B3, edge_dict, face_dict
+    return B1, B2, B3, B4, edge_dict, face_dict, tet_dict
 
 
 def generalized_degree(sc, edge_dict, face_dict, d):
@@ -136,7 +158,7 @@ def NGF(d, N, s, beta):
                 node[nt, j] = i
                 at[nt] = at[nt] * np.exp(-beta * epsilon[i])
 
-    it = d + 1
+    it = d  # + 1
 
     while it < N - 1:
         it += 1
@@ -200,7 +222,7 @@ def NGF(d, N, s, beta):
             np.sort(np.reshape(np.array(tetrahedra, dtype=int), (-1, 4)), axis=1),
             axis=0,
         ),
-        "4-simplexes": np.unique(
+        "4-simplices": np.unique(
             np.sort(np.reshape(np.array(four_simplexes, dtype=int), (-1, 5)), axis=1),
             axis=0,
         ),
@@ -209,6 +231,6 @@ def NGF(d, N, s, beta):
     sc["n1"] = sc["edges"].shape[0]
     sc["n2"] = sc["faces"].shape[0]
     sc["n3"] = sc["tetrahedra"].shape[0]
-    sc["n4"] = sc["4-simplexes"].shape[0]
+    sc["n4"] = sc["4-simplices"].shape[0]
 
     return sc
