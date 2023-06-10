@@ -8,44 +8,57 @@ import powerlaw as pwl
 from scipy.sparse.linalg import eigsh
 from Functions import plotting, scomplex, renormalize
 from scipy.stats import t
+from scipy.signal import find_peaks
 
 
-N = 100
-d = 4
-s = -1
 
+
+N = 500
+d = 2
+n_tau = 50
+rep = 5
+METHOD = 'representative'
+SPARSIFY = False
+TRUE_CONNECTIONS = False
+
+s = 1
 beta = 0.1
+ls = True  # logscale
 
-sc = scomplex.NGF(d, N, s, beta)
-B1, B2, B3, B4, edge_dict, face_dict, tet_dict = scomplex.boundary_matrices_3(sc)
+suff = "simple"
+pref = f"d{d}s{s}"+suff
+path = f"hodge_renormalization/Hodge_renorm/Tests/Experiments_{METHOD}_{SPARSIFY}_{TRUE_CONNECTIONS}/{pref}"
 
-L0 = (B4.T) @ B4
-# print(B1.todense())
-# exit()
-L0 = L0.asfptype()
-Na = sc["n4"] - 1
-D0, U0 = eigsh(L0, k=Na, sigma=0, which="LM")
-D0 = np.concatenate((D0, 10000 * np.ones(sc["n4"] - Na)))
-U0 = np.concatenate((U0, np.zeros((sc["n4"], sc["n4"] - Na))), axis=1)
-tau = 0.4
-order = 4
-L = L0
-U = U0
-D = D0
 
-new_sc, mapnodes, comp, __ = renormalize.renormalize_simplicial_VARIANTS(
-    sc,
-    order,
-    L,
-    U,
-    D,
-    tau,
-    "representative",
-    False,
-    False,
-    1,
-)
+with open(path + "/deg_dist.pkl", "rb") as f:
+    deg_dist = pickle.load(f)
 
-f, ax = plt.subplots()
-plotting.plot_complex(new_sc, ax)
+
+Ns = np.zeros((rep, d + 1, n_tau), dtype=int)
+for r in range(rep):
+    for i in range(d + 1):
+        for t in range(n_tau):
+            Ns[r, i, t] = len(deg_dist[r][t][i][0])
+            
+
+fig,axs = plt.subplots(d,d+1,figsize = (2*(d+1),2*(d)))
+
+compression = 0.4
+tau_correct = np.zeros(d+1,dtype=int)
+chr = 0
+
+for j in range(d+1):
+    print(Ns[0,j,:])
+
+for j in range(d+1):
+    tau_correct[j] = np.argwhere(np.squeeze(Ns[chr,j,:])<=(1-compression)*N)[0]
+
+for i in range(d):
+    for j in range(d+1):
+        ax = axs[i,j]
+        ddist = deg_dist[chr][tau_correct[j]][j][i]
+        pwl.plot_pdf(deg_dist[chr][0][0][i], color='black', linewidth=2, ax = ax)
+        pwl.plot_pdf(ddist, color='red', linewidth=2, ax = ax)
+       
+       
 plt.show()

@@ -8,8 +8,8 @@ The scale-free simplicial complexes are generated using the "Network Geometry wi
 - ``stat_analysis.py``: plots the results of ``stat_scan.py``.
 
 ## List of functions
-- ``NGF``: generates an NGF simplicial complex of dimension 1,2 or 3;
-- ``boundary_matrices_3``: returns the first three boundary matrices in a sparse format;
+- ``NGF``: generates an NGF simplicial complex of dimension 1,2,3 or 4;
+- ``boundary_matrices_3``: returns the first four boundary matrices in a sparse format;
 - ``generalized_degree``: computes the generalized degrees of a simplicial complex (ex. for dim = 2, faces in each node and faces in each edge);
 - ``plot_complex`` : plots nodes, edges and faces of a given simplicial complex;
 - ``compute_heat``: returns the values of the specific heat of a given Hodge Laplacian on a time range;

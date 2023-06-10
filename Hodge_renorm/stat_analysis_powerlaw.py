@@ -17,7 +17,8 @@ palette = np.array(
         [0.3647, 0.2824, 0.1059],
         [0.8549, 0.6314, 0.3294],
         [0.4745, 0.5843, 0.5373],
-        [0.4745, 0.3843, 0.7373],
+        [200.0/255, 202.0/255, 180.0/255],
+        [107.0/255, 42.0/255, 2.0/255]
     ]
 )
 
@@ -34,7 +35,8 @@ s = 1
 beta = 0.1
 ls = True  # logscale
 
-pref = f"d{d}s{s}"
+suff = "simple"
+pref = f"d{d}s{s}"+suff
 path = f"Tests/Experiments_{METHOD}_{SPARSIFY}_{TRUE_CONNECTIONS}/{pref}"
 
 
@@ -50,7 +52,7 @@ for r in range(rep):
 # Ns = sp.io.loadmat(path + '/Ns.mat')['Ns']
 # deg_dist = sp.io.loadmat(fpath pref + '/deg_dist.mat')['deg_dist']
 
-names = ["Node", "Link", "Face", "Tetrahedron"]
+names = ["Node", "Link", "Face", "Tetrahedron", "4_Simplex"]
 
 
 deg_distance = np.zeros((rep, d + 1, d, n_tau))
@@ -67,26 +69,33 @@ for r in range(rep):
                 deg_distance[r, norml, degg, tau] = fit_function.power_law.D
 
 
-fig = plt.figure(figsize=(10, 6))
+# fig = plt.figure(figsize=(10, 6))
 
-gs = fig.add_gridspec(d, 2)
-ax1 = fig.add_subplot(gs[:, 0])
-axv = []
+# gs = fig.add_gridspec(d, 2)
+# ax1 = fig.add_subplot(gs[:, 0])
+# axv = []
+# for i in range(d):
+#     ax = fig.add_subplot(gs[i, 1])
+#     axv = axv + [ax]
+# fig.tight_layout(pad=3)
+
+# sc = scomplex.NGF(d, 100, s, beta)
+
+
+# plotting.plot_complex(sc, ax1)
+# ax1.set_title(r"\textbf{NGF d = " + str(d) + ", s = " + str(s) + "}", fontsize=14)
+
+
+bin = np.linspace(0, 1, num=30)
+
+fig, axv = plt.subplots(1, d, figsize=(5*d, 4))
+
 for i in range(d):
-    ax = fig.add_subplot(gs[i, 1])
-    axv = axv + [ax]
-fig.tight_layout(pad=3)
+    if d == 1:
+        ax = axv
+    else:
+        ax = axv[i]
 
-sc = scomplex.NGF(d, 100, s, beta)
-
-
-plotting.plot_complex(sc, ax1)
-ax1.set_title(r"\textbf{NGF d = " + str(d) + ", s = " + str(s) + "}", fontsize=14)
-
-
-bin = np.linspace(0, 1, num=10)
-for i in range(d):
-    ax = axv[i]
     data = {
         "Compression rate": bin[
             np.digitize(1 - (Ns[:, :, :].flatten()) / N, bin, right=True) - 1
