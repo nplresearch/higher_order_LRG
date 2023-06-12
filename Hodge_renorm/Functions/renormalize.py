@@ -67,7 +67,7 @@ def renormalize_simplicial_VARIANTS(
    
     # STEP II: Perform the reduction
 
-    new_sc, mapnodes, nodesclusters = coarse_grain_ez(sc, order, comp, ncomp)
+    new_sc, mapnodes, nodesclusters = coarse_grain(sc, order, comp, ncomp)
 
     return new_sc, mapnodes, comp, nodesclusters
 
@@ -119,58 +119,6 @@ def cluster_simplices(
         )  # Clusters assigned to the simplices
 
     return ncomp, comp
-
-def coarse_grain_ez(sc, order, comp, ncomp):
-    name = f"n{order}"
-    nk = sc[name]
-
-    if order == 0:
-        simplices = "nodes"
-    elif order == 1:
-        simplices = "edges"
-    elif order == 2:
-        simplices = "faces"
-    elif order == 3:
-        simplices = "tetrahedra"
-    elif order == 4:
-        simplices = "4-simplices"
-    else:
-        raise ValueError("Order must be 0, 1, 2, 3 or 4")
-
-    nodesclusters = [set() for _ in range(sc["n0"])]
-
-    # Assign labels to nodes
-    # nodecomponents: node -> set of components it belongs to
-
-    for i in range(nk):
-        nodes = sc[simplices][i,:] # Nodes in simplex i
-        for j in range(order+1):
-            nodesclusters[nodes[j]] = nodesclusters[nodes[j]].union(set([comp[i]]))
-
-    
-    nodelabel = [None for _ in range(sc["n0"])]
-    for i in range(sc["n0"]):
-        nodesclusters[i] = np.sort(list(nodesclusters[i]))
-        clusters = nodesclusters[i]
-        a = ""
-        for j in range(len(clusters)):
-            a += str(clusters[j]) + "_"
-        nodelabel[i] = a
-    
-    comps = np.unique(nodelabel)
-    ncomps = len(comps)
-
-    mapnodes = np.zeros(sc["n0"]) # Maps each node to its image in the renormalized simplicial complex
-
-    
-    j = 0
-    for i in range(ncomps):
-        mapnodes[np.argwhere([nodelabel[k] == comps[i] for k in range(sc["n0"])])[0]] = j
-        j = j + 1
-
-    new_sc = induce_simplices(sc, mapnodes)
-
-    return new_sc, mapnodes, nodesclusters
 
 def coarse_grain(sc, order, comp, ncomp, METHOD="representative"):
     name = f"n{order}"

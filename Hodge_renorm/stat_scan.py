@@ -26,7 +26,7 @@ threshold = 0.8
 s = 1
 beta = 0.1
 
-suff = "simple"
+suff = ""
 pref = f"d{d}s{s}"+suff
 
 deg_dist = []

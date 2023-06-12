@@ -34,7 +34,7 @@ s = 1
 beta = 0.1
 ls = True  # logscale
 
-suff = "simple"
+suff = ""
 pref = f"d{d}s{s}"+suff
 path = f"Tests/Experiments_{METHOD}_{SPARSIFY}_{TRUE_CONNECTIONS}/{pref}"
 
@@ -94,35 +94,51 @@ for i in range(d):
         ax = axv
     else:
         ax = axv[i]
-    data = {
-        "Compression rate": bin[
-            np.digitize(1 - (Ns[:, :, :].flatten()) / N, bin, right=True) - 1
-        ],
-        "KS distance": deg_distance[:, :, i, :].flatten(),
-        "type": np.array(
-            [
-                [["$L_" + str(j) + "$" for _ in range(n_tau)] for j in range(d + 1)]
-                for _ in range(rep)
-            ]
-        ).flatten(),
-    }
-    # Creates pandas DataFrame.
-    df = pd.DataFrame(data)
-    if ls:
-        ax.set_yscale("log")
-    sns.lineplot(
-        x="Compression rate",
-        y="KS distance",
-        hue="type",
-        data=df,
-        ax=ax,
-        palette=palette,
-        legend="brief"
-    )
-
-    ax.legend(loc="upper left")
+    for j in range(d+1):
+        for r in range(rep):
+            if r == 0:
+                lab = "$L_"+str(j)+"$"
+            else:
+                lab = ""
+            id = np.argwhere(Ns[r, j, :] != 1)
+            ax.plot(1 - Ns[r, j, id]/N, deg_distance[r,j,i,id], '-o', color = palette[j,:], alpha = 0.5, linewidth = 0.8, markersize = 4, label = lab)
+    ax.legend()
     ax.set_title(r"\textbf{" + names[i] + "-" + names[d] + "}", fontsize=14)
-    ax.set_xlim([0, 0.5])
+
+# for i in range(d):
+#     if d == 1:
+#         ax = axv
+#     else:
+#         ax = axv[i]
+#     data = {
+#         "Compression rate": bin[
+#             np.digitize(1 - (Ns[:, :, :].flatten()) / N, bin, right=True) - 1
+#         ],
+#         "KS distance": deg_distance[:, :, i, :].flatten(),
+#         "type": np.array(
+#             [
+#                 [["$L_" + str(j) + "$" for _ in range(n_tau)] for j in range(d + 1)]
+#                 for _ in range(rep)
+#             ]
+#         ).flatten(),
+#     }
+#     # Creates pandas DataFrame.
+#     df = pd.DataFrame(data)
+#     if ls:
+#         ax.set_yscale("log")
+#     sns.lineplot(
+#         x="Compression rate",
+#         y="KS distance",
+#         hue="type",
+#         data=df,
+#         ax=ax,
+#         palette=palette,
+#         legend="brief"
+#     )
+
+#     ax.legend(loc="upper left")
+#     ax.set_title(r"\textbf{" + names[i] + "-" + names[d] + "}", fontsize=14)
+#     ax.set_xlim([0, 0.5])
 
 # plt.show()
 plt.savefig(path + "/deg_errors.pdf", format="pdf")  # , bbox_inches="tight")
