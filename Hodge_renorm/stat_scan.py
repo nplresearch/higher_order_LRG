@@ -47,11 +47,11 @@ for r in range(rep):
     D0 = np.concatenate((D0, 10000 * np.ones(sc["n0"] - Na)))
     U0 = np.concatenate((U0, np.zeros((sc["n0"], sc["n0"] - Na))), axis=1)
     
-    tau_space0 = np.flip(1/D0)[0::sc["n0"]//n_tau]
-    # [specific_heat, tau_space] = renormalize.compute_heat(D0, -2, 1.5, 200)
-    # id, __ = find_peaks(specific_heat)
-    # tau_max0 = tau_space[id[0]]
-    # tau_space0 = np.linspace(0, tau_max0, n_tau)
+    # tau_space0 = np.flip(1/D0)[0::sc["n0"]//n_tau]
+    [specific_heat, tau_space] = renormalize.compute_heat(D0, -2, 1.5, 200)
+    id, __ = find_peaks(specific_heat)
+    tau_max0 = tau_space[id[0]]
+    tau_space0 = np.linspace(0, tau_max0, n_tau)
 
     if sc["n1"] != 0:
         L1 = (B1.T) @ B1 + B2 @ (B2.T)
@@ -60,12 +60,12 @@ for r in range(rep):
         D1, U1 = eigsh(L1, k=Na, which="SM")
         D1 = np.concatenate((D1, 10000 * np.ones(sc["n1"] - Na)))
         U1 = np.concatenate((U1, np.zeros((sc["n1"], sc["n1"] - Na))), axis=1)
-        tau_space1 = np.flip(1/D1)[0::sc["n1"]//n_tau]
+        #tau_space1 = np.flip(1/D1)[0::sc["n1"]//n_tau]
         
-        # [specific_heat, tau_space] = renormalize.compute_heat(D1, -2, 1.5, 200)
-        # id, __ = find_peaks(specific_heat)
-        # tau_max1 = tau_space[id[0]]
-        # tau_space1 = np.linspace(0, tau_max1, n_tau)
+        [specific_heat, tau_space] = renormalize.compute_heat(D1, -2, 1.5, 200)
+        id, __ = find_peaks(specific_heat)
+        tau_max1 = tau_space[id[0]]
+        tau_space1 = np.linspace(0, tau_max1, n_tau)
 
     if sc["n2"] != 0:
         L2 = (B2.T) @ B2 + B3 @ (B3.T)
@@ -75,11 +75,11 @@ for r in range(rep):
         D2 = np.concatenate((D2, 10000 * np.ones(sc["n2"] - Na)))
         U2 = np.concatenate((U2, np.zeros((sc["n2"], sc["n2"] - Na))), axis=1)
 
-        tau_space2 = np.flip(1/D2)[0::sc["n2"]//n_tau]
-        # [specific_heat, tau_space] = renormalize.compute_heat(D2, -2, 1.5, 200)
-        # id, __ = find_peaks(specific_heat)
-        # tau_max2 = tau_space[id[0]]
-        # tau_space2 = np.linspace(0, tau_max2, n_tau)
+        # tau_space2 = np.flip(1/D2)[0::sc["n2"]//n_tau]
+        [specific_heat, tau_space] = renormalize.compute_heat(D2, -2, 1.5, 200)
+        id, __ = find_peaks(specific_heat)
+        tau_max2 = tau_space[id[0]]
+        tau_space2 = np.linspace(0, tau_max2, n_tau)
 
     if sc["n3"] != 0:
         L3 = (B3.T) @ B3 + B4 @ (B4.T)
@@ -89,11 +89,11 @@ for r in range(rep):
         D3 = np.concatenate((D3, 10000 * np.ones(sc["n3"] - Na)))
         U3 = np.concatenate((U3, np.zeros((sc["n3"], sc["n3"] - Na))), axis=1)
 
-        tau_space3 = np.flip(1/D3)[0::sc["n3"]//n_tau]
-        #[specific_heat, tau_space] = renormalize.compute_heat(D3, -2, 1.5, 200)
-        #id, __ = find_peaks(specific_heat)
-        #tau_max3 = tau_space[id[0]]
-        #tau_space3 = np.linspace(0, tau_max3, n_tau)
+        #tau_space3 = np.flip(1/D3)[0::sc["n3"]//n_tau]
+        [specific_heat, tau_space] = renormalize.compute_heat(D3, -2, 1.5, 200)
+        id, __ = find_peaks(specific_heat)
+        tau_max3 = tau_space[id[0]]
+        tau_space3 = np.linspace(0, tau_max3, n_tau)
 
     if sc["n4"] != 0:
         L4 = (B4.T) @ B4
@@ -103,11 +103,11 @@ for r in range(rep):
         D4 = np.concatenate((D4, 10000 * np.ones(sc["n4"] - Na)))
         U4 = np.concatenate((U4, np.zeros((sc["n4"], sc["n4"] - Na))), axis=1)
 
-        tau_space4 = np.flip(1/D4)[0::sc["n4"]//n_tau]
-        # [specific_heat, tau_space] = renormalize.compute_heat(D4, -2, 1.5, 200)
-        # id, __ = find_peaks(specific_heat)
-        # tau_max4 = tau_space[id[0]]
-        # tau_space4 = np.linspace(0, tau_max4, n_tau)
+        # tau_space4 = np.flip(1/D4)[0::sc["n4"]//n_tau]
+        [specific_heat, tau_space] = renormalize.compute_heat(D4, -2, 1.5, 200)
+        id, __ = find_peaks(specific_heat)
+        tau_max4 = tau_space[id[0]]
+        tau_space4 = np.linspace(0, tau_max4, n_tau)
 
     for t in range(n_tau):
         rowt = []
