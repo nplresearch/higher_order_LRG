@@ -64,10 +64,11 @@ def renormalize_simplicial_VARIANTS(
     ncomp, comp = cluster_simplices(
         nk, ncut, rho, threshold, TRUE_CONNECTIONS, L, SPARSIFY
     )
-   
-    # STEP II: Perform the reduction
 
-    new_sc, mapnodes, nodesclusters = coarse_grain(sc, order, comp, ncomp)
+    # STEP II: Perform the reduction
+    mapnodes, nodesclusters = coarse_grain(sc, order, comp, ncomp)
+    
+    new_sc = induce_simplices(sc, mapnodes)
 
     return new_sc, mapnodes, comp, nodesclusters
 
@@ -119,6 +120,7 @@ def cluster_simplices(
         )  # Clusters assigned to the simplices
 
     return ncomp, comp
+
 
 def coarse_grain(sc, order, comp, ncomp, METHOD="representative"):
     name = f"n{order}"
@@ -217,10 +219,7 @@ def coarse_grain(sc, order, comp, ncomp, METHOD="representative"):
                 ]  # Collapse node i to the closest interface or representative
     else:
         raise ValueError("METHOD must be 'closest' or 'representative'")
-
-    new_sc = induce_simplices(sc, mapnodes)
-
-    return new_sc, mapnodes, nodesclusters
+    return mapnodes, nodesclusters
 
 
 def induce_simplices(sc, mapnodes):
@@ -311,7 +310,79 @@ def compute_heat(D, exm, exM, n_t):
 
         mu = mu[mu > 0]
         S[t] = -np.sum(mu * np.log(mu))
-    #specific_heat = -(np.diff(S) / np.diff(np.log(tau_space)))
-    specific_heat = -(np.diff(S) / np.diff(tau_space))
+    specific_heat = -(np.diff(S) / np.diff(np.log(tau_space)))
+    # specific_heat = -(np.diff(S) / np.diff(tau_space))
     tau_space = tau_space[: n_t - 1]
     return specific_heat, tau_space
+
+
+
+def renormalize_simplicial_Dirac(
+    sc,
+    orders,
+    Us,
+    Ds,
+    taus,
+):
+    # Perform a simplicial renormalization step
+    # Inputs:
+    # sc - simplicial complex object
+    # order - {0,1,2,3} order of the renormalization
+    # U - Laplacian of given order's eigenvectors
+    # D - array containing Laplacian of given order's eigenvalues
+    # tau - diffusion time
+    # METHOD - {'closest','representative'}
+    # SPARSIFY - {True,False}
+    # TRUE_CONNECTIONS - {True,False}
+
+    Ps = []
+    for o in range(len(orders)):
+        order = orders[o]
+        D = np.abs(Ds[o])  # Ensure eigenvalues are non-negative
+        U = Us[o]
+        tau = taus[o]
+
+        if order == 0:
+            nk = sc["n0"]
+            assert len(D) == nk
+        elif order == 1:
+            nk = sc["n1"]
+            assert len(D) == nk
+        elif order == 2:
+            nk = sc["n2"]
+            assert len(D) == nk
+        elif order == 3:
+            nk = sc["n3"]
+            assert len(D) == nk
+        elif order == 4:
+            nk = sc["n4"]
+            assert len(D) == nk
+        else:
+            raise ValueError("Order must be 0, 1, 2, 3 or 4")
+
+    
+        # STEP I: Cluster the simplices
+
+        # Compute the eigenvalues of exp(-tau*L)/trace(exp(-tau*L))
+        Dtilde = np.zeros(nk)
+        for i in range(nk):
+            Dtilde[i] = 1 / np.sum(np.exp(-tau * (D - D[i])))
+
+        rho = U @ np.diag(Dtilde) @ U.T  # Normalized Heat Kernel
+        rho = np.abs(np.triu(rho))  # Take its absolute value to ignore orientations
+
+        ncut = np.sum(D > 1 / tau)  # Number of simplices to remove
+
+        ncomp, comp = cluster_simplices(
+            nk, ncut, rho, 1, False , 0, False
+        )
+        
+        mapnodes, _ = coarse_grain(sc, order, comp, ncomp)
+        nc = len(np.unique(mapnodes))
+        Ps.append(support.map2partition(mapnodes, nc))
+
+    P = support.meet(Ps[0],Ps[1])
+    mapnodes, nc = support.partition2map(P,sc["n0"])
+    new_sc = induce_simplices(sc, mapnodes)
+
+    return new_sc, mapnodes

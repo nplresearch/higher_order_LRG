@@ -14,19 +14,19 @@ import scipy
 # Pass arguments from command line:
 # python stat_scan.py N d n_tau rep METHOD SPARSIFY TRUE_CONNECTIONS
 
-N = int(sys.argv[1])
-d = int(sys.argv[2])
-n_tau = int(sys.argv[3])
-rep = int(sys.argv[4])
-METHOD = sys.argv[5]  # {"representative","closest"}
-SPARSIFY = sys.argv[6] == "True"
-TRUE_CONNECTIONS = sys.argv[7] == "True"
+N = 500
+d = 2
+n_tau = 100
+rep = 1
+METHOD = "representative"
+SPARSIFY = False
+TRUE_CONNECTIONS = False
 
-threshold = 0.8
+threshold = 0.9
 s = 1
 beta = 0.1
 
-suff = ""
+suff = "single"
 pref = f"d{d}s{s}" + suff
 
 deg_dist = []
@@ -81,34 +81,6 @@ for r in range(rep):
         tau_max2 = tau_space[id[0]]
         tau_space2 = np.linspace(0, tau_max2, n_tau)
 
-    if sc["n3"] != 0:
-        L3 = (B3.T) @ B3 + B4 @ (B4.T)
-        L3 = L3.asfptype()
-        Na = sc["n3"] - 1
-        D3, U3 = eigsh(L3, k=Na, which="SM")
-        D3 = np.concatenate((D3, 10000 * np.ones(sc["n3"] - Na)))
-        U3 = np.concatenate((U3, np.zeros((sc["n3"], sc["n3"] - Na))), axis=1)
-
-        # tau_space3 = np.flip(1/D3)[0::sc["n3"]//n_tau]
-        [specific_heat, tau_space] = renormalize.compute_heat(D3, -2, 1.5, 200)
-        id, __ = find_peaks(specific_heat)
-        tau_max3 = tau_space[id[0]]
-        tau_space3 = np.linspace(0, tau_max3, n_tau)
-
-    if sc["n4"] != 0:
-        L4 = (B4.T) @ B4
-        L4 = L4.asfptype()
-        Na = sc["n4"] - 1
-        D4, U4 = eigsh(L4, k=Na, which="SM")
-        D4 = np.concatenate((D4, 10000 * np.ones(sc["n4"] - Na)))
-        U4 = np.concatenate((U4, np.zeros((sc["n4"], sc["n4"] - Na))), axis=1)
-
-        # tau_space4 = np.flip(1/D4)[0::sc["n4"]//n_tau]
-        [specific_heat, tau_space] = renormalize.compute_heat(D4, -2, 1.5, 200)
-        id, __ = find_peaks(specific_heat)
-        tau_max4 = tau_space[id[0]]
-        tau_space4 = np.linspace(0, tau_max4, n_tau)
-
     for t in range(n_tau):
         rowt = []
         print(
@@ -139,16 +111,6 @@ for r in range(rep):
                 U = U2
                 D = D2
                 L = L2
-            elif order == 3:
-                tau_space = tau_space3
-                U = U3
-                D = D3
-                L = L3
-            elif order == 4:
-                tau_space = tau_space4
-                U = U4
-                D = D4
-                L = L4
 
             new_sc, mapnodes, comp, __ = renormalize.renormalize_simplicial_VARIANTS(
                 sc,
@@ -181,5 +143,7 @@ path = f"Tests/Experiments_{METHOD}_{SPARSIFY}_{TRUE_CONNECTIONS}/{pref}"
 if not os.path.exists(path):
     os.makedirs(path)
 
+with open(path + "/deg_dist.pkl", "wb") as f:
+    pickle.dump(deg_dist, f)
 with open(path + "/deg_dist.pkl", "wb") as f:
     pickle.dump(deg_dist, f)

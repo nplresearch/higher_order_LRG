@@ -1,3 +1,5 @@
+import numpy as np
+
 class UnionFind:
     def __init__(self, n):
         self.parent = list(range(n))
@@ -33,3 +35,37 @@ class UnionFind:
     def add_edges(self, edges):
         for u, v in edges:
             self.union(u, v)
+
+
+
+def meet(P,Q):
+    PmQ = set()
+    for p in P:
+        if len(p) == 1:
+            PmQ.add(p)
+        else:
+            for q in Q:
+                inter = p.intersection(q)
+                if len(inter) != 0:
+                    PmQ.add(p.intersection(q))
+    return(PmQ)
+
+def map2partition(mapnodes,nc):
+    P = set()
+    N = len(mapnodes)
+    for n in range(nc):
+        ag = np.reshape(np.argwhere(mapnodes == n),(-1,))
+        P.add(frozenset(list(ag)))
+    return P
+
+
+def partition2map(P,N):
+    nc = len(P)
+    mapnodes = np.zeros(N)
+    n = 0
+    for p in P:
+        for node in list(p):
+            mapnodes[node] = n
+        n += 1
+    return mapnodes, nc
+

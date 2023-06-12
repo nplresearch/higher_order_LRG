@@ -25,7 +25,7 @@ def plot_complex(sc, ax, color):
             f = sc["faces"][i, :]
             x = [pos[f[0]][0], pos[f[1]][0], pos[f[2]][0]]
             y = [pos[f[0]][1], pos[f[1]][1], pos[f[2]][1]]
-            ax.fill(x, y, color=color, alpha = 0.2)
+            ax.fill(x, y, color=color, alpha=0.2)
 
         nx.draw_networkx(
             G,
@@ -33,7 +33,7 @@ def plot_complex(sc, ax, color):
             node_color=color,
             node_size=10,
             with_labels=False,
-            edge_color= color,
+            edge_color=color,
             linewidths=1,
             ax=ax,
         )
