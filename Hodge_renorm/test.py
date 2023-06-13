@@ -20,7 +20,7 @@ palette = np.array(
 )
 
 N = 300
-d = 1
+d = 2
 s = 1
 sc = scomplex.NGF(d, N, s, 0.1)
 
@@ -46,7 +46,7 @@ U1 = np.concatenate((U1, np.zeros((sc["n1"], sc["n1"] - Na))), axis=1)
 Ds = [D0,D1]
 Us = [U0,U1]
 orders = [0,1]
-taus = [1,5]
+taus = [1,1]
 new_sc, mapnodes = renormalize.renormalize_simplicial_Dirac(
     sc,
     orders,

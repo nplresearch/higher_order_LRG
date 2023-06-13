@@ -69,3 +69,8 @@ def partition2map(P,N):
         n += 1
     return mapnodes, nc
 
+
+def list_dim(a):
+    if not type(a) == list:
+        return []
+    return [len(a)] + list_dim(a[0])

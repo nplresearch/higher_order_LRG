@@ -2,7 +2,7 @@ import os
 import pickle
 import sys
 
-sys.path.append("..")  # Adds higher directory to python modules path.
+sys.path.append(sys.path[0]+'/..')  # Adds higher directory to python modules path.
 
 import numpy as np
 from Functions import renormalize, scomplex

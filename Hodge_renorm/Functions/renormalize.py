@@ -382,6 +382,7 @@ def renormalize_simplicial_Dirac(
         Ps.append(support.map2partition(mapnodes, nc))
 
     P = support.meet(Ps[0],Ps[1])
+
     mapnodes, nc = support.partition2map(P,sc["n0"])
     new_sc = induce_simplices(sc, mapnodes)
 
