@@ -69,7 +69,10 @@ def plot_complex(sc, ax, color):
 
 
 
-def plot_deg_dist(deg_dist, path = None, limsup = None):
+def plot_deg_dist(deg_dist, path = None, limsup = None, return_data = None, labels = None, colors = None ):
+    if colors is None:
+        colors = palette
+         
     dim = support.list_dim(deg_dist)
     N = len(deg_dist[0][0][0][0])
     renorms = dim[2]
@@ -114,14 +117,17 @@ def plot_deg_dist(deg_dist, path = None, limsup = None):
         for j in range(renorms):
             for r in range(rep):
                 if r == 0:
-                    lab = "$L_" + str(j) + "$"
+                    if labels is not None:
+                        lab = labels[j]
+                    else:
+                        lab = "$L_" + str(j) + "$"
                 else:
                     lab = ""
                 id = np.argwhere(Ns[r, j, :] > 3)
                 ax.plot(
                     1 - Ns[r, j, id] / N,
                     deg_distance[r, j, i, id],
-                    color=palette[j, :],
+                    color=colors[j, :],
                     alpha=0.3,
                     linewidth=0.8,
                 )
@@ -130,16 +136,19 @@ def plot_deg_dist(deg_dist, path = None, limsup = None):
                     deg_distance[r, j, i, id],
                     "o",
                     alpha=0.8,
-                    color=palette[j, :],
+                    color=colors[j, :],
                     ms=4,
                     label=lab,
                 )
-        ax.legend()
+        ax.legend(loc = 'upper left')
         ax.set_title(r"\textbf{" + names[i] + "-" + names[d] + "}", fontsize=14)
         if limsup is not None:
             ax.set_xlim(right = limsup)
+            ax.set_ylim(top = np.max(deg_distance[r, j, i, id])+0.1)
 
     if path is not None:
         plt.savefig(path + "/deg_errors.pdf", format="pdf")  # , bbox_inches="tight")
     else:
         plt.show()
+    if return_data:
+        return Ns, deg_distance

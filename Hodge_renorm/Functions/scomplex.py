@@ -269,3 +269,34 @@ def NGF(d, N, s, beta):
     sc["n4"] = sc["4-simplices"].shape[0]
 
     return sc
+
+
+
+keys = ["nodes","edges","faces", "tetrahedra","4-simplices"]
+
+# Multiorder Laplacian functions
+def adj_matrix_of_order(sc, d) : 
+    """Returns the adjacency matrix of order d of t"""
+    N = sc["n0"]
+    G = nx.Graph()
+    G.add_nodes_from(sc[keys[0]])
+    G.add_edges_from(sc[keys[1]])
+    Adj = nx.adjacency_matrix(G).toarray()
+
+    if d==1:
+        adj_d = Adj
+    else:
+        adj_d = np.zeros_like(Adj)
+        for s in range(0,d):
+            for d_simplex in sc[keys[s]] : #lista di d-simplessi
+                for [i_,j_] in permutations(d_simplex, 2):
+                    adj_d[i_,j_] += 1
+    return adj_d
+
+def laplacian_of_order(sc, d):
+
+    Adj_d = adj_matrix_of_order(sc, d)
+    K_d = sum(Adj_d)
+    L_d = np.diag(K_d) - Adj_d
+
+    return L_d
