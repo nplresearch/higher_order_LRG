@@ -8,15 +8,18 @@ from scipy.sparse import csgraph, csr_matrix
 
 def renormalize_simplicial_VARIANTS(
     sc,
-    order,
-    L,
-    U,
-    D,
-    tau,
+    order=0,
+    L = None,
+    U = None,
+    D = None,
+    tau = 1,
     METHOD="representative",
     SPARSIFY=False,
     TRUE_CONNECTIONS=False,
     threshold=1,
+    simple=False,
+    rho = None,
+    nc = 10,
 ):
     # Perform a simplicial renormalization step
     # Inputs:
@@ -29,45 +32,47 @@ def renormalize_simplicial_VARIANTS(
     # SPARSIFY - {True,False}
     # TRUE_CONNECTIONS - {True,False}
 
-    if order == 0:
-        nk = sc["n0"]
+    nk = sc["n" + str(order)]
+    
+    if rho is None:
         assert len(D) == nk
-    elif order == 1:
-        nk = sc["n1"]
-        assert len(D) == nk
-    elif order == 2:
-        nk = sc["n2"]
-        assert len(D) == nk
-    elif order == 3:
-        nk = sc["n3"]
-        assert len(D) == nk
-    elif order == 4:
-        nk = sc["n4"]
-        assert len(D) == nk
+
+        D = np.abs(D)  # Ensure eigenvalues are non-negative
+
+        # STEP I: Cluster the simplices
+
+        # Compute the eigenvalues of exp(-tau*L)/trace(exp(-tau*L))
+        Dtilde = np.zeros(nk)
+        for i in range(nk):
+            #Dtilde[i] = 1 / np.sum(np.exp(-tau * (D - D[i])))
+            Dtilde[i] = np.exp(-tau *D[i])
+
+        rho = U @ np.diag(Dtilde) @ U.T  # Normalized Heat Kernel
+        rho = np.abs(np.triu(rho))  # Take its absolute value to ignore orientations
+        #rho = np.abs(np.real(rho))
+        ncut = np.sum(D > 1 / np.abs(tau))  # Number of simplices to remove
+
     else:
-        raise ValueError("Order must be 0, 1, 2, 3 or 4")
+        assert len(rho) == nk
+        ncut = nc
 
-    D = np.abs(D)  # Ensure eigenvalues are non-negative
-
-    # STEP I: Cluster the simplices
-
-    # Compute the eigenvalues of exp(-tau*L)/trace(exp(-tau*L))
-    Dtilde = np.zeros(nk)
-    for i in range(nk):
-        Dtilde[i] = 1 / np.sum(np.exp(-tau * (D - D[i])))
-
-    rho = U @ np.diag(Dtilde) @ U.T  # Normalized Heat Kernel
-    rho = np.abs(np.triu(rho))  # Take its absolute value to ignore orientations
-
-    ncut = np.sum(D > 1 / tau)  # Number of simplices to remove
-
-    ncomp, comp = cluster_simplices(
-        nk, ncut, rho, threshold, TRUE_CONNECTIONS, L, SPARSIFY
-    )
+    if not simple:
+        ncomp, comp = cluster_simplices(
+            nk, ncut, rho, threshold, TRUE_CONNECTIONS, L, SPARSIFY
+        )
+    else:
+        zeta = np.zeros((nk, nk))
+        for i in range(nk):
+            for j in range(i, nk):
+                zeta[i, j] = (rho[i, j] >= rho[i, i]) or (rho[i, j] >= rho[j, j])
+        zeta = csr_matrix(zeta)
+        ncomp, comp = csgraph.connected_components(
+            zeta, directed=True, connection="weak"
+        )  # Clusters assigned to the simplices
 
     # STEP II: Perform the reduction
-    mapnodes, nodesclusters = coarse_grain(sc, order, comp, ncomp)
-    
+    mapnodes, nodesclusters = coarse_grain(sc, order, comp, ncomp, METHOD)
+
     new_sc = induce_simplices(sc, mapnodes)
 
     return new_sc, mapnodes, comp, nodesclusters
@@ -122,22 +127,11 @@ def cluster_simplices(
     return ncomp, comp
 
 
-def coarse_grain(sc, order, comp, ncomp, METHOD="representative"):
+def coarse_grain(sc, order, comp, ncomp, METHOD = "representative"):
     name = f"n{order}"
     nk = sc[name]
-
-    if order == 0:
-        simplices = "nodes"
-    elif order == 1:
-        simplices = "edges"
-    elif order == 2:
-        simplices = "faces"
-    elif order == 3:
-        simplices = "tetrahedra"
-    elif order == 4:
-        simplices = "4-simplices"
-    else:
-        raise ValueError("Order must be 0, 1, 2, 3 or 4")
+    keys = ["nodes","edges","faces","tetrahedra","4-simplices"]
+    simplices = keys[order]
 
     nodesclusters = [set() for _ in range(sc["n0"])]  # Map nodes to their clusters
     # Assign labels to nodes
@@ -316,7 +310,6 @@ def compute_heat(D, exm, exM, n_t):
     return specific_heat, tau_space
 
 
-
 def renormalize_simplicial_Dirac(
     sc,
     orders,
@@ -360,7 +353,6 @@ def renormalize_simplicial_Dirac(
         else:
             raise ValueError("Order must be 0, 1, 2, 3 or 4")
 
-    
         # STEP I: Cluster the simplices
 
         # Compute the eigenvalues of exp(-tau*L)/trace(exp(-tau*L))
@@ -373,17 +365,15 @@ def renormalize_simplicial_Dirac(
 
         ncut = np.sum(D > 1 / tau)  # Number of simplices to remove
 
-        ncomp, comp = cluster_simplices(
-            nk, ncut, rho, 1, False , 0, False
-        )
-        
+        ncomp, comp = cluster_simplices(nk, ncut, rho, 1, False, 0, False)
+
         mapnodes, _ = coarse_grain(sc, order, comp, ncomp)
         nc = len(np.unique(mapnodes))
         Ps.append(support.map2partition(mapnodes, nc))
 
-    P = support.meet(Ps[0],Ps[1])
+    P = support.meet(Ps[0], Ps[1])
 
-    mapnodes, nc = support.partition2map(P,sc["n0"])
+    mapnodes, nc = support.partition2map(P, sc["n0"])
     new_sc = induce_simplices(sc, mapnodes)
 
     return new_sc, mapnodes

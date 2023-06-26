@@ -22,13 +22,13 @@ SMALL_SIZE = 10
 MEDIUM_SIZE = 12
 BIGGER_SIZE = 13
 
-plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
-plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
-plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
-plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
-plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+plt.rc("font", size=SMALL_SIZE)  # controls default text sizes
+plt.rc("axes", titlesize=SMALL_SIZE)  # fontsize of the axes title
+plt.rc("axes", labelsize=MEDIUM_SIZE)  # fontsize of the x and y labels
+plt.rc("xtick", labelsize=SMALL_SIZE)  # fontsize of the tick labels
+plt.rc("ytick", labelsize=SMALL_SIZE)  # fontsize of the tick labels
+plt.rc("legend", fontsize=SMALL_SIZE)  # legend fontsize
+plt.rc("figure", titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 # palette = np.array([[0, 18, 25], [10, 147, 150], [233, 216, 166] ,[238, 155, 0], [174, 32, 18]])/255
 
@@ -45,7 +45,7 @@ s = 1
 beta = 0.1
 ls = True  # logscale
 
-suff = ""
+suff = "_simple"
 pref = f"d{d}s{s}" + suff
 
 path = f"Tests/Experiments_{METHOD}_{SPARSIFY}_{TRUE_CONNECTIONS}/{pref}"
@@ -55,4 +55,4 @@ with open(path + "/deg_dist.pkl", "rb") as f:
     deg_dist = pickle.load(f)
 
 
-plotting.plot_deg_dist(deg_dist)
+plotting.plot_deg_dist(deg_dist, path=path, limsup=0.7, lscale=True)

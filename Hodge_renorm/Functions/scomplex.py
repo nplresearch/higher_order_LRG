@@ -2,7 +2,7 @@ import networkx as nx
 import numpy as np
 import scipy.sparse as sp
 from scipy.sparse import csr_matrix, lil_matrix, tril
-
+from itertools import combinations
 
 def make_dict(sc):
     edge_dict = {}
@@ -272,31 +272,33 @@ def NGF(d, N, s, beta):
 
 
 
-keys = ["nodes","edges","faces", "tetrahedra","4-simplices"]
 
 # Multiorder Laplacian functions
-def adj_matrix_of_order(sc, d) : 
-    """Returns the adjacency matrix of order d of t"""
-    N = sc["n0"]
-    G = nx.Graph()
-    G.add_nodes_from(sc[keys[0]])
-    G.add_edges_from(sc[keys[1]])
-    Adj = nx.adjacency_matrix(G).toarray()
 
-    if d==1:
+def adj_matrix_of_order(sc, d):
+    keys = ["nodes", "edges", "faces", "tetrahedra", "4-simplices"]
+    """Returns the adjacency matrix of order d of t"""
+
+    if d == 1:
+        G = nx.Graph()
+        G.add_nodes_from([sc["nodes"][i][0] for i in range(sc["n0"])])
+        G.add_edges_from(sc["edges"])
+        Adj = nx.adjacency_matrix(G).toarray()
         adj_d = Adj
     else:
-        adj_d = np.zeros_like(Adj)
-        for s in range(0,d):
-            for d_simplex in sc[keys[s]] : #lista di d-simplessi
-                for [i_,j_] in permutations(d_simplex, 2):
-                    adj_d[i_,j_] += 1
+        N = sc["n0"]
+        adj_d = np.zeros((N,N))
+        for s in range(2, d+1):
+            for d_simplex in sc[keys[s]]:  # lista di d-simplessi
+                for [i_, j_] in combinations(d_simplex, 2):
+                    adj_d[i_, j_] += 1
+                    adj_d[j_, i_] += 1
     return adj_d
 
-def laplacian_of_order(sc, d):
 
+def laplacian_of_order(sc, d):
     Adj_d = adj_matrix_of_order(sc, d)
-    K_d = sum(Adj_d)
+    K_d = np.sum(Adj_d,0)
     L_d = np.diag(K_d) - Adj_d
 
-    return L_d
+    return csr_matrix(L_d)

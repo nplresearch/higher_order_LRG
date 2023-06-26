@@ -1,8 +1,12 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
+import numpy.matlib as mtlb
+
 from Functions import support
 import scipy
+from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.gaussian_process.kernels import RBF
 
 plt.rcParams["text.usetex"] = True
 palette = np.array(
@@ -19,15 +23,16 @@ SMALL_SIZE = 10
 MEDIUM_SIZE = 12
 BIGGER_SIZE = 13
 
-plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
-plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
-plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
-plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
-plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+plt.rc("font", size=SMALL_SIZE)  # controls default text sizes
+plt.rc("axes", titlesize=SMALL_SIZE)  # fontsize of the axes title
+plt.rc("axes", labelsize=MEDIUM_SIZE)  # fontsize of the x and y labels
+plt.rc("xtick", labelsize=SMALL_SIZE)  # fontsize of the tick labels
+plt.rc("ytick", labelsize=SMALL_SIZE)  # fontsize of the tick labels
+plt.rc("legend", fontsize=SMALL_SIZE)  # legend fontsize
+plt.rc("figure", titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
-def plot_complex(sc, ax, color):
+
+def plot_complex(sc, ax, color, edge_alpha = 1, layout = "spring"):
     if sc["n1"] == 0:
         G = nx.Graph()
         G.add_nodes_from(range(sc["n0"]))
@@ -35,16 +40,20 @@ def plot_complex(sc, ax, color):
             G,
             pos=nx.spring_layout(G),
             node_color=color,
+            alpha = edge_alpha,
             node_size=200,
             with_labels=False,
             edge_color="k",
-            linewidths=2,
+            linewidths=1,
             ax=ax,
         )
     else:
         G = nx.Graph()
         G.add_edges_from(sc["edges"])
-        pos = nx.spring_layout(G, iterations=200)
+        if layout == "spring":
+            pos = nx.spring_layout(G, iterations=200)
+        elif layout == "circle":
+            pos = nx.circular_layout(G)
         for i in range(sc["n2"]):
             f = sc["faces"][i, :]
             x = [pos[f[0]][0], pos[f[1]][0], pos[f[2]][0]]
@@ -55,6 +64,7 @@ def plot_complex(sc, ax, color):
             G,
             pos=pos,
             node_color=color,
+            alpha = edge_alpha,
             node_size=10,
             with_labels=False,
             edge_color=color,
@@ -66,19 +76,31 @@ def plot_complex(sc, ax, color):
         # ax.draw()
 
 
-
-
-
-def plot_deg_dist(deg_dist, path = None, limsup = None, return_data = None, labels = None, colors = None ):
+def plot_deg_dist(
+    deg_dist,
+    measure=None,
+    path=None,
+    limsup=None,
+    return_data=None,
+    labels=None,
+    colors=None,
+    lscale=False,
+):
     if colors is None:
         colors = palette
-         
+
     dim = support.list_dim(deg_dist)
     N = len(deg_dist[0][0][0][0])
     renorms = dim[2]
-    d = dim[3] 
+    d = dim[3]
     n_tau = dim[1]
     rep = dim[0]
+
+    if measure is None:
+
+        def measure(deg1, deg2):
+            test = scipy.stats.kstest(deg1, deg2)
+            return test.statistic
 
     Ns = np.zeros((rep, renorms, n_tau), dtype=int)
     for r in range(rep):
@@ -98,13 +120,17 @@ def plot_deg_dist(deg_dist, path = None, limsup = None, return_data = None, labe
                     if len(deg2) == 0:
                         deg2 = [0]
                     # KS Distance
-                    test = scipy.stats.kstest(deg1, deg2)
-                    deg_distance[r, norml, degg, tau] = test.statistic
-
+                    # test = scipy.stats.kstest(deg1, deg2)
+                    # deg_distance[r, norml, degg, tau] = test.statistic
+                    deg_distance[r, norml, degg, tau] = measure(deg1, deg2)
 
     fig, axv = plt.subplots(1, d, figsize=(5 * d, 4))
-    plt.locator_params(axis='y', nbins=6)
-    plt.locator_params(axis='x', nbins=5)
+    plt.locator_params(axis="y", nbins=6)
+    plt.locator_params(axis="x", nbins=5)
+
+    kernel = 1 * RBF(
+        length_scale=0.1, length_scale_bounds="fixed"
+    )  # , length_scale_bounds=(8*1e-2, 1e2))
 
     for i in range(d):
         if d == 1:
@@ -128,27 +154,44 @@ def plot_deg_dist(deg_dist, path = None, limsup = None, return_data = None, labe
                     1 - Ns[r, j, id] / N,
                     deg_distance[r, j, i, id],
                     color=colors[j, :],
-                    alpha=0.3,
+                    alpha=0.0,
                     linewidth=0.8,
                 )
                 ax.plot(
                     1 - Ns[r, j, id] / N,
                     deg_distance[r, j, i, id],
                     "o",
-                    alpha=0.8,
+                    alpha=0.3,
                     color=colors[j, :],
-                    ms=4,
+                    ms=1.5,
                     label=lab,
                 )
-        ax.legend(loc = 'upper left')
+            gaussian_process = GaussianProcessRegressor(
+                kernel=kernel, n_restarts_optimizer=9
+            )
+            gaussian_process.fit(
+                np.reshape(1 - Ns[:, j, id] / N, (-1, 1)),
+                np.reshape(deg_distance[:, j, i, id], (-1, 1)),
+            )
+            X = np.linspace(0, 1 - np.min(Ns[:, j, id]) / N, 100)
+            mean_prediction, __ = gaussian_process.predict(
+                np.reshape(X, (-1, 1)), return_std=True
+            )
+            ax.plot(X, mean_prediction, color=colors[j, :])
+
+        ax.legend(loc="upper left")
         ax.set_title(r"\textbf{" + names[i] + "-" + names[d] + "}", fontsize=14)
+        if lscale:
+            ax.set_yscale("log")
         if limsup is not None:
-            ax.set_xlim(right = limsup)
-            ax.set_ylim(top = np.max(deg_distance[r, j, i, id])+0.1)
+            ax.set_xlim(right=limsup)
+            ax.set_ylim(top=np.max(deg_distance[r, j, i, id]) + 0.1)
 
     if path is not None:
         plt.savefig(path + "/deg_errors.pdf", format="pdf")  # , bbox_inches="tight")
     else:
         plt.show()
     if return_data:
-        return Ns, deg_distance
+        return Ns, deg_distance, axv
+    else:
+        return axv

@@ -2,7 +2,7 @@ import os
 import pickle
 import sys
 
-sys.path.append(sys.path[0]+'/..')  # Adds higher directory to python modules path.
+sys.path.append(sys.path[0] + "/..")  # Adds higher directory to python modules path.
 
 import numpy as np
 from Functions import renormalize, scomplex, plotting
@@ -18,7 +18,7 @@ d = 2
 n_tau = 50
 rep = 2
 
-orders = [0,2]
+orders = [0, 2]
 
 threshold = 0.8
 s = 1
@@ -78,7 +78,7 @@ for r in range(rep):
             D, U = eigsh(L, k=Na, which="SM")
             D = np.concatenate((D, 10000 * np.ones(sc["n4"] - Na)))
             U = np.concatenate((U, np.zeros((sc["n4"], sc["n4"] - Na))), axis=1)
-        
+
         [specific_heat, tau_space] = renormalize.compute_heat(D, -2, 1.5, 200)
         id, __ = find_peaks(specific_heat)
         tau_max = tau_space[id[0]]
@@ -98,7 +98,7 @@ for r in range(rep):
             + "/"
             + str(n_tau)
         )
-        taus = [tau_spaces[0][t],tau_spaces[1][t]]
+        taus = [tau_spaces[0][t], tau_spaces[1][t]]
 
         rowi = []
         new_sc, mapnodes = renormalize.renormalize_simplicial_Dirac(
@@ -114,7 +114,7 @@ for r in range(rep):
         new_deg = scomplex.generalized_degree(
             new_sc, new_edge_dict, new_face_dict, new_tet_dict, d
         )
-        
+
         # repetitions x renorml x deg type x tau
 
         for j in range(d):
@@ -125,14 +125,9 @@ for r in range(rep):
     deg_dist.append(rowr)
 
 
-
-
-
 plotting.plot_deg_dist(deg_dist)
 exit()
 path = "Tests/Experiment" + name
-
-
 
 
 if not os.path.exists(path):

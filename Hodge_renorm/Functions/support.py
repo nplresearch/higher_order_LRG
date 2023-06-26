@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class UnionFind:
     def __init__(self, n):
         self.parent = list(range(n))
@@ -37,8 +38,7 @@ class UnionFind:
             self.union(u, v)
 
 
-
-def meet(P,Q):
+def meet(P, Q):
     PmQ = set()
     for p in P:
         if len(p) == 1:
@@ -48,18 +48,19 @@ def meet(P,Q):
                 inter = p.intersection(q)
                 if len(inter) != 0:
                     PmQ.add(p.intersection(q))
-    return(PmQ)
+    return PmQ
 
-def map2partition(mapnodes,nc):
+
+def map2partition(mapnodes, nc):
     P = set()
     N = len(mapnodes)
     for n in range(nc):
-        ag = np.reshape(np.argwhere(mapnodes == n),(-1,))
+        ag = np.reshape(np.argwhere(mapnodes == n), (-1,))
         P.add(frozenset(list(ag)))
     return P
 
 
-def partition2map(P,N):
+def partition2map(P, N):
     nc = len(P)
     mapnodes = np.zeros(N)
     n = 0

@@ -6,7 +6,7 @@ import networkx as nx
 import numpy as np
 import powerlaw as pwl
 from scipy.sparse.linalg import eigsh
-from Functions import plotting, scomplex, renormalize
+from Functions import plotting, scomplex, renormalize, support
 from scipy.stats import t
 
 palette = np.array(
@@ -43,10 +43,10 @@ D1, U1 = eigsh(L1, k=Na, sigma=0, which="LM")
 D1 = np.concatenate((D1, 10000 * np.ones(sc["n1"] - Na)))
 U1 = np.concatenate((U1, np.zeros((sc["n1"], sc["n1"] - Na))), axis=1)
 
-Ds = [D0,D1]
-Us = [U0,U1]
-orders = [0,1]
-taus = [1,1]
+Ds = [D0, D1]
+Us = [U0, U1]
+orders = [0, 1]
+taus = [1, 1]
 new_sc, mapnodes = renormalize.renormalize_simplicial_Dirac(
     sc,
     orders,
@@ -55,9 +55,9 @@ new_sc, mapnodes = renormalize.renormalize_simplicial_Dirac(
     taus,
 )
 
-f,axs = plt.subplots(1,2)
-plotting.plot_complex(sc,axs[0],palette[0,:])
-plotting.plot_complex(new_sc,axs[1],palette[1,:])
+f, axs = plt.subplots(1, 2)
+plotting.plot_complex(sc, axs[0], palette[0, :])
+plotting.plot_complex(new_sc, axs[1], palette[1, :])
 plt.show()
 exit()
 
