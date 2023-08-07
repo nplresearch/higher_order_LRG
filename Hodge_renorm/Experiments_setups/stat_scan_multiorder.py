@@ -89,7 +89,7 @@ for r in range(rep):
         )
         for i in range(d):
             rowi = []
-            order = i+1
+            order = i + 1
             if order == 1:
                 tau_space = tau_space1
                 U = U1
@@ -116,8 +116,8 @@ for r in range(rep):
                 METHOD,
                 SPARSIFY,
                 TRUE_CONNECTIONS,
-                threshold = 1,
-                simple = True
+                threshold=1,
+                simple=True,
             )
             print(new_sc["n0"])
             new_edge_dict, new_face_dict, new_tet_dict = scomplex.make_dict(new_sc)

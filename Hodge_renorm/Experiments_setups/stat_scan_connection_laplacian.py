@@ -58,7 +58,7 @@ for r in range(rep):
     if sc["n1"] != 0:
         L1 = (B1.T) @ B1 + B2 @ (B2.T)
         L1 = np.array(np.abs(L1 - np.diag(np.diag(L1.todense()))))
-        L1 = np.diag(np.sum(L1, axis = 0,keepdims = 0)) - L1
+        L1 = np.diag(np.sum(L1, axis=0, keepdims=0)) - L1
         D1, U1 = eigh(L1)
 
         [specific_heat, tau_space] = renormalize.compute_heat(D1, -2, 2, 200)
@@ -69,9 +69,9 @@ for r in range(rep):
     if sc["n2"] != 0:
         L2 = (B2.T) @ B2 + B3 @ (B3.T)
         L2 = np.array(np.abs(L2 - np.diag(np.diag(L2.todense()))))
-        L2 = np.diag(np.sum(L2, axis = 0,keepdims = 0)) - L2
+        L2 = np.diag(np.sum(L2, axis=0, keepdims=0)) - L2
         D2, U2 = eigh(L2)
-       
+
         [specific_heat, tau_space] = renormalize.compute_heat(D2, -2, 2, 200)
         id, __ = find_peaks(specific_heat)
         tau_max2 = tau_space[id[0]]
@@ -80,7 +80,7 @@ for r in range(rep):
     if sc["n3"] != 0:
         L3 = (B3.T) @ B3 + B4 @ (B4.T)
         L3 = np.array(np.abs(L3 - np.diag(np.diag(L3.todense()))))
-        L3 = np.diag(np.sum(L3, axis = 0,keepdims = 0)) - L3
+        L3 = np.diag(np.sum(L3, axis=0, keepdims=0)) - L3
         D3, U3 = eigh(L3)
 
         # tau_space3 = np.flip(1/D3)[0::sc["n3"]//n_tau]

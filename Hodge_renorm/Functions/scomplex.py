@@ -4,6 +4,7 @@ import scipy.sparse as sp
 from scipy.sparse import csr_matrix, lil_matrix, tril
 from itertools import combinations
 
+
 def make_dict(sc):
     edge_dict = {}
     for i, edge in enumerate(sc["edges"]):
@@ -271,9 +272,201 @@ def NGF(d, N, s, beta):
     return sc
 
 
+def generate_tlattice(n, m, p):
+    G = nx.triangular_lattice_graph(n, m)
+    G = nx.convert_node_labels_to_integers(G)
+    N = len(G.nodes)
+    sc = {
+        "nodes": np.reshape(np.array(G.nodes), (-1, 1)),
+        "n0": N,
+        "edges": np.array(G.edges),
+    }
+    r = []
+    for i in range(len(sc["edges"])):
+        if np.random.rand() < p:
+            r.append(i)
+    sc["edges"] = np.delete(sc["edges"], r, 0)
+    all_cliques = nx.enumerate_all_cliques(nx.from_edgelist(sc["edges"]))
+
+    sc["n1"] = len(sc["edges"])
+    sc["faces"] = np.array([x for x in all_cliques if len(x) == 3])
+    sc["tetrahedra"] = np.zeros((0, 4))
+    sc["4-simplices"] = np.zeros((0, 5))
+    sc["n2"] = sc["faces"].shape[0]
+    sc["n3"] = 0
+    sc["n4"] = 0
+    return sc
+
+
+def generate_slattice(n, m, p):
+    G = nx.grid_2d_graph(m, n)
+    G = nx.convert_node_labels_to_integers(G)
+    N = len(G.nodes)
+    sc = {
+        "nodes": np.reshape(np.array(G.nodes), (-1, 1)),
+        "n0": N,
+        "edges": np.array(G.edges),
+    }
+    r = []
+    for i in range(len(sc["edges"])):
+        if np.random.rand() < p:
+            r.append(i)
+    sc["edges"] = np.delete(sc["edges"], r, 0)
+
+    sc["n1"] = len(sc["edges"])
+    sc["faces"] = np.zeros((0, 3))
+    sc["tetrahedra"] = np.zeros((0, 4))
+    sc["4-simplices"] = np.zeros((0, 5))
+    sc["n2"] = 0
+    sc["n3"] = 0
+    sc["n4"] = 0
+    return sc
+
+
+def generate_hlattice(n, m, p):
+    G = nx.hexagonal_lattice_graph(n, m)
+    G = nx.convert_node_labels_to_integers(G)
+    N = len(G.nodes)
+    sc = {
+        "nodes": np.reshape(np.array(G.nodes), (-1, 1)),
+        "n0": N,
+        "edges": np.array(G.edges),
+    }
+    r = []
+    for i in range(len(sc["edges"])):
+        if np.random.rand() < p:
+            r.append(i)
+    sc["edges"] = np.delete(sc["edges"], r, 0)
+
+    sc["n1"] = len(sc["edges"])
+    sc["faces"] = np.zeros((0, 3))
+    sc["tetrahedra"] = np.zeros((0, 4))
+    sc["4-simplices"] = np.zeros((0, 5))
+    sc["n2"] = 0
+    sc["n3"] = 0
+    sc["n4"] = 0
+    return sc
+
+
+def generate_fractal_cycle(slist, p, spikes):
+    s = len(slist)
+    edges = []
+    n = 0
+    for i in range(s):
+        for j in range(slist[i]):
+            edges.append([n, n + 1])
+            n += 1
+        if p != 0:
+            for l in range(n - slist[i], n):
+                for m in range(l + 1, n):
+                    if np.random.rand() < p:
+                        edges.append([l, m])
+        edges.append([n, n - slist[i]])
+    edges.append([n, 0])
+    n += 1
+    for i in range(spikes):
+        edges.append([n, np.random.randint(0, n)])
+        n += 1
+
+    G = nx.from_edgelist(edges)
+    N = len(G.nodes)
+    sc = {
+        "nodes": np.reshape(np.array(G.nodes), (-1, 1)),
+        "n0": N,
+        "edges": np.array(G.edges),
+    }
+    sc["n1"] = len(sc["edges"])
+    sc["faces"] = np.zeros((0, 3))
+    sc["tetrahedra"] = np.zeros((0, 4))
+    sc["4-simplices"] = np.zeros((0, 5))
+    sc["n2"] = 0
+    sc["n3"] = 0
+    sc["n4"] = 0
+    return sc
+
+
+def generate_bridged_communities(N1, N2, p1, p2, bridge):
+    edges = []
+    for j in range(N1):
+        edges.append([j, j + 1])
+    edges.append([0, N1])
+
+    for l in range(0, N1):
+        for m in range(l + 1, N1):
+            if np.random.rand() < p1:
+                edges.append([l, m])
+
+    for j in range(N1 + 1, N1 + 1 + N2):
+        edges.append([j, j + 1])
+    edges.append([N1 + 1, N1 + N2 + 1])
+
+    for l in range(N1 + 1, N1 + N2 + 1):
+        for m in range(l + 1, N1 + N2 + 1):
+            if np.random.rand() < p2:
+                edges.append([l, m])
+
+    edges.append([0, N1 + N2 + 2])
+    for k in range(bridge):
+        edges.append([N1 + N2 + 2 + k, N1 + N2 + 3 + k])
+    edges.append([N1 + N2 + 2 + bridge, N1 + 1])
+
+    n = N1 + N2 + 2 + bridge + 1
+
+    edges.append([4, n])
+    for k in range(bridge):
+        edges.append([n, n + 1])
+        n += 1
+    edges.append([n, N1 + 5])
+
+    G = nx.from_edgelist(edges)
+    N = len(G.nodes)
+    sc = {
+        "nodes": np.reshape(np.array(G.nodes), (-1, 1)),
+        "n0": N,
+        "edges": np.array(G.edges),
+    }
+    sc["n1"] = len(sc["edges"])
+    sc["faces"] = np.zeros((0, 3))
+    sc["tetrahedra"] = np.zeros((0, 4))
+    sc["4-simplices"] = np.zeros((0, 5))
+    sc["n2"] = 0
+    sc["n3"] = 0
+    sc["n4"] = 0
+    return sc
+
+
+def convert_graph_to_sc(G, dim=2):
+    G = nx.convert_node_labels_to_integers(G)
+    N = len(G.nodes)
+    sc = {
+        "nodes": np.reshape(np.array(G.nodes), (-1, 1)),
+        "n0": N,
+        "edges": np.sort(np.array(G.edges), 1),
+    }
+    all_cliques = nx.enumerate_all_cliques(nx.from_edgelist(sc["edges"]))
+    sc["n1"] = len(sc["edges"])
+    if dim >= 2:
+        sc["faces"] = np.array([x for x in all_cliques if len(x) == 3])
+    else:
+        sc["faces"] = np.zeros((0, 3))
+    if dim >= 3:
+        sc["tetrahedra"] = np.array([x for x in all_cliques if len(x) == 4])
+    else:
+        sc["tetrahedra"] = np.zeros((0, 4))
+
+    sc["4-simplices"] = np.zeros((0, 5))
+    sc["n2"] = sc["faces"].shape[0]
+    if sc["n2"] > 0:
+        sc["faces"] = np.sort(sc["faces"], 1)
+    sc["n3"] = sc["tetrahedra"].shape[0]
+    if sc["n3"] > 0:
+        sc["tetrahedra"] = np.sort(sc["tetrahedra"], 1)
+    sc["n4"] = 0
+    return sc
 
 
 # Multiorder Laplacian functions
+
 
 def adj_matrix_of_order(sc, d):
     keys = ["nodes", "edges", "faces", "tetrahedra", "4-simplices"]
@@ -287,8 +480,8 @@ def adj_matrix_of_order(sc, d):
         adj_d = Adj
     else:
         N = sc["n0"]
-        adj_d = np.zeros((N,N))
-        for s in range(2, d+1):
+        adj_d = np.zeros((N, N))
+        for s in range(2, d + 1):
             for d_simplex in sc[keys[s]]:  # lista di d-simplessi
                 for [i_, j_] in combinations(d_simplex, 2):
                     adj_d[i_, j_] += 1
@@ -298,7 +491,7 @@ def adj_matrix_of_order(sc, d):
 
 def laplacian_of_order(sc, d):
     Adj_d = adj_matrix_of_order(sc, d)
-    K_d = np.sum(Adj_d,0)
+    K_d = np.sum(Adj_d, 0)
     L_d = np.diag(K_d) - Adj_d
 
     return csr_matrix(L_d)

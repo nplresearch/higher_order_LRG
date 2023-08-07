@@ -2,24 +2,26 @@ from collections import defaultdict
 
 import networkx as nx
 import numpy as np
-from Functions import support
+from Functions import support, scomplex
 from scipy.sparse import csgraph, csr_matrix
+import scipy
+import matplotlib.pyplot as plt
 
 
 def renormalize_simplicial_VARIANTS(
     sc,
     order=0,
-    L = None,
-    U = None,
-    D = None,
-    tau = 1,
+    L=None,
+    U=None,
+    D=None,
+    tau=1,
     METHOD="representative",
     SPARSIFY=False,
     TRUE_CONNECTIONS=False,
     threshold=1,
     simple=False,
-    rho = None,
-    nc = 10,
+    rho=None,
+    nc=10,
 ):
     # Perform a simplicial renormalization step
     # Inputs:
@@ -33,7 +35,7 @@ def renormalize_simplicial_VARIANTS(
     # TRUE_CONNECTIONS - {True,False}
 
     nk = sc["n" + str(order)]
-    
+
     if rho is None:
         assert len(D) == nk
 
@@ -44,12 +46,12 @@ def renormalize_simplicial_VARIANTS(
         # Compute the eigenvalues of exp(-tau*L)/trace(exp(-tau*L))
         Dtilde = np.zeros(nk)
         for i in range(nk):
-            #Dtilde[i] = 1 / np.sum(np.exp(-tau * (D - D[i])))
-            Dtilde[i] = np.exp(-tau *D[i])
+            # Dtilde[i] = 1 / np.sum(np.exp(-tau * (D - D[i])))
+            Dtilde[i] = np.exp(-tau * D[i])
 
         rho = U @ np.diag(Dtilde) @ U.T  # Normalized Heat Kernel
         rho = np.abs(np.triu(rho))  # Take its absolute value to ignore orientations
-        #rho = np.abs(np.real(rho))
+        # rho = np.abs(np.real(rho))
         ncut = np.sum(D > 1 / np.abs(tau))  # Number of simplices to remove
 
     else:
@@ -127,10 +129,10 @@ def cluster_simplices(
     return ncomp, comp
 
 
-def coarse_grain(sc, order, comp, ncomp, METHOD = "representative"):
+def coarse_grain(sc, order, comp, ncomp, METHOD="representative"):
     name = f"n{order}"
     nk = sc[name]
-    keys = ["nodes","edges","faces","tetrahedra","4-simplices"]
+    keys = ["nodes", "edges", "faces", "tetrahedra", "4-simplices"]
     simplices = keys[order]
 
     nodesclusters = [set() for _ in range(sc["n0"])]  # Map nodes to their clusters
@@ -307,7 +309,7 @@ def compute_heat(D, exm, exM, n_t):
     specific_heat = -(np.diff(S) / np.diff(np.log(tau_space)))
     # specific_heat = -(np.diff(S) / np.diff(tau_space))
     tau_space = tau_space[: n_t - 1]
-    return specific_heat, tau_space
+    return specific_heat, tau_space, S
 
 
 def renormalize_simplicial_Dirac(
@@ -377,3 +379,125 @@ def renormalize_simplicial_Dirac(
     new_sc = induce_simplices(sc, mapnodes)
 
     return new_sc, mapnodes
+
+
+def plot_heats(d, sc, tmin=-1, tmax=3, nt=200, plot=True, L1_=None):
+    B1, B2, __, __, edge_dict, face_dict, tet_dict = scomplex.boundary_matrices_3(sc)
+    L0 = (B1 @ B1.T).todense()
+    if L1_ is None:
+        L1 = (B1.T @ B1 + B2 @ B2.T).todense()
+    else:
+        L1 = L1_
+    L2 = (B2.T @ B2).todense()
+
+    D0 = scipy.linalg.eigh(L0)[0]
+    specific_heat0, tau_space, S0 = compute_heat(D0, tmin, tmax, nt)
+    fpeaks = scipy.signal.find_peaks(specific_heat0)[0]
+
+    D1 = scipy.linalg.eigh(L1)[0]
+    specific_heat1, tau_space, S1 = compute_heat(D1, tmin, tmax, nt)
+
+    fpeaks1 = scipy.signal.find_peaks(specific_heat1)[0]
+
+    if d >= 2:
+        D2 = scipy.linalg.eigh(L2)[0]
+        specific_heat2, tau_space, S2 = compute_heat(D2, tmin, tmax, nt)
+        fpeaks2 = scipy.signal.find_peaks(specific_heat2)[0]
+    else:
+        D2 = []
+        fpeaks2 = []
+
+    if plot:
+        f, ax = plt.subplots(1, 1, figsize=(6.5, 4))
+
+        ax.semilogx(tau_space, specific_heat0)
+        ax.semilogx(tau_space, specific_heat1)
+
+        if d >= 2:
+            ax.semilogx(tau_space, specific_heat2)
+
+        for p in fpeaks:
+            ax.vlines(
+                x=tau_space[p],
+                ymin=specific_heat0[p] - 0.1,
+                ymax=specific_heat0[p] + 0.1,
+                color="tab:blue",
+            )
+        for p in fpeaks1:
+            ax.vlines(
+                x=tau_space[p],
+                ymin=specific_heat1[p] - 0.1,
+                ymax=specific_heat1[p] + 0.1,
+                color="tab:orange",
+            )
+        if d >= 2:
+            for p in fpeaks2:
+                ax.vlines(
+                    x=tau_space[p],
+                    ymin=specific_heat2[p] - 0.1,
+                    ymax=specific_heat2[p] + 0.1,
+                    color="tab:green",
+                )
+
+        ax.set_xlabel("Time")
+        ax.set_ylabel("$C_k$")
+
+        ax2 = ax.twinx()
+
+        ax2.semilogx(tau_space, 1 - S0[1:] / np.log(sc["n0"]), "--")
+        ax2.semilogx(tau_space, 1 - S1[1:] / np.log(sc["n1"]), "--")
+        if d >= 2:
+            ax2.semilogx(tau_space, 1 - S2[1:] / np.log(sc["n2"]), "--")
+
+        ax.legend([f"$L_{i}$" for i in range(d + 1)])
+
+    return D0, D1, D2, tau_space, fpeaks, fpeaks1, fpeaks2
+
+
+def compute_psi(Z, tol=10):
+    thresholds = Z[:, 2]  # np.unique(Z[:,2].round(decimals = tol))
+    psi = np.zeros(len(thresholds) - 1)
+    for i in range(len(thresholds) - 1):
+        psi[i] = np.log10(thresholds[i + 1]) - np.log10(thresholds[i])
+
+    psi = psi / (np.log10(thresholds[-1]) - np.log10(thresholds[0]))
+
+    return psi, thresholds
+
+
+def compute_psi_nlog(Z, tol=10):
+    thresholds = np.unique(Z[:, 2].round(decimals=tol))
+    psi = np.zeros(len(thresholds) - 1)
+    for i in range(len(thresholds) - 1):
+        psi[i] = (thresholds[i + 1]) - (thresholds[i])
+
+    psi = psi / ((thresholds[-1]) - (thresholds[0]))
+
+    return psi, thresholds
+
+
+def coarse_grain_interfaces(sc, order, comp, ncomp, METHOD="representative"):
+    name = f"n{order}"
+    nk = sc[name]
+    keys = ["nodes", "edges", "faces", "tetrahedra", "4-simplices"]
+    simplices = keys[order]
+
+    nodesclusters = [set() for _ in range(sc["n0"])]  # Map nodes to their clusters
+    # Assign labels to nodes
+    for i in range(nk):
+        nodes = sc[simplices][i, :]  # Nodes in simplex i
+        for j in range(order + 1):
+            nodesclusters[nodes[j]] = nodesclusters[nodes[j]].union({comp[i]})
+
+    for i in range(len(nodesclusters)):
+        nodesclusters[i] = np.array2string(np.sort(list(nodesclusters[i])))
+    uq = np.unique(nodesclusters)
+    d = {b: a for a, b in enumerate(uq)}
+
+    mapnodes = np.zeros(
+        sc["n0"], dtype=int
+    )  # Maps each node to its image in the renormalized simplicial complex
+    for i in range(sc["n0"]):
+        mapnodes[i] = d[nodesclusters[i]]
+
+    return mapnodes, nodesclusters
