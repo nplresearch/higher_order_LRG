@@ -556,8 +556,10 @@ def renormalize_steps(sc,lmax,tau, diff_order =0, int_order = 1, PLOT = False, V
 
         if VERBOSE:
             print(new_sc["n0"])
+        
         if PLOT:
             plotting.plot_complex(new_sc,ax = axs[l], face_color=[colors[2*l]],edge_color=[0.4/255*np.array(tuple(int(colors[2*l].lstrip("#")[j:j+2], 16) for j in (0, 2, 4)))], node_color=[0.4/255*np.array(tuple(int(colors[2*l].lstrip("#")[j:j+2], 16) for j in (0, 2, 4)))],layout = "spring", iterations = 3000, node_size=4,edge_width=0.8,face_alpha = 0.4)
+        
         sequence.append(new_sc)
         
     if PLOT:
