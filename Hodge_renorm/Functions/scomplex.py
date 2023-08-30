@@ -4,7 +4,6 @@ import scipy.sparse as sp
 from scipy.sparse import csr_matrix, lil_matrix, tril
 from itertools import combinations
 
-
 def make_dict(sc):
     edge_dict = {}
     for i, edge in enumerate(sc["edges"]):
@@ -167,7 +166,7 @@ def generalized_degree(sc, edge_dict, face_dict, tet_dict, d):
     return deg
 
 
-def NGF(d, N, s, beta):
+def NGF(d, N, s, beta, M = 1):
     if d > 4:
         print("Dimension out of bounds. NGF implemented only for d=1,2,3,4")
 
@@ -178,7 +177,7 @@ def NGF(d, N, s, beta):
     a_occ = np.array([])
     node = np.zeros(((d + 1) + (N - (d + 1)) * d, d), dtype=int)
 
-    # Initial condition: at time t=1 a single d-dimensional hypercube (1,2,3,4)
+    # Initial condition: at time t=1 a single d-dimensional simplex (1,2,3,4)
     for i in range(d + 1):
         for j in range(i + 1, d + 1):
             a[i, j] = 1
@@ -198,24 +197,24 @@ def NGF(d, N, s, beta):
 
     while it < N - 1:
         it += 1
+        for m in range(M):
+            mat = at * a_occ
+            J = mat.nonzero()[0]
+            V = np.squeeze(mat[mat.nonzero()])
+            norm = np.sum(V)
+            x = np.random.rand() * norm
+            for nj1 in range(len(V)):
+                x -= V[nj1]
+                if x < 0:
+                    nj = J[nj1]
+                    break
 
-        mat = at * a_occ
-        J = mat.nonzero()[0]
-        V = np.squeeze(mat[mat.nonzero()])
-        norm = np.sum(V)
-        x = np.random.rand() * norm
-        for nj1 in range(len(V)):
-            x -= V[nj1]
-            if x < 0:
-                nj = J[nj1]
-                break
+            a_occ[nj] = a_occ[nj] + s
 
-        a_occ[nj] = a_occ[nj] + s
-
-        for n1 in range(d):
-            j = node[nj, n1]
-            a[it, j] = 1
-            a[j, it] = 1
+            for n1 in range(d):
+                j = node[nj, n1]
+                a[it, j] = 1
+                a[j, it] = 1
 
         for n1 in range(d):
             nt += 1
@@ -348,94 +347,10 @@ def generate_hlattice(n, m, p):
     return sc
 
 
-def generate_fractal_cycle(slist, p, spikes):
-    s = len(slist)
-    edges = []
-    n = 0
-    for i in range(s):
-        for j in range(slist[i]):
-            edges.append([n, n + 1])
-            n += 1
-        if p != 0:
-            for l in range(n - slist[i], n):
-                for m in range(l + 1, n):
-                    if np.random.rand() < p:
-                        edges.append([l, m])
-        edges.append([n, n - slist[i]])
-    edges.append([n, 0])
-    n += 1
-    for i in range(spikes):
-        edges.append([n, np.random.randint(0, n)])
-        n += 1
-
-    G = nx.from_edgelist(edges)
-    N = len(G.nodes)
-    sc = {
-        "nodes": np.reshape(np.array(G.nodes), (-1, 1)),
-        "n0": N,
-        "edges": np.array(G.edges),
-    }
-    sc["n1"] = len(sc["edges"])
-    sc["faces"] = np.zeros((0, 3))
-    sc["tetrahedra"] = np.zeros((0, 4))
-    sc["4-simplices"] = np.zeros((0, 5))
-    sc["n2"] = 0
-    sc["n3"] = 0
-    sc["n4"] = 0
-    return sc
-
-
-def generate_bridged_communities(N1, N2, p1, p2, bridge):
-    edges = []
-    for j in range(N1):
-        edges.append([j, j + 1])
-    edges.append([0, N1])
-
-    for l in range(0, N1):
-        for m in range(l + 1, N1):
-            if np.random.rand() < p1:
-                edges.append([l, m])
-
-    for j in range(N1 + 1, N1 + 1 + N2):
-        edges.append([j, j + 1])
-    edges.append([N1 + 1, N1 + N2 + 1])
-
-    for l in range(N1 + 1, N1 + N2 + 1):
-        for m in range(l + 1, N1 + N2 + 1):
-            if np.random.rand() < p2:
-                edges.append([l, m])
-
-    edges.append([0, N1 + N2 + 2])
-    for k in range(bridge):
-        edges.append([N1 + N2 + 2 + k, N1 + N2 + 3 + k])
-    edges.append([N1 + N2 + 2 + bridge, N1 + 1])
-
-    n = N1 + N2 + 2 + bridge + 1
-
-    edges.append([4, n])
-    for k in range(bridge):
-        edges.append([n, n + 1])
-        n += 1
-    edges.append([n, N1 + 5])
-
-    G = nx.from_edgelist(edges)
-    N = len(G.nodes)
-    sc = {
-        "nodes": np.reshape(np.array(G.nodes), (-1, 1)),
-        "n0": N,
-        "edges": np.array(G.edges),
-    }
-    sc["n1"] = len(sc["edges"])
-    sc["faces"] = np.zeros((0, 3))
-    sc["tetrahedra"] = np.zeros((0, 4))
-    sc["4-simplices"] = np.zeros((0, 5))
-    sc["n2"] = 0
-    sc["n3"] = 0
-    sc["n4"] = 0
-    return sc
 
 
 def convert_graph_to_sc(G, dim=2):
+    # Converts a graph G to its clique complex of dimension dim 
     G = nx.convert_node_labels_to_integers(G)
     N = len(G.nodes)
     sc = {
@@ -465,33 +380,50 @@ def convert_graph_to_sc(G, dim=2):
     return sc
 
 
-# Multiorder Laplacian functions
+def adjacency_of_order(sc,k,l):
+    # sc: simplicial complex object
+    # k: order of the diffusing simplices
+    # l: order of the interaction simplices
 
-
-def adj_matrix_of_order(sc, d):
     keys = ["nodes", "edges", "faces", "tetrahedra", "4-simplices"]
-    """Returns the adjacency matrix of order d of t"""
-
-    if d == 1:
-        G = nx.Graph()
-        G.add_nodes_from([sc["nodes"][i][0] for i in range(sc["n0"])])
-        G.add_edges_from(sc["edges"])
-        Adj = nx.adjacency_matrix(G).toarray()
-        adj_d = Adj
-    else:
-        N = sc["n0"]
-        adj_d = np.zeros((N, N))
-        for s in range(2, d + 1):
-            for d_simplex in sc[keys[s]]:  # lista di d-simplessi
-                for [i_, j_] in combinations(d_simplex, 2):
-                    adj_d[i_, j_] += 1
-                    adj_d[j_, i_] += 1
-    return adj_d
+    nk = sc[f"n{k}"]
+    adj = np.zeros((nk,nk),dtype = int)
+    
+    assert l != k, "The interaction order should be different from the order of the diffusing simplices"
+    assert l >= 0, "The interaction order should be greater or equal than 0"
+    assert k >= 0, "The order of the diffusing simplices should be greater or equal than 0"
+    assert (l <= 4) and (k <= 4), "Simplices of order greater than 4 are not supported"
 
 
-def laplacian_of_order(sc, d):
-    Adj_d = adj_matrix_of_order(sc, d)
-    K_d = np.sum(Adj_d, 0)
-    L_d = np.diag(K_d) - Adj_d
+    if l < k: 
+        diff_units = sc[keys[k]]
+        for i in range(nk):
+            for j in range(i+1,nk):
+                intersection = (set(diff_units[i,:]) & set(diff_units[j,:]))
+                if len(intersection) == l + 1:
+                    adj[i,j] += 1
 
-    return csr_matrix(L_d)
+    elif l > k:
+        edge_dict, face_dict, tet_dict = make_dict(sc)
+        dicts = [{(i,):i for i in range(sc["n0"])},edge_dict,face_dict,tet_dict]
+        int_simplices = sc[keys[l]]
+
+        for i in range(sc[f"n{l}"]):
+            simp = int_simplices[i,:]
+            combs = list(combinations(simp, k+1))
+            ncombs = len(combs)
+            combs_ids = np.zeros(ncombs,dtype=int)
+            for n in range(ncombs):
+                combs_ids[n] = dicts[k][combs[n]]
+            combs_ids = np.sort(combs_ids)
+            for n in range(ncombs):
+                for m in range(n+1,ncombs):
+                    adj[combs_ids[n],combs_ids[m]]+=1
+                 
+    return adj + adj.T
+
+def diffusion_laplacian(sc,k,l):
+    A = adjacency_of_order(sc,k,l)
+    K = np.sum(A, 0)
+    L = np.diag(K) - A
+    return L

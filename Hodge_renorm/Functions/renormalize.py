@@ -2,7 +2,7 @@ from collections import defaultdict
 
 import networkx as nx
 import numpy as np
-from Functions import support, scomplex
+from Functions import support, scomplex, plotting
 from scipy.sparse import csgraph, csr_matrix
 import scipy
 import matplotlib.pyplot as plt
@@ -489,6 +489,13 @@ def coarse_grain_interfaces(sc, order, comp, ncomp, METHOD="representative"):
         for j in range(order + 1):
             nodesclusters[nodes[j]] = nodesclusters[nodes[j]].union({comp[i]})
 
+    # Give labels to unlabeled nodes
+    id = ncomp
+    for i in range(sc["n0"]):
+        if len(nodesclusters[i]) == 0:
+            nodesclusters[i] = nodesclusters[i].union({id})
+            id += 1
+
     for i in range(len(nodesclusters)):
         nodesclusters[i] = np.array2string(np.sort(list(nodesclusters[i])))
     uq = np.unique(nodesclusters)
@@ -501,3 +508,61 @@ def coarse_grain_interfaces(sc, order, comp, ncomp, METHOD="representative"):
         mapnodes[i] = d[nodesclusters[i]]
 
     return mapnodes, nodesclusters
+
+
+
+def renormalize_steps(sc,lmax,tau, diff_order =0, int_order = 1, PLOT = False, VERBOSE = False, SAVENAME = None):
+    # Performs multiple steps of the simplicial renormalization flow
+    # INPUTS
+    # sc: simplicial complex object
+    # lmax: number of renormalization steps
+    # tau: diffusion time
+    # diff_order: order of the diffusing simplices
+    # int_order: order of the interacting simplices
+    # PLOT: if True plot the flow of simplicial complexes
+    # VERBOSE: if True print the number of nodes at each step
+    # SAVENAME: if not None saves the plot with given name
+
+    # OUTPUTS
+    # sequence of the renormalized simplicial complexes
+    if PLOT:
+        colors = ["#071C56","#06418F","#2B589F","#5A5389","#7F588D","#533262","#B45389","#D75F78","#FDA599","#A40237"]
+        colors = colors + colors + colors + colors 
+        fig,axs = plt.subplots(1,lmax,figsize = (18/4*lmax,4.4))
+
+    sequence = [] 
+    new_sc = sc
+    for l in range(lmax):
+        if l > 0 and new_sc["n0"]>1:
+            L = scomplex.diffusion_laplacian(new_sc, diff_order, int_order)
+
+            D,U = np.linalg.eigh(L)
+
+            rho  = np.abs(U@np.diag(np.exp(-tau*D))@U.T)
+
+            Gv = nx.Graph()
+            Gv.add_nodes_from([i for i in range(new_sc[f"n{diff_order}"])])
+            for i in range(new_sc[f"n{diff_order}"]):
+                for j in range(i+1,new_sc[f"n{diff_order}"]):
+                    if rho[i,j] >= min(rho[i,i],rho[j,j]):
+                        Gv.add_edge(i,j)
+
+                
+            idx_components = {u:i for i,node_set in enumerate(nx.connected_components(Gv)) for u in node_set}
+            clusters = [idx_components[u] for u in Gv.nodes]
+
+            mapnodes,__ = coarse_grain_interfaces(new_sc,diff_order,clusters,np.max(clusters)+1)
+            new_sc = induce_simplices(new_sc, mapnodes)
+
+        if VERBOSE:
+            print(new_sc["n0"])
+        if PLOT:
+            plotting.plot_complex(new_sc,ax = axs[l], face_color=[colors[2*l]],edge_color=[0.4/255*np.array(tuple(int(colors[2*l].lstrip("#")[j:j+2], 16) for j in (0, 2, 4)))], node_color=[0.4/255*np.array(tuple(int(colors[2*l].lstrip("#")[j:j+2], 16) for j in (0, 2, 4)))],layout = "spring", iterations = 3000, node_size=4,edge_width=0.8,face_alpha = 0.4)
+        sequence.append(new_sc)
+        
+    if PLOT:
+        plt.tight_layout()
+        if SAVENAME is not None:
+            plt.savefig(f'{SAVENAME}.pdf')
+        
+    return sequence  
