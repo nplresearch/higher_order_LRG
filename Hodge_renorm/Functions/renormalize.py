@@ -476,7 +476,7 @@ def compute_psi_nlog(Z, tol=10):
     return psi, thresholds
 
 
-def coarse_grain_interfaces(sc, order, comp, ncomp, METHOD="representative"):
+def coarse_grain_interfaces(sc, order, comp, ncomp):
     name = f"n{order}"
     nk = sc[name]
     keys = ["nodes", "edges", "faces", "tetrahedra", "4-simplices"]
@@ -496,14 +496,18 @@ def coarse_grain_interfaces(sc, order, comp, ncomp, METHOD="representative"):
             nodesclusters[i] = nodesclusters[i].union({id})
             id += 1
 
-    for i in range(len(nodesclusters)):
+
+    #for i in range(len(nodesclusters)):
+    for i in range(sc["n0"]):
         nodesclusters[i] = np.array2string(np.sort(list(nodesclusters[i])))
+
     uq = np.unique(nodesclusters)
     d = {b: a for a, b in enumerate(uq)}
 
     mapnodes = np.zeros(
         sc["n0"], dtype=int
     )  # Maps each node to its image in the renormalized simplicial complex
+    
     for i in range(sc["n0"]):
         mapnodes[i] = d[nodesclusters[i]]
 
@@ -530,6 +534,10 @@ def renormalize_steps(sc,lmax,tau, diff_order =0, int_order = 1, PLOT = False, V
         colors = colors + colors + colors + colors 
         fig,axs = plt.subplots(1,lmax,figsize = (18/4*lmax,4.4))
 
+    if len(np.shape(tau)) == 0:
+        tau = [tau for i in range(lmax)]
+
+
     sequence = [] 
     new_sc = sc
     for l in range(lmax):
@@ -538,7 +546,7 @@ def renormalize_steps(sc,lmax,tau, diff_order =0, int_order = 1, PLOT = False, V
 
             D,U = np.linalg.eigh(L)
 
-            rho  = np.abs(U@np.diag(np.exp(-tau*D))@U.T)
+            rho  = np.abs(U@np.diag(np.exp(-tau[l]*D))@U.T)
 
             Gv = nx.Graph()
             Gv.add_nodes_from([i for i in range(new_sc[f"n{diff_order}"])])

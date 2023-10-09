@@ -1,7 +1,7 @@
 import networkx as nx
 import numpy as np
 import scipy.sparse as sp
-from scipy.sparse import csr_matrix, lil_matrix, tril
+from scipy.sparse import csr_matrix, lil_matrix, spdiags
 from itertools import combinations
 
 def make_dict(sc):
@@ -349,7 +349,7 @@ def generate_hlattice(n, m, p):
 
 
 
-def convert_graph_to_sc(G, dim=2):
+def convert_graph_to_sc(G, dim = 2):
     # Converts a graph G to its clique complex of dimension dim 
     G = nx.convert_node_labels_to_integers(G)
     N = len(G.nodes)
@@ -358,7 +358,7 @@ def convert_graph_to_sc(G, dim=2):
         "n0": N,
         "edges": np.sort(np.array(G.edges), 1),
     }
-    all_cliques = nx.enumerate_all_cliques(nx.from_edgelist(sc["edges"]))
+    all_cliques = list(nx.enumerate_all_cliques(nx.from_edgelist(sc["edges"])))
     sc["n1"] = len(sc["edges"])
     if dim >= 2:
         sc["faces"] = np.array([x for x in all_cliques if len(x) == 3])
@@ -380,14 +380,17 @@ def convert_graph_to_sc(G, dim=2):
     return sc
 
 
-def adjacency_of_order(sc,k,l):
+def adjacency_of_order(sc,k,l, sparse = False):
     # sc: simplicial complex object
     # k: order of the diffusing simplices
     # l: order of the interaction simplices
 
     keys = ["nodes", "edges", "faces", "tetrahedra", "4-simplices"]
     nk = sc[f"n{k}"]
-    adj = np.zeros((nk,nk),dtype = int)
+    if sparse:
+        adj = lil_matrix((nk,nk), dtype = int)
+    else:
+        adj = np.zeros((nk,nk),dtype = int)
     
     assert l != k, "The interaction order should be different from the order of the diffusing simplices"
     assert l >= 0, "The interaction order should be greater or equal than 0"
@@ -418,12 +421,19 @@ def adjacency_of_order(sc,k,l):
             combs_ids = np.sort(combs_ids)
             for n in range(ncombs):
                 for m in range(n+1,ncombs):
-                    adj[combs_ids[n],combs_ids[m]]+=1
-                 
+                    adj[combs_ids[n],combs_ids[m]] += 1
+
+    if sparse:
+        adj = csr_matrix(adj)
+
     return adj + adj.T
 
-def diffusion_laplacian(sc,k,l):
-    A = adjacency_of_order(sc,k,l)
+def diffusion_laplacian(sc,k,l, sparse = False):
+    A = adjacency_of_order(sc,k,l,sparse)
     K = np.sum(A, 0)
-    L = np.diag(K) - A
+    if sparse:
+        lenK = K.shape[1]
+        L = spdiags(K,0,lenK,lenK) - A
+    else:
+        L = np.diag(K) - A
     return L

@@ -42,6 +42,7 @@ def plot_complex(
     edge_alpha=1,
     edge_width=1,
     layout="spring",
+    pos = None,
     node_size=10,
     iterations=1000,
 ):
@@ -65,12 +66,13 @@ def plot_complex(
 
         G = nx.Graph()
         G.add_edges_from(sc["edges"])
-        if layout == "spring":
-            pos = nx.spring_layout(G, iterations=iterations)
-        elif layout == "circle":
-            pos = nx.circular_layout(G)
-        elif layout == "spectral":
-            pos = nx.spectral_layout(G)
+        if pos == None:
+            if layout == "spring":
+                pos = nx.spring_layout(G, iterations=iterations)
+            elif layout == "circle":
+                pos = nx.circular_layout(G)
+            elif layout == "spectral":
+                pos = nx.spectral_layout(G)
         for i in range(sc["n2"]):
             f = sc["faces"][i, :]
             x = [pos[f[0]][0], pos[f[1]][0], pos[f[2]][0]]
