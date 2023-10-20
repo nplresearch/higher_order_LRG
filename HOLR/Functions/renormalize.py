@@ -1,23 +1,21 @@
-from collections import defaultdict
-
 import networkx as nx
 import numpy as np
-from Functions import scomplex, plotting
-from scipy.sparse import csgraph, csr_matrix
-import scipy
-import matplotlib.pyplot as plt
+from Functions import scomplex
+from itertools import groupby
 
 
 
 def compute_heat(D, exm, exM, n_t):
     # Computes the Von Neumann entropy and Entropic susceptibility
     # INPUTS
-    # D: eigenvalues of the Laplacian matrix
-    # exm, exM, n_t: computes the quantities in n_t logarithmically spaced points
+    # D: eigenvalues of the Laplacian matrix considered
+    # exm, exM, n_t: computes the quantities in n_t logarithmically spaced time points
     #  in the interval [10**exm,10**exM] 
 
     # OUTPUTS
-    # mapnodes: mapp
+    # specific_heat: numpy array containing the entropic susceptibility values
+    # tau_space: numpy array containing n_t - 1 logarithmically spaced time points
+    # S: numpy array containing the Von Neumann entropy
 
     N = len(D)
     D = np.abs(D)
@@ -36,7 +34,51 @@ def compute_heat(D, exm, exM, n_t):
     tau_space = tau_space[: n_t - 1]
     return specific_heat, tau_space, S
 
+def compute_spectral_d(D,exm,exM,n_t):
+    # Computes the spectral dimension associated to a diffusion process
+    # INPUTS
+    # D: eigenvalues of the Laplacian matrix considered
+    # exm, exM, n_t: computes the spectral dimension in n_t logarithmically spaced time points
+    #  in the interval [10**exm,10**exM] 
 
+    # OUTPUTS
+    # dS: numpy array containing the spectral dimension values
+    # tau_space: numpy array containing n_t - 1 logarithmically spaced time points
+
+    tau_space = np.logspace(exm, exM, num=n_t)
+    Z = np.zeros(n_t)
+    for t in range(n_t):
+        Z[t] = np.sum(np.exp(- tau_space[t]*D))
+
+    dS = -2*np.diff(np.log(Z))/np.diff(np.log(tau_space))
+    return dS, tau_space[1:]
+
+
+
+def measure_SI(tau_space,sp_heat, epsilon = 0.1,ymin = -5,ymax = 1, ny = 70):
+    # Computes the scale-invariance parameter of an entropic susceptibility curve
+    # INPUTS
+    # tau_space: numpy array containing the times in which the entropic susc. has been computed
+    # sp_heat: numpy array entropic susc. curve
+    # epsilon: pleateau threshold
+    # ymin, ymax: respectively, the minimum and maximum value of log C to scan for plateaus
+    # ny: number of points in the interval [ymin,ymax] to scan for plateaus
+  
+    # OUTPUTS
+    # SIP: scale-invariance parameter
+
+    max_plateau = 0
+    sp_heat =  np.log(sp_heat)
+    for y in np.linspace(ymin,ymax,ny):
+        mask = np.abs(sp_heat-y)<epsilon
+        list_s = [[a,len(list(k))] for a,k in groupby(mask)]
+        for j in range(len(list_s)):
+            if list_s[j][0]:
+                if list_s[j][1] > max_plateau:
+                    max_plateau = list_s[j][1]
+
+    SIP = max_plateau*np.log(tau_space[1]/tau_space[0])
+    return SIP
 
 def induce_simplices(sc, mapnodes):
     # Finds induced simplices in the simplicial complex after its nodes are coarse grained 
