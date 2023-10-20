@@ -43,6 +43,7 @@ def plot_complex(
             linewidths=1,
             ax=ax,
         )
+        ax.axis("off")
     else:
         if len(face_color) == 1:
             face_color = [face_color[0] for i in range(sc["n2"])]
