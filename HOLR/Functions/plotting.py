@@ -1,11 +1,5 @@
 import matplotlib.pyplot as plt
 import networkx as nx
-import numpy as np
-import numpy.matlib as mtlb
-
-import scipy
-from sklearn.gaussian_process import GaussianProcessRegressor
-from sklearn.gaussian_process.kernels import RBF
 
 
 SMALL_SIZE = 10
@@ -62,6 +56,8 @@ def plot_complex(
                 pos = nx.circular_layout(G)
             elif layout == "spectral":
                 pos = nx.spectral_layout(G)
+            elif layout == "kamada_kawai":
+                pos = nx.kamada_kawai_layout(G)
         for i in range(sc["n2"]):
             f = sc["faces"][i, :]
             x = [pos[f[0]][0], pos[f[1]][0], pos[f[2]][0]]
