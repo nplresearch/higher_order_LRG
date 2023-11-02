@@ -3,6 +3,7 @@ import numpy as np
 import scipy.sparse as sp
 from scipy.sparse import csr_matrix, lil_matrix, spdiags
 from itertools import combinations
+import xgi
 #import graph_tool.all as gt
 
 def make_dict(sc):
@@ -30,7 +31,8 @@ def make_dict(sc):
     return edge_dict, face_dict, tet_dict
 
 
-def boundary_matrices_3(sc):
+def boundary_matrices(sc):
+    # Compute bounadry matrices up to the 4-th order
     n0 = sc["n0"]
     n1 = sc["n1"]
     n2 = sc["n2"]
@@ -92,82 +94,10 @@ def boundary_matrices_3(sc):
     return B1, B2, B3, B4, edge_dict, face_dict, tet_dict
 
 
-def generalized_degree(sc, edge_dict, face_dict, tet_dict, d):
-    if d == 1:
-        deg = [np.zeros(sc["n" + str(l)]) for l in range(d)]
-        for i in range(sc["n1"]):
-            edge = sc["edges"][i]
-            deg[0][edge[0]] += 1
-            deg[0][edge[1]] += 1
-
-    elif d == 2:
-        deg = [np.zeros(sc["n" + str(l)]) for l in range(d)]
-        for i in range(sc["n2"]):
-            face = sc["faces"][i]
-            deg[0][face[0]] += 1
-            deg[0][face[1]] += 1
-            deg[0][face[2]] += 1
-            deg[1][edge_dict[tuple((face[0], face[1]))]] += 1
-            deg[1][edge_dict[tuple((face[0], face[2]))]] += 1
-            deg[1][edge_dict[tuple((face[1], face[2]))]] += 1
-
-    elif d == 3:
-        deg = [np.zeros(sc["n" + str(l)]) for l in range(d)]
-        for i in range(sc["n3"]):
-            tet = sc["tetrahedra"][i, :]
-
-            for j in range(d + 1):
-                deg[0][tet[j]] += 1
-
-            for j in range(d + 1):
-                for k in range(j + 1, d + 1):
-                    deg[1][edge_dict[tuple((tet[j], tet[k]))]] += 1
-
-            for j in range(d + 1):
-                for k in range(j + 1, d + 1):
-                    for l in range(k + 1, d + 1):
-                        deg[2][face_dict[tuple((tet[j], tet[k], tet[l]))]] += 1
-
-    elif d == 4:
-        deg = [np.zeros(sc["n" + str(l)]) for l in range(d)]
-
-        for i in range(sc["n4"]):
-            four_simp = sc["4-simplices"][i, :]
-            for j in range(d + 1):
-                deg[0][four_simp[j]] += 1
-
-            for j in range(d + 1):
-                for k in range(j + 1, d + 1):
-                    deg[1][edge_dict[tuple((four_simp[j], four_simp[k]))]] += 1
-
-            for j in range(d + 1):
-                for k in range(j + 1, d + 1):
-                    for l in range(k + 1, d + 1):
-                        deg[2][
-                            face_dict[tuple((four_simp[j], four_simp[k], four_simp[l]))]
-                        ] += 1
-
-            for j in range(d + 1):
-                for k in range(j + 1, d + 1):
-                    for l in range(k + 1, d + 1):
-                        for m in range(l + 1, d + 1):
-                            deg[3][
-                                tet_dict[
-                                    tuple(
-                                        (
-                                            four_simp[j],
-                                            four_simp[k],
-                                            four_simp[l],
-                                            four_simp[m],
-                                        )
-                                    )
-                                ]
-                            ] += 1
-
-    return deg
-
-
 def NGF(d, N, s, beta, M = 1):
+    # Generate a d-dimensional NGF simplicial complex
+    # 
+    # 
     if d > 4:
         print("Dimension out of bounds. NGF implemented only for d=1,2,3,4")
 
@@ -207,17 +137,18 @@ def NGF(d, N, s, beta, M = 1):
             for nj1 in range(len(V)):
                 x -= V[nj1]
                 if x < 0:
-                    nj = J[nj1]
+                    nj = J[nj1] # Index of the d-1 simplex where the next simplex is attached
                     break
 
             a_occ[nj] = a_occ[nj] + s
 
-            for n1 in range(d):
+            # Attach the next simplex
+            for n1 in range(d): 
                 j = node[nj, n1]
                 a[it, j] = 1
                 a[j, it] = 1
 
-        for n1 in range(d):
+        for n1 in range(d): # d (d-1)-simplices are added
             nt += 1
             at = np.append(at, 1)
             a_occ = np.append(a_occ, 1)
@@ -232,7 +163,7 @@ def NGF(d, N, s, beta, M = 1):
                     a[node[nj, n2], it] = 1
 
     a = a > 0
-    G = nx.from_numpy_matrix(a)
+    G = nx.from_numpy_array(a)
     cliques = list(nx.enumerate_all_cliques(G))
     faces = []
     tetrahedra = []
@@ -270,84 +201,6 @@ def NGF(d, N, s, beta, M = 1):
     sc["n4"] = sc["4-simplices"].shape[0]
 
     return sc
-
-
-def generate_tlattice(n, m, p):
-    G = nx.triangular_lattice_graph(n, m)
-    G = nx.convert_node_labels_to_integers(G)
-    N = len(G.nodes)
-    sc = {
-        "nodes": np.reshape(np.array(G.nodes), (-1, 1)),
-        "n0": N,
-        "edges": np.array(G.edges),
-    }
-    r = []
-    for i in range(len(sc["edges"])):
-        if np.random.rand() < p:
-            r.append(i)
-    sc["edges"] = np.delete(sc["edges"], r, 0)
-    all_cliques = nx.enumerate_all_cliques(nx.from_edgelist(sc["edges"]))
-
-    sc["n1"] = len(sc["edges"])
-    sc["faces"] = np.array([x for x in all_cliques if len(x) == 3])
-    sc["tetrahedra"] = np.zeros((0, 4))
-    sc["4-simplices"] = np.zeros((0, 5))
-    sc["n2"] = sc["faces"].shape[0]
-    sc["n3"] = 0
-    sc["n4"] = 0
-    return sc
-
-
-def generate_slattice(n, m, p):
-    G = nx.grid_2d_graph(m, n)
-    G = nx.convert_node_labels_to_integers(G)
-    N = len(G.nodes)
-    sc = {
-        "nodes": np.reshape(np.array(G.nodes), (-1, 1)),
-        "n0": N,
-        "edges": np.array(G.edges),
-    }
-    r = []
-    for i in range(len(sc["edges"])):
-        if np.random.rand() < p:
-            r.append(i)
-    sc["edges"] = np.delete(sc["edges"], r, 0)
-
-    sc["n1"] = len(sc["edges"])
-    sc["faces"] = np.zeros((0, 3))
-    sc["tetrahedra"] = np.zeros((0, 4))
-    sc["4-simplices"] = np.zeros((0, 5))
-    sc["n2"] = 0
-    sc["n3"] = 0
-    sc["n4"] = 0
-    return sc
-
-
-def generate_hlattice(n, m, p):
-    G = nx.hexagonal_lattice_graph(n, m)
-    G = nx.convert_node_labels_to_integers(G)
-    N = len(G.nodes)
-    sc = {
-        "nodes": np.reshape(np.array(G.nodes), (-1, 1)),
-        "n0": N,
-        "edges": np.array(G.edges),
-    }
-    r = []
-    for i in range(len(sc["edges"])):
-        if np.random.rand() < p:
-            r.append(i)
-    sc["edges"] = np.delete(sc["edges"], r, 0)
-
-    sc["n1"] = len(sc["edges"])
-    sc["faces"] = np.zeros((0, 3))
-    sc["tetrahedra"] = np.zeros((0, 4))
-    sc["4-simplices"] = np.zeros((0, 5))
-    sc["n2"] = 0
-    sc["n3"] = 0
-    sc["n4"] = 0
-    return sc
-
-
 
 
 def convert_graph_to_sc(G, dim = 2, type = 'clique'):
@@ -452,3 +305,141 @@ def diffusion_laplacian(sc,k,l, sparse = False):
     else:
         L = np.diag(K) - A
     return L
+
+
+def pseudofractal_d2(steps):
+    edges = [(0,1),(1,2),(0,2)]
+    n = 3
+    for s in range(steps):
+        boundary = edges.copy()
+        for ed in boundary:
+            edges.append((ed[0],n))
+            edges.append((ed[1],n))
+            n += 1
+
+    G = nx.from_edgelist(edges)
+    sc = convert_graph_to_sc(G,dim = 2)
+    return sc
+
+def pseudofractal_d3(steps):
+    edges = [(0,1),(0,2),(0,3),(1,2),(1,3),(2,3)]
+    faces = [(0,1,2),(0,1,3),(0,2,3),(1,2,3)]
+    n = 4
+    for s in range(steps):
+        boundary = faces.copy()
+        for fa in boundary:
+            edges.append((fa[0],n))
+            edges.append((fa[1],n))
+            edges.append((fa[2],n))
+            faces.append((fa[0],fa[1],n))
+            faces.append((fa[0],fa[2],n))
+            faces.append((fa[1],fa[2],n))
+            n += 1
+
+    G = nx.from_edgelist(edges)
+    sc = convert_graph_to_sc(G,dim = 3)
+
+    return sc
+
+def apollonian_d2(steps):
+    edges = [(0,1),(1,2),(0,2)]
+    new_boundary = edges.copy()
+    n = 3
+    for s in range(steps):
+        boundary = new_boundary
+        new_boundary = []
+        for ed in boundary:
+            edges.append((ed[0],n))
+            edges.append((ed[1],n))
+            new_boundary.append((ed[0],n))
+            new_boundary.append((ed[1],n))
+            n += 1
+
+    G = nx.from_edgelist(edges)
+    sc = convert_graph_to_sc(G, dim = 2)
+
+    return sc
+
+
+def import_network_data(f, d):
+    # Imports a network from file and returns its clique complex 
+    # INPUTS
+    # f: file
+    # d: maximal dimension of the cliques
+    # OUTPUTS
+    # sc: clique complex
+    i = 0
+    edges = []
+    for line in f:
+        if i != 0:
+            words = line.split()
+            edges.append((words[0],words[1]))
+        else:
+            i += 1
+    f.close()
+    G = nx.from_edgelist(edges)
+    G = nx.convert_node_labels_to_integers(G)
+    G.remove_edges_from(nx.selfloop_edges(G))
+    Gcc = sorted(nx.connected_components(G), key=len, reverse=True)
+    G = G.subgraph(Gcc[0])
+    sc = convert_graph_to_sc(G,dim = d)
+
+    return sc
+
+def import_network_data_xgi(name,d):
+    # Imports a higher-order network from xgi and reuturns the associated 
+    # simplicial complex 
+    # INPUTS
+    # name: name of the dataset 
+    # {"email-enron","email-eu","hospital-lyon”,"contact-high-school”,
+    # “contact-primary-school”,“tags-ask-ubuntu”,“congress-bills”,
+    # “disgenenet”,“diseasome”,"ndc-substances”,“coauth-mag-geology”,
+    # “coauth-mag-history”}
+    # d: maximal dimension of the simplices
+    # OUTPUTS
+    # sc: simplicial complex
+
+    H = xgi.load_xgi_data(name, max_order=d)
+    H.cleanup()
+    H = xgi.SimplicialComplex(H.edges.members())
+    H.close()
+
+    sc = {}
+    sc["nodes"] = np.sort(np.array([H.nodes]).T,0)
+    sc["n0"] = sc["nodes"].shape[0]
+    keys = ["edges","faces","tetrahedra","4-simplices"]
+
+    for k in keys:
+        sc[k] = []
+    for e in H.edges.members():
+        sc[keys[len(e)-2]].append(list(e))
+
+    for i,k in enumerate(keys):
+        if len(sc[k]) == 0:
+            sc[k] = np.zeros((0,i+2))
+        else:
+            sc[k] = np.unique(np.sort(np.array(sc[k]),1),axis =0)
+        
+        sc[f"n{i+1}"] = sc[k].shape[0] 
+    
+    return sc  
+
+def subdivide(G):
+    # Returns the barycentric subdivision of a given graph, i.e. the 
+    # original graph where each edge is replaced with two edges  
+    # INPUTS
+    # G: networkx graph
+    # OUTPUTS
+    # G: subdivided graph
+    
+    n = len(G.nodes) 
+    G2 = G.copy()
+    for e in G2.edges:
+        e0 = e[0]
+        e1 = e[1]
+        G.remove_edge(e0,e1)
+        G.add_edge(e0,n)
+        G.add_edge(n,e1)
+        n += 1
+        
+    return G

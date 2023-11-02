@@ -50,6 +50,7 @@ def plot_complex(
 
         G = nx.Graph()
         G.add_edges_from(sc["edges"])
+        
         if pos == None:
             if layout == "spring":
                 pos = nx.spring_layout(G, iterations=iterations)
@@ -59,10 +60,14 @@ def plot_complex(
                 pos = nx.spectral_layout(G)
             elif layout == "kamada_kawai":
                 pos = nx.kamada_kawai_layout(G)
+                    
         for i in range(sc["n2"]):
             f = sc["faces"][i, :]
-            x = [pos[f[0]][0], pos[f[1]][0], pos[f[2]][0]]
-            y = [pos[f[0]][1], pos[f[1]][1], pos[f[2]][1]]
+            pf0 = pos[f[0]]
+            pf1 = pos[f[1]]
+            pf2 = pos[f[2]]
+            x = [pf0[0], pf1[0], pf2[0]]
+            y = [pf0[1], pf1[1], pf2[1]]
             ax.fill(x, y, color=face_color[i], alpha=face_alpha)
 
         nx.draw_networkx(
