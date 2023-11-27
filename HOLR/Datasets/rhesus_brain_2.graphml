@@ -1,0 +1,2802 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+         http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+<!-- Created by igraph -->
+  <key id="g_DOI" for="graph" attr.name="DOI" attr.type="string"/>
+  <key id="g_source" for="graph" attr.name="source" attr.type="string"/>
+  <key id="g_sensor" for="graph" attr.name="sensor" attr.type="string"/>
+  <key id="g_region" for="graph" attr.name="region" attr.type="string"/>
+  <key id="v_name" for="node" attr.name="name" attr.type="string"/>
+  <key id="e_Dist_mm" for="edge" attr.name="Dist_mm" attr.type="double"/>
+  <key id="e_SLN_perc" for="edge" attr.name="SLN_perc" attr.type="double"/>
+  <graph id="G" edgedefault="directed">
+    <data key="g_DOI">10.1002/cne.23458</data>
+    <data key="g_source">http://www.core-nets.org/download/JCN_2013%20Table.xls</data>
+    <data key="g_sensor">Retrograde tracer</data>
+    <data key="g_region">brain</data>
+    <node id="n0">
+      <data key="v_name">V1</data>
+    </node>
+    <node id="n1">
+      <data key="v_name">V2</data>
+    </node>
+    <node id="n2">
+      <data key="v_name">V3A</data>
+    </node>
+    <node id="n3">
+      <data key="v_name">V4</data>
+    </node>
+    <node id="n4">
+      <data key="v_name">7B</data>
+    </node>
+    <node id="n5">
+      <data key="v_name">LIP</data>
+    </node>
+    <node id="n6">
+      <data key="v_name">VIP</data>
+    </node>
+    <node id="n7">
+      <data key="v_name">MIP</data>
+    </node>
+    <node id="n8">
+      <data key="v_name">PIP</data>
+    </node>
+    <node id="n9">
+      <data key="v_name">DP</data>
+    </node>
+    <node id="n10">
+      <data key="v_name">V6</data>
+    </node>
+    <node id="n11">
+      <data key="v_name">V6A</data>
+    </node>
+    <node id="n12">
+      <data key="v_name">5</data>
+    </node>
+    <node id="n13">
+      <data key="v_name">7m</data>
+    </node>
+    <node id="n14">
+      <data key="v_name">STPr</data>
+    </node>
+    <node id="n15">
+      <data key="v_name">STPi</data>
+    </node>
+    <node id="n16">
+      <data key="v_name">STPc</data>
+    </node>
+    <node id="n17">
+      <data key="v_name">TPt</data>
+    </node>
+    <node id="n18">
+      <data key="v_name">PGa</data>
+    </node>
+    <node id="n19">
+      <data key="v_name">IPa</data>
+    </node>
+    <node id="n20">
+      <data key="v_name">FST</data>
+    </node>
+    <node id="n21">
+      <data key="v_name">MST</data>
+    </node>
+    <node id="n22">
+      <data key="v_name">MT</data>
+    </node>
+    <node id="n23">
+      <data key="v_name">TEO</data>
+    </node>
+    <node id="n24">
+      <data key="v_name">TEOm</data>
+    </node>
+    <node id="n25">
+      <data key="v_name">PERIRHINAL</data>
+    </node>
+    <node id="n26">
+      <data key="v_name">TEav</data>
+    </node>
+    <node id="n27">
+      <data key="v_name">TEpd</data>
+    </node>
+    <node id="n28">
+      <data key="v_name">TEpv</data>
+    </node>
+    <node id="n29">
+      <data key="v_name">TEa/ma</data>
+    </node>
+    <node id="n30">
+      <data key="v_name">TEa/mp</data>
+    </node>
+    <node id="n31">
+      <data key="v_name">ENTORHINAL</data>
+    </node>
+    <node id="n32">
+      <data key="v_name">TH/TF</data>
+    </node>
+    <node id="n33">
+      <data key="v_name">TEMPORAL_POLE</data>
+    </node>
+    <node id="n34">
+      <data key="v_name">MB</data>
+    </node>
+    <node id="n35">
+      <data key="v_name">LB</data>
+    </node>
+    <node id="n36">
+      <data key="v_name">INSULA</data>
+    </node>
+    <node id="n37">
+      <data key="v_name">2</data>
+    </node>
+    <node id="n38">
+      <data key="v_name">23</data>
+    </node>
+    <node id="n39">
+      <data key="v_name">24a</data>
+    </node>
+    <node id="n40">
+      <data key="v_name">24b</data>
+    </node>
+    <node id="n41">
+      <data key="v_name">29/30</data>
+    </node>
+    <node id="n42">
+      <data key="v_name">31</data>
+    </node>
+    <node id="n43">
+      <data key="v_name">F1</data>
+    </node>
+    <node id="n44">
+      <data key="v_name">F2</data>
+    </node>
+    <node id="n45">
+      <data key="v_name">F7</data>
+    </node>
+    <node id="n46">
+      <data key="v_name">F3</data>
+    </node>
+    <node id="n47">
+      <data key="v_name">F5</data>
+    </node>
+    <node id="n48">
+      <data key="v_name">9</data>
+    </node>
+    <node id="n49">
+      <data key="v_name">46d</data>
+    </node>
+    <node id="n50">
+      <data key="v_name">46v</data>
+    </node>
+    <node id="n51">
+      <data key="v_name">9/46d</data>
+    </node>
+    <node id="n52">
+      <data key="v_name">9/46v</data>
+    </node>
+    <node id="n53">
+      <data key="v_name">8B</data>
+    </node>
+    <node id="n54">
+      <data key="v_name">8L</data>
+    </node>
+    <node id="n55">
+      <data key="v_name">8m</data>
+    </node>
+    <node id="n56">
+      <data key="v_name">45B</data>
+    </node>
+    <node id="n57">
+      <data key="v_name">45A</data>
+    </node>
+    <node id="n58">
+      <data key="v_name">12</data>
+    </node>
+    <node id="n59">
+      <data key="v_name">13</data>
+    </node>
+    <node id="n60">
+      <data key="v_name">V3</data>
+    </node>
+    <node id="n61">
+      <data key="v_name">V4t</data>
+    </node>
+    <node id="n62">
+      <data key="v_name">7op</data>
+    </node>
+    <node id="n63">
+      <data key="v_name">7A</data>
+    </node>
+    <node id="n64">
+      <data key="v_name">AIP</data>
+    </node>
+    <node id="n65">
+      <data key="v_name">TEad</data>
+    </node>
+    <node id="n66">
+      <data key="v_name">SUBICULUM</data>
+    </node>
+    <node id="n67">
+      <data key="v_name">CORE</data>
+    </node>
+    <node id="n68">
+      <data key="v_name">PBr</data>
+    </node>
+    <node id="n69">
+      <data key="v_name">PBc</data>
+    </node>
+    <node id="n70">
+      <data key="v_name">Parainsula</data>
+    </node>
+    <node id="n71">
+      <data key="v_name">Gu</data>
+    </node>
+    <node id="n72">
+      <data key="v_name">SII</data>
+    </node>
+    <node id="n73">
+      <data key="v_name">3</data>
+    </node>
+    <node id="n74">
+      <data key="v_name">24c</data>
+    </node>
+    <node id="n75">
+      <data key="v_name">24d</data>
+    </node>
+    <node id="n76">
+      <data key="v_name">32</data>
+    </node>
+    <node id="n77">
+      <data key="v_name">F6</data>
+    </node>
+    <node id="n78">
+      <data key="v_name">F4</data>
+    </node>
+    <node id="n79">
+      <data key="v_name">ProM</data>
+    </node>
+    <node id="n80">
+      <data key="v_name">10</data>
+    </node>
+    <node id="n81">
+      <data key="v_name">8r</data>
+    </node>
+    <node id="n82">
+      <data key="v_name">44</data>
+    </node>
+    <node id="n83">
+      <data key="v_name">OPRO</data>
+    </node>
+    <node id="n84">
+      <data key="v_name">OPAI</data>
+    </node>
+    <node id="n85">
+      <data key="v_name">11</data>
+    </node>
+    <node id="n86">
+      <data key="v_name">14</data>
+    </node>
+    <node id="n87">
+      <data key="v_name">25</data>
+    </node>
+    <node id="n88">
+      <data key="v_name">PIRIFORM</data>
+    </node>
+    <node id="n89">
+      <data key="v_name">Pro.St.</data>
+    </node>
+    <node id="n90">
+      <data key="v_name">1</data>
+    </node>
+    <edge source="n0" target="n63">
+      <data key="e_Dist_mm">25.5</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n1" target="n63">
+      <data key="e_Dist_mm">24.5</data>
+      <data key="e_SLN_perc">50</data>
+    </edge>
+    <edge source="n2" target="n63">
+      <data key="e_Dist_mm">15.4</data>
+      <data key="e_SLN_perc">50</data>
+    </edge>
+    <edge source="n3" target="n63">
+      <data key="e_Dist_mm">22.8</data>
+      <data key="e_SLN_perc">80.18</data>
+    </edge>
+    <edge source="n4" target="n63">
+      <data key="e_Dist_mm">12.8</data>
+      <data key="e_SLN_perc">5.77</data>
+    </edge>
+    <edge source="n5" target="n63">
+      <data key="e_Dist_mm">6.3</data>
+      <data key="e_SLN_perc">58.11</data>
+    </edge>
+    <edge source="n6" target="n63">
+      <data key="e_Dist_mm">10.3</data>
+      <data key="e_SLN_perc">66.67</data>
+    </edge>
+    <edge source="n7" target="n63">
+      <data key="e_Dist_mm">19.4</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n8" target="n63">
+      <data key="e_Dist_mm">9.2</data>
+      <data key="e_SLN_perc">40</data>
+    </edge>
+    <edge source="n9" target="n63">
+      <data key="e_Dist_mm">11.4</data>
+      <data key="e_SLN_perc">23.15</data>
+    </edge>
+    <edge source="n10" target="n63">
+      <data key="e_Dist_mm">18.2</data>
+      <data key="e_SLN_perc">14.29</data>
+    </edge>
+    <edge source="n11" target="n63">
+      <data key="e_Dist_mm">24.6</data>
+      <data key="e_SLN_perc">44.2</data>
+    </edge>
+    <edge source="n12" target="n63">
+      <data key="e_Dist_mm">22.5</data>
+      <data key="e_SLN_perc">38.74</data>
+    </edge>
+    <edge source="n13" target="n63">
+      <data key="e_Dist_mm">18.1</data>
+      <data key="e_SLN_perc">42.07</data>
+    </edge>
+    <edge source="n14" target="n63">
+      <data key="e_Dist_mm">29</data>
+      <data key="e_SLN_perc">64.13</data>
+    </edge>
+    <edge source="n15" target="n63">
+      <data key="e_Dist_mm">21</data>
+      <data key="e_SLN_perc">52.35</data>
+    </edge>
+    <edge source="n16" target="n63">
+      <data key="e_Dist_mm">10.2</data>
+      <data key="e_SLN_perc">65.88</data>
+    </edge>
+    <edge source="n17" target="n63">
+      <data key="e_Dist_mm">6.3</data>
+      <data key="e_SLN_perc">54.31</data>
+    </edge>
+    <edge source="n18" target="n63">
+      <data key="e_Dist_mm">21.7</data>
+      <data key="e_SLN_perc">32.44</data>
+    </edge>
+    <edge source="n19" target="n63">
+      <data key="e_Dist_mm">23.6</data>
+      <data key="e_SLN_perc">12.5</data>
+    </edge>
+    <edge source="n20" target="n63">
+      <data key="e_Dist_mm">18.1</data>
+      <data key="e_SLN_perc">45.55</data>
+    </edge>
+    <edge source="n21" target="n63">
+      <data key="e_Dist_mm">6.8</data>
+      <data key="e_SLN_perc">61.21</data>
+    </edge>
+    <edge source="n22" target="n63">
+      <data key="e_Dist_mm">18.8</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n23" target="n63">
+      <data key="e_Dist_mm">24.6</data>
+      <data key="e_SLN_perc">62.39</data>
+    </edge>
+    <edge source="n24" target="n63">
+      <data key="e_Dist_mm">27.4</data>
+      <data key="e_SLN_perc">78.17</data>
+    </edge>
+    <edge source="n25" target="n63">
+      <data key="e_Dist_mm">37.2</data>
+      <data key="e_SLN_perc">20.98</data>
+    </edge>
+    <edge source="n26" target="n63">
+      <data key="e_Dist_mm">32.1</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n27" target="n63">
+      <data key="e_Dist_mm">28.3</data>
+      <data key="e_SLN_perc">6.54</data>
+    </edge>
+    <edge source="n28" target="n63">
+      <data key="e_Dist_mm">27.2</data>
+      <data key="e_SLN_perc">36.24</data>
+    </edge>
+    <edge source="n29" target="n63">
+      <data key="e_Dist_mm">34.8</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n30" target="n63">
+      <data key="e_Dist_mm">29.1</data>
+      <data key="e_SLN_perc">46.28</data>
+    </edge>
+    <edge source="n31" target="n63">
+      <data key="e_Dist_mm">37</data>
+      <data key="e_SLN_perc">1.88</data>
+    </edge>
+    <edge source="n32" target="n63">
+      <data key="e_Dist_mm">27.9</data>
+      <data key="e_SLN_perc">22.34</data>
+    </edge>
+    <edge source="n33" target="n63">
+      <data key="e_Dist_mm">34.5</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n34" target="n63">
+      <data key="e_Dist_mm">23.8</data>
+      <data key="e_SLN_perc">71.43</data>
+    </edge>
+    <edge source="n35" target="n63">
+      <data key="e_Dist_mm">20.8</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n36" target="n63">
+      <data key="e_Dist_mm">22.8</data>
+      <data key="e_SLN_perc">37.59</data>
+    </edge>
+    <edge source="n37" target="n63">
+      <data key="e_Dist_mm">17.9</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n38" target="n63">
+      <data key="e_Dist_mm">16</data>
+      <data key="e_SLN_perc">41.29</data>
+    </edge>
+    <edge source="n39" target="n63">
+      <data key="e_Dist_mm">26.8</data>
+      <data key="e_SLN_perc">23.33</data>
+    </edge>
+    <edge source="n40" target="n63">
+      <data key="e_Dist_mm">26.7</data>
+      <data key="e_SLN_perc">34.55</data>
+    </edge>
+    <edge source="n41" target="n63">
+      <data key="e_Dist_mm">16.6</data>
+      <data key="e_SLN_perc">54.86</data>
+    </edge>
+    <edge source="n42" target="n63">
+      <data key="e_Dist_mm">15.9</data>
+      <data key="e_SLN_perc">41.3</data>
+    </edge>
+    <edge source="n43" target="n63">
+      <data key="e_Dist_mm">23</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n44" target="n63">
+      <data key="e_Dist_mm">27.1</data>
+      <data key="e_SLN_perc">72.59</data>
+    </edge>
+    <edge source="n45" target="n63">
+      <data key="e_Dist_mm">35.2</data>
+      <data key="e_SLN_perc">23.53</data>
+    </edge>
+    <edge source="n46" target="n63">
+      <data key="e_Dist_mm">28.2</data>
+      <data key="e_SLN_perc">56.36</data>
+    </edge>
+    <edge source="n47" target="n63">
+      <data key="e_Dist_mm">29.2</data>
+      <data key="e_SLN_perc">96.55</data>
+    </edge>
+    <edge source="n48" target="n63">
+      <data key="e_Dist_mm">40</data>
+      <data key="e_SLN_perc">22.22</data>
+    </edge>
+    <edge source="n49" target="n63">
+      <data key="e_Dist_mm">36.4</data>
+      <data key="e_SLN_perc">67.67</data>
+    </edge>
+    <edge source="n50" target="n63">
+      <data key="e_Dist_mm">37.2</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n51" target="n63">
+      <data key="e_Dist_mm">35.5</data>
+      <data key="e_SLN_perc">44.27</data>
+    </edge>
+    <edge source="n52" target="n63">
+      <data key="e_Dist_mm">34.8</data>
+      <data key="e_SLN_perc">47.37</data>
+    </edge>
+    <edge source="n53" target="n63">
+      <data key="e_Dist_mm">35.4</data>
+      <data key="e_SLN_perc">44.05</data>
+    </edge>
+    <edge source="n54" target="n63">
+      <data key="e_Dist_mm">30.4</data>
+      <data key="e_SLN_perc">49.02</data>
+    </edge>
+    <edge source="n55" target="n63">
+      <data key="e_Dist_mm">30.6</data>
+      <data key="e_SLN_perc">30.51</data>
+    </edge>
+    <edge source="n56" target="n63">
+      <data key="e_Dist_mm">32.5</data>
+      <data key="e_SLN_perc">40</data>
+    </edge>
+    <edge source="n57" target="n63">
+      <data key="e_Dist_mm">33.6</data>
+      <data key="e_SLN_perc">71.81</data>
+    </edge>
+    <edge source="n58" target="n63">
+      <data key="e_Dist_mm">36.4</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n59" target="n63">
+      <data key="e_Dist_mm">33.9</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n0" target="n54">
+      <data key="e_Dist_mm">45.6</data>
+      <data key="e_SLN_perc">75</data>
+    </edge>
+    <edge source="n1" target="n54">
+      <data key="e_Dist_mm">40.2</data>
+      <data key="e_SLN_perc">92.86</data>
+    </edge>
+    <edge source="n60" target="n54">
+      <data key="e_Dist_mm">42</data>
+      <data key="e_SLN_perc">92.52</data>
+    </edge>
+    <edge source="n2" target="n54">
+      <data key="e_Dist_mm">40</data>
+      <data key="e_SLN_perc">81.25</data>
+    </edge>
+    <edge source="n3" target="n54">
+      <data key="e_Dist_mm">40.2</data>
+      <data key="e_SLN_perc">95.69</data>
+    </edge>
+    <edge source="n61" target="n54">
+      <data key="e_Dist_mm">40.6</data>
+      <data key="e_SLN_perc">68.97</data>
+    </edge>
+    <edge source="n62" target="n54">
+      <data key="e_Dist_mm">26.3</data>
+      <data key="e_SLN_perc">54.55</data>
+    </edge>
+    <edge source="n63" target="n54">
+      <data key="e_Dist_mm">30.4</data>
+      <data key="e_SLN_perc">25.58</data>
+    </edge>
+    <edge source="n4" target="n54">
+      <data key="e_Dist_mm">22.6</data>
+      <data key="e_SLN_perc">66.67</data>
+    </edge>
+    <edge source="n5" target="n54">
+      <data key="e_Dist_mm">33.4</data>
+      <data key="e_SLN_perc">50.44</data>
+    </edge>
+    <edge source="n6" target="n54">
+      <data key="e_Dist_mm">28.3</data>
+      <data key="e_SLN_perc">30.54</data>
+    </edge>
+    <edge source="n7" target="n54">
+      <data key="e_Dist_mm">34.5</data>
+      <data key="e_SLN_perc">37.5</data>
+    </edge>
+    <edge source="n8" target="n54">
+      <data key="e_Dist_mm">40</data>
+      <data key="e_SLN_perc">75.6</data>
+    </edge>
+    <edge source="n64" target="n54">
+      <data key="e_Dist_mm">21.3</data>
+      <data key="e_SLN_perc">40</data>
+    </edge>
+    <edge source="n9" target="n54">
+      <data key="e_Dist_mm">37.5</data>
+      <data key="e_SLN_perc">77.97</data>
+    </edge>
+    <edge source="n11" target="n54">
+      <data key="e_Dist_mm">42</data>
+      <data key="e_SLN_perc">4.76</data>
+    </edge>
+    <edge source="n12" target="n54">
+      <data key="e_Dist_mm">31.3</data>
+      <data key="e_SLN_perc">16.67</data>
+    </edge>
+    <edge source="n13" target="n54">
+      <data key="e_Dist_mm">32.3</data>
+      <data key="e_SLN_perc">8.33</data>
+    </edge>
+    <edge source="n14" target="n54">
+      <data key="e_Dist_mm">21.4</data>
+      <data key="e_SLN_perc">10.91</data>
+    </edge>
+    <edge source="n15" target="n54">
+      <data key="e_Dist_mm">23.9</data>
+      <data key="e_SLN_perc">15.13</data>
+    </edge>
+    <edge source="n16" target="n54">
+      <data key="e_Dist_mm">28.8</data>
+      <data key="e_SLN_perc">32.48</data>
+    </edge>
+    <edge source="n17" target="n54">
+      <data key="e_Dist_mm">33.3</data>
+      <data key="e_SLN_perc">40.48</data>
+    </edge>
+    <edge source="n18" target="n54">
+      <data key="e_Dist_mm">23.3</data>
+      <data key="e_SLN_perc">40.67</data>
+    </edge>
+    <edge source="n19" target="n54">
+      <data key="e_Dist_mm">26</data>
+      <data key="e_SLN_perc">30.77</data>
+    </edge>
+    <edge source="n20" target="n54">
+      <data key="e_Dist_mm">31.9</data>
+      <data key="e_SLN_perc">56.39</data>
+    </edge>
+    <edge source="n21" target="n54">
+      <data key="e_Dist_mm">38.5</data>
+      <data key="e_SLN_perc">42.29</data>
+    </edge>
+    <edge source="n22" target="n54">
+      <data key="e_Dist_mm">31.8</data>
+      <data key="e_SLN_perc">48.78</data>
+    </edge>
+    <edge source="n23" target="n54">
+      <data key="e_Dist_mm">32.3</data>
+      <data key="e_SLN_perc">83.33</data>
+    </edge>
+    <edge source="n24" target="n54">
+      <data key="e_Dist_mm">38.5</data>
+      <data key="e_SLN_perc">88.33</data>
+    </edge>
+    <edge source="n25" target="n54">
+      <data key="e_Dist_mm">24.3</data>
+      <data key="e_SLN_perc">80</data>
+    </edge>
+    <edge source="n65" target="n54">
+      <data key="e_Dist_mm">29.3</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n26" target="n54">
+      <data key="e_Dist_mm">24.3</data>
+      <data key="e_SLN_perc">38.46</data>
+    </edge>
+    <edge source="n27" target="n54">
+      <data key="e_Dist_mm">31</data>
+      <data key="e_SLN_perc">53.33</data>
+    </edge>
+    <edge source="n28" target="n54">
+      <data key="e_Dist_mm">29.5</data>
+      <data key="e_SLN_perc">61.29</data>
+    </edge>
+    <edge source="n29" target="n54">
+      <data key="e_Dist_mm">28</data>
+      <data key="e_SLN_perc">9.09</data>
+    </edge>
+    <edge source="n30" target="n54">
+      <data key="e_Dist_mm">30.7</data>
+      <data key="e_SLN_perc">80</data>
+    </edge>
+    <edge source="n31" target="n54">
+      <data key="e_Dist_mm">22.9</data>
+      <data key="e_SLN_perc">25</data>
+    </edge>
+    <edge source="n32" target="n54">
+      <data key="e_Dist_mm">35.7</data>
+      <data key="e_SLN_perc">54.84</data>
+    </edge>
+    <edge source="n66" target="n54">
+      <data key="e_Dist_mm">34.2</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n33" target="n54">
+      <data key="e_Dist_mm">22.3</data>
+      <data key="e_SLN_perc">20</data>
+    </edge>
+    <edge source="n67" target="n54">
+      <data key="e_Dist_mm">27.8</data>
+      <data key="e_SLN_perc">10.94</data>
+    </edge>
+    <edge source="n34" target="n54">
+      <data key="e_Dist_mm">24.5</data>
+      <data key="e_SLN_perc">10.64</data>
+    </edge>
+    <edge source="n35" target="n54">
+      <data key="e_Dist_mm">29.9</data>
+      <data key="e_SLN_perc">31.58</data>
+    </edge>
+    <edge source="n68" target="n54">
+      <data key="e_Dist_mm">26.1</data>
+      <data key="e_SLN_perc">14.63</data>
+    </edge>
+    <edge source="n69" target="n54">
+      <data key="e_Dist_mm">33</data>
+      <data key="e_SLN_perc">42.86</data>
+    </edge>
+    <edge source="n70" target="n54">
+      <data key="e_Dist_mm">18.3</data>
+      <data key="e_SLN_perc">15.63</data>
+    </edge>
+    <edge source="n36" target="n54">
+      <data key="e_Dist_mm">21.3</data>
+      <data key="e_SLN_perc">10.2</data>
+    </edge>
+    <edge source="n71" target="n54">
+      <data key="e_Dist_mm">16</data>
+      <data key="e_SLN_perc">4.65</data>
+    </edge>
+    <edge source="n72" target="n54">
+      <data key="e_Dist_mm">18.3</data>
+      <data key="e_SLN_perc">17.8</data>
+    </edge>
+    <edge source="n37" target="n54">
+      <data key="e_Dist_mm">21.8</data>
+      <data key="e_SLN_perc">45</data>
+    </edge>
+    <edge source="n73" target="n54">
+      <data key="e_Dist_mm">23</data>
+      <data key="e_SLN_perc">58.33</data>
+    </edge>
+    <edge source="n38" target="n54">
+      <data key="e_Dist_mm">28.7</data>
+      <data key="e_SLN_perc">54.55</data>
+    </edge>
+    <edge source="n39" target="n54">
+      <data key="e_Dist_mm">14.3</data>
+      <data key="e_SLN_perc">56.23</data>
+    </edge>
+    <edge source="n40" target="n54">
+      <data key="e_Dist_mm">14.3</data>
+      <data key="e_SLN_perc">33.19</data>
+    </edge>
+    <edge source="n74" target="n54">
+      <data key="e_Dist_mm">11.2</data>
+      <data key="e_SLN_perc">39.08</data>
+    </edge>
+    <edge source="n75" target="n54">
+      <data key="e_Dist_mm">16.3</data>
+      <data key="e_SLN_perc">43.69</data>
+    </edge>
+    <edge source="n41" target="n54">
+      <data key="e_Dist_mm">26.4</data>
+      <data key="e_SLN_perc">50</data>
+    </edge>
+    <edge source="n42" target="n54">
+      <data key="e_Dist_mm">33.7</data>
+      <data key="e_SLN_perc">28.57</data>
+    </edge>
+    <edge source="n76" target="n54">
+      <data key="e_Dist_mm">17.9</data>
+      <data key="e_SLN_perc">50</data>
+    </edge>
+    <edge source="n43" target="n54">
+      <data key="e_Dist_mm">20.7</data>
+      <data key="e_SLN_perc">19.57</data>
+    </edge>
+    <edge source="n44" target="n54">
+      <data key="e_Dist_mm">18.1</data>
+      <data key="e_SLN_perc">19.57</data>
+    </edge>
+    <edge source="n45" target="n54">
+      <data key="e_Dist_mm">13.5</data>
+      <data key="e_SLN_perc">25.8</data>
+    </edge>
+    <edge source="n46" target="n54">
+      <data key="e_Dist_mm">17</data>
+      <data key="e_SLN_perc">9.09</data>
+    </edge>
+    <edge source="n77" target="n54">
+      <data key="e_Dist_mm">14.5</data>
+      <data key="e_SLN_perc">35.09</data>
+    </edge>
+    <edge source="n78" target="n54">
+      <data key="e_Dist_mm">16.3</data>
+      <data key="e_SLN_perc">22.41</data>
+    </edge>
+    <edge source="n47" target="n54">
+      <data key="e_Dist_mm">14.4</data>
+      <data key="e_SLN_perc">31.85</data>
+    </edge>
+    <edge source="n79" target="n54">
+      <data key="e_Dist_mm">14.7</data>
+      <data key="e_SLN_perc">7.02</data>
+    </edge>
+    <edge source="n80" target="n54">
+      <data key="e_Dist_mm">23.6</data>
+      <data key="e_SLN_perc">7.69</data>
+    </edge>
+    <edge source="n48" target="n54">
+      <data key="e_Dist_mm">16.7</data>
+      <data key="e_SLN_perc">17.46</data>
+    </edge>
+    <edge source="n49" target="n54">
+      <data key="e_Dist_mm">16.4</data>
+      <data key="e_SLN_perc">27.27</data>
+    </edge>
+    <edge source="n50" target="n54">
+      <data key="e_Dist_mm">15.2</data>
+      <data key="e_SLN_perc">16.71</data>
+    </edge>
+    <edge source="n51" target="n54">
+      <data key="e_Dist_mm">12.4</data>
+      <data key="e_SLN_perc">21.13</data>
+    </edge>
+    <edge source="n52" target="n54">
+      <data key="e_Dist_mm">9.3</data>
+      <data key="e_SLN_perc">29.66</data>
+    </edge>
+    <edge source="n53" target="n54">
+      <data key="e_Dist_mm">16.1</data>
+      <data key="e_SLN_perc">25.16</data>
+    </edge>
+    <edge source="n55" target="n54">
+      <data key="e_Dist_mm">6.1</data>
+      <data key="e_SLN_perc">49.87</data>
+    </edge>
+    <edge source="n81" target="n54">
+      <data key="e_Dist_mm">3.8</data>
+      <data key="e_SLN_perc">59.99</data>
+    </edge>
+    <edge source="n56" target="n54">
+      <data key="e_Dist_mm">8.3</data>
+      <data key="e_SLN_perc">38.15</data>
+    </edge>
+    <edge source="n57" target="n54">
+      <data key="e_Dist_mm">10.1</data>
+      <data key="e_SLN_perc">30</data>
+    </edge>
+    <edge source="n82" target="n54">
+      <data key="e_Dist_mm">8.7</data>
+      <data key="e_SLN_perc">36.59</data>
+    </edge>
+    <edge source="n83" target="n54">
+      <data key="e_Dist_mm">12.7</data>
+      <data key="e_SLN_perc">8.58</data>
+    </edge>
+    <edge source="n84" target="n54">
+      <data key="e_Dist_mm">15.6</data>
+      <data key="e_SLN_perc">15.79</data>
+    </edge>
+    <edge source="n85" target="n54">
+      <data key="e_Dist_mm">15.9</data>
+      <data key="e_SLN_perc">26.42</data>
+    </edge>
+    <edge source="n86" target="n54">
+      <data key="e_Dist_mm">17.5</data>
+      <data key="e_SLN_perc">66.67</data>
+    </edge>
+    <edge source="n87" target="n54">
+      <data key="e_Dist_mm">16.5</data>
+      <data key="e_SLN_perc">40</data>
+    </edge>
+    <edge source="n58" target="n54">
+      <data key="e_Dist_mm">16.2</data>
+      <data key="e_SLN_perc">29.18</data>
+    </edge>
+    <edge source="n59" target="n54">
+      <data key="e_Dist_mm">13.5</data>
+      <data key="e_SLN_perc">7.8</data>
+    </edge>
+    <edge source="n88" target="n54">
+      <data key="e_Dist_mm">14.7</data>
+      <data key="e_SLN_perc">88.89</data>
+    </edge>
+    <edge source="n1" target="n55">
+      <data key="e_Dist_mm">40.3</data>
+      <data key="e_SLN_perc">20</data>
+    </edge>
+    <edge source="n60" target="n55">
+      <data key="e_Dist_mm">42</data>
+      <data key="e_SLN_perc">25</data>
+    </edge>
+    <edge source="n2" target="n55">
+      <data key="e_Dist_mm">38.9</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n3" target="n55">
+      <data key="e_Dist_mm">38.8</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n61" target="n55">
+      <data key="e_Dist_mm">39.4</data>
+      <data key="e_SLN_perc">58.33</data>
+    </edge>
+    <edge source="n62" target="n55">
+      <data key="e_Dist_mm">25</data>
+      <data key="e_SLN_perc">46.81</data>
+    </edge>
+    <edge source="n63" target="n55">
+      <data key="e_Dist_mm">30.6</data>
+      <data key="e_SLN_perc">30.3</data>
+    </edge>
+    <edge source="n4" target="n55">
+      <data key="e_Dist_mm">22.5</data>
+      <data key="e_SLN_perc">66.67</data>
+    </edge>
+    <edge source="n5" target="n55">
+      <data key="e_Dist_mm">32.5</data>
+      <data key="e_SLN_perc">24.61</data>
+    </edge>
+    <edge source="n6" target="n55">
+      <data key="e_Dist_mm">27.5</data>
+      <data key="e_SLN_perc">34.48</data>
+    </edge>
+    <edge source="n7" target="n55">
+      <data key="e_Dist_mm">33.3</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n8" target="n55">
+      <data key="e_Dist_mm">38.8</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n64" target="n55">
+      <data key="e_Dist_mm">22</data>
+      <data key="e_SLN_perc">41.33</data>
+    </edge>
+    <edge source="n9" target="n55">
+      <data key="e_Dist_mm">41.3</data>
+      <data key="e_SLN_perc">70.59</data>
+    </edge>
+    <edge source="n11" target="n55">
+      <data key="e_Dist_mm">40.8</data>
+      <data key="e_SLN_perc">43.75</data>
+    </edge>
+    <edge source="n12" target="n55">
+      <data key="e_Dist_mm">30.8</data>
+      <data key="e_SLN_perc">57.14</data>
+    </edge>
+    <edge source="n13" target="n55">
+      <data key="e_Dist_mm">31.4</data>
+      <data key="e_SLN_perc">51.11</data>
+    </edge>
+    <edge source="n14" target="n55">
+      <data key="e_Dist_mm">20.5</data>
+      <data key="e_SLN_perc">5.08</data>
+    </edge>
+    <edge source="n15" target="n55">
+      <data key="e_Dist_mm">23.6</data>
+      <data key="e_SLN_perc">20.9</data>
+    </edge>
+    <edge source="n16" target="n55">
+      <data key="e_Dist_mm">28.9</data>
+      <data key="e_SLN_perc">26.96</data>
+    </edge>
+    <edge source="n17" target="n55">
+      <data key="e_Dist_mm">30.3</data>
+      <data key="e_SLN_perc">14.29</data>
+    </edge>
+    <edge source="n18" target="n55">
+      <data key="e_Dist_mm">21.7</data>
+      <data key="e_SLN_perc">29.71</data>
+    </edge>
+    <edge source="n19" target="n55">
+      <data key="e_Dist_mm">24.4</data>
+      <data key="e_SLN_perc">12.5</data>
+    </edge>
+    <edge source="n20" target="n55">
+      <data key="e_Dist_mm">30.3</data>
+      <data key="e_SLN_perc">27</data>
+    </edge>
+    <edge source="n21" target="n55">
+      <data key="e_Dist_mm">32.5</data>
+      <data key="e_SLN_perc">44.38</data>
+    </edge>
+    <edge source="n22" target="n55">
+      <data key="e_Dist_mm">31.7</data>
+      <data key="e_SLN_perc">59.65</data>
+    </edge>
+    <edge source="n24" target="n55">
+      <data key="e_Dist_mm">37.1</data>
+      <data key="e_SLN_perc">50</data>
+    </edge>
+    <edge source="n25" target="n55">
+      <data key="e_Dist_mm">24.2</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n27" target="n55">
+      <data key="e_Dist_mm">31.5</data>
+      <data key="e_SLN_perc">33.33</data>
+    </edge>
+    <edge source="n28" target="n55">
+      <data key="e_Dist_mm">28.6</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n29" target="n55">
+      <data key="e_Dist_mm">27.4</data>
+      <data key="e_SLN_perc">66.67</data>
+    </edge>
+    <edge source="n30" target="n55">
+      <data key="e_Dist_mm">30.2</data>
+      <data key="e_SLN_perc">15.38</data>
+    </edge>
+    <edge source="n31" target="n55">
+      <data key="e_Dist_mm">22.3</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n32" target="n55">
+      <data key="e_Dist_mm">34.2</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n33" target="n55">
+      <data key="e_Dist_mm">23.8</data>
+      <data key="e_SLN_perc">18.18</data>
+    </edge>
+    <edge source="n67" target="n55">
+      <data key="e_Dist_mm">26.2</data>
+      <data key="e_SLN_perc">22.81</data>
+    </edge>
+    <edge source="n34" target="n55">
+      <data key="e_Dist_mm">23.1</data>
+      <data key="e_SLN_perc">16.31</data>
+    </edge>
+    <edge source="n35" target="n55">
+      <data key="e_Dist_mm">28.4</data>
+      <data key="e_SLN_perc">33.68</data>
+    </edge>
+    <edge source="n68" target="n55">
+      <data key="e_Dist_mm">26.2</data>
+      <data key="e_SLN_perc">18.56</data>
+    </edge>
+    <edge source="n69" target="n55">
+      <data key="e_Dist_mm">31.9</data>
+      <data key="e_SLN_perc">25.06</data>
+    </edge>
+    <edge source="n70" target="n55">
+      <data key="e_Dist_mm">18.3</data>
+      <data key="e_SLN_perc">10</data>
+    </edge>
+    <edge source="n36" target="n55">
+      <data key="e_Dist_mm">18.5</data>
+      <data key="e_SLN_perc">28.39</data>
+    </edge>
+    <edge source="n71" target="n55">
+      <data key="e_Dist_mm">17.5</data>
+      <data key="e_SLN_perc">36.36</data>
+    </edge>
+    <edge source="n72" target="n55">
+      <data key="e_Dist_mm">16.7</data>
+      <data key="e_SLN_perc">37.1</data>
+    </edge>
+    <edge source="n37" target="n55">
+      <data key="e_Dist_mm">21.2</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n73" target="n55">
+      <data key="e_Dist_mm">22</data>
+      <data key="e_SLN_perc">50</data>
+    </edge>
+    <edge source="n38" target="n55">
+      <data key="e_Dist_mm">28.1</data>
+      <data key="e_SLN_perc">27.27</data>
+    </edge>
+    <edge source="n39" target="n55">
+      <data key="e_Dist_mm">13.9</data>
+      <data key="e_SLN_perc">20.69</data>
+    </edge>
+    <edge source="n40" target="n55">
+      <data key="e_Dist_mm">13.9</data>
+      <data key="e_SLN_perc">12.05</data>
+    </edge>
+    <edge source="n74" target="n55">
+      <data key="e_Dist_mm">9</data>
+      <data key="e_SLN_perc">20.51</data>
+    </edge>
+    <edge source="n75" target="n55">
+      <data key="e_Dist_mm">15.8</data>
+      <data key="e_SLN_perc">36.67</data>
+    </edge>
+    <edge source="n41" target="n55">
+      <data key="e_Dist_mm">25.8</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n42" target="n55">
+      <data key="e_Dist_mm">33.1</data>
+      <data key="e_SLN_perc">33.33</data>
+    </edge>
+    <edge source="n76" target="n55">
+      <data key="e_Dist_mm">16.9</data>
+      <data key="e_SLN_perc">8.33</data>
+    </edge>
+    <edge source="n43" target="n55">
+      <data key="e_Dist_mm">20.2</data>
+      <data key="e_SLN_perc">29.41</data>
+    </edge>
+    <edge source="n44" target="n55">
+      <data key="e_Dist_mm">13.9</data>
+      <data key="e_SLN_perc">20.3</data>
+    </edge>
+    <edge source="n45" target="n55">
+      <data key="e_Dist_mm">13</data>
+      <data key="e_SLN_perc">28.24</data>
+    </edge>
+    <edge source="n46" target="n55">
+      <data key="e_Dist_mm">17.2</data>
+      <data key="e_SLN_perc">26.32</data>
+    </edge>
+    <edge source="n77" target="n55">
+      <data key="e_Dist_mm">15.3</data>
+      <data key="e_SLN_perc">12.5</data>
+    </edge>
+    <edge source="n78" target="n55">
+      <data key="e_Dist_mm">15.6</data>
+      <data key="e_SLN_perc">30.5</data>
+    </edge>
+    <edge source="n47" target="n55">
+      <data key="e_Dist_mm">14.1</data>
+      <data key="e_SLN_perc">35.37</data>
+    </edge>
+    <edge source="n79" target="n55">
+      <data key="e_Dist_mm">16.5</data>
+      <data key="e_SLN_perc">39.58</data>
+    </edge>
+    <edge source="n80" target="n55">
+      <data key="e_Dist_mm">22.8</data>
+      <data key="e_SLN_perc">1.16</data>
+    </edge>
+    <edge source="n48" target="n55">
+      <data key="e_Dist_mm">17.8</data>
+      <data key="e_SLN_perc">22.02</data>
+    </edge>
+    <edge source="n49" target="n55">
+      <data key="e_Dist_mm">15.4</data>
+      <data key="e_SLN_perc">30.56</data>
+    </edge>
+    <edge source="n50" target="n55">
+      <data key="e_Dist_mm">20</data>
+      <data key="e_SLN_perc">40.15</data>
+    </edge>
+    <edge source="n51" target="n55">
+      <data key="e_Dist_mm">12.5</data>
+      <data key="e_SLN_perc">36.96</data>
+    </edge>
+    <edge source="n52" target="n55">
+      <data key="e_Dist_mm">13.1</data>
+      <data key="e_SLN_perc">47.34</data>
+    </edge>
+    <edge source="n53" target="n55">
+      <data key="e_Dist_mm">12.1</data>
+      <data key="e_SLN_perc">15.73</data>
+    </edge>
+    <edge source="n54" target="n55">
+      <data key="e_Dist_mm">6.1</data>
+      <data key="e_SLN_perc">57.7</data>
+    </edge>
+    <edge source="n81" target="n55">
+      <data key="e_Dist_mm">7.3</data>
+      <data key="e_SLN_perc">48.79</data>
+    </edge>
+    <edge source="n56" target="n55">
+      <data key="e_Dist_mm">11.7</data>
+      <data key="e_SLN_perc">55.55</data>
+    </edge>
+    <edge source="n57" target="n55">
+      <data key="e_Dist_mm">13.7</data>
+      <data key="e_SLN_perc">53.6</data>
+    </edge>
+    <edge source="n82" target="n55">
+      <data key="e_Dist_mm">9.6</data>
+      <data key="e_SLN_perc">39.37</data>
+    </edge>
+    <edge source="n83" target="n55">
+      <data key="e_Dist_mm">14.9</data>
+      <data key="e_SLN_perc">14.29</data>
+    </edge>
+    <edge source="n84" target="n55">
+      <data key="e_Dist_mm">14.5</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n85" target="n55">
+      <data key="e_Dist_mm">20.4</data>
+      <data key="e_SLN_perc">13.33</data>
+    </edge>
+    <edge source="n86" target="n55">
+      <data key="e_Dist_mm">21.1</data>
+      <data key="e_SLN_perc">37.5</data>
+    </edge>
+    <edge source="n58" target="n55">
+      <data key="e_Dist_mm">17</data>
+      <data key="e_SLN_perc">28.79</data>
+    </edge>
+    <edge source="n59" target="n55">
+      <data key="e_Dist_mm">14.3</data>
+      <data key="e_SLN_perc">21.33</data>
+    </edge>
+    <edge source="n0" target="n22">
+      <data key="e_Dist_mm">12.5</data>
+      <data key="e_SLN_perc">89.05</data>
+    </edge>
+    <edge source="n1" target="n22">
+      <data key="e_Dist_mm">13.6</data>
+      <data key="e_SLN_perc">94.17</data>
+    </edge>
+    <edge source="n60" target="n22">
+      <data key="e_Dist_mm">11</data>
+      <data key="e_SLN_perc">89.64</data>
+    </edge>
+    <edge source="n2" target="n22">
+      <data key="e_Dist_mm">8</data>
+      <data key="e_SLN_perc">86.33</data>
+    </edge>
+    <edge source="n3" target="n22">
+      <data key="e_Dist_mm">9.4</data>
+      <data key="e_SLN_perc">61.53</data>
+    </edge>
+    <edge source="n61" target="n22">
+      <data key="e_Dist_mm">10.9</data>
+      <data key="e_SLN_perc">47.07</data>
+    </edge>
+    <edge source="n89" target="n22">
+      <data key="e_Dist_mm">13.2</data>
+      <data key="e_SLN_perc">33.33</data>
+    </edge>
+    <edge source="n63" target="n22">
+      <data key="e_Dist_mm">18.8</data>
+      <data key="e_SLN_perc">66.12</data>
+    </edge>
+    <edge source="n5" target="n22">
+      <data key="e_Dist_mm">13.2</data>
+      <data key="e_SLN_perc">52.91</data>
+    </edge>
+    <edge source="n6" target="n22">
+      <data key="e_Dist_mm">13.9</data>
+      <data key="e_SLN_perc">51.39</data>
+    </edge>
+    <edge source="n7" target="n22">
+      <data key="e_Dist_mm">24.6</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n8" target="n22">
+      <data key="e_Dist_mm">14.5</data>
+      <data key="e_SLN_perc">61.48</data>
+    </edge>
+    <edge source="n9" target="n22">
+      <data key="e_Dist_mm">15.6</data>
+      <data key="e_SLN_perc">83.77</data>
+    </edge>
+    <edge source="n11" target="n22">
+      <data key="e_Dist_mm">17.1</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n14" target="n22">
+      <data key="e_Dist_mm">26.6</data>
+      <data key="e_SLN_perc">1.23</data>
+    </edge>
+    <edge source="n15" target="n22">
+      <data key="e_Dist_mm">19.8</data>
+      <data key="e_SLN_perc">2.74</data>
+    </edge>
+    <edge source="n16" target="n22">
+      <data key="e_Dist_mm">19</data>
+      <data key="e_SLN_perc">5.02</data>
+    </edge>
+    <edge source="n17" target="n22">
+      <data key="e_Dist_mm">15.6</data>
+      <data key="e_SLN_perc">44.44</data>
+    </edge>
+    <edge source="n18" target="n22">
+      <data key="e_Dist_mm">14.5</data>
+      <data key="e_SLN_perc">3.93</data>
+    </edge>
+    <edge source="n19" target="n22">
+      <data key="e_Dist_mm">16.7</data>
+      <data key="e_SLN_perc">5.59</data>
+    </edge>
+    <edge source="n20" target="n22">
+      <data key="e_Dist_mm">8.9</data>
+      <data key="e_SLN_perc">28.59</data>
+    </edge>
+    <edge source="n21" target="n22">
+      <data key="e_Dist_mm">16.2</data>
+      <data key="e_SLN_perc">18.69</data>
+    </edge>
+    <edge source="n23" target="n22">
+      <data key="e_Dist_mm">9.7</data>
+      <data key="e_SLN_perc">33.27</data>
+    </edge>
+    <edge source="n24" target="n22">
+      <data key="e_Dist_mm">10.8</data>
+      <data key="e_SLN_perc">36.21</data>
+    </edge>
+    <edge source="n25" target="n22">
+      <data key="e_Dist_mm">27.3</data>
+      <data key="e_SLN_perc">0.34</data>
+    </edge>
+    <edge source="n65" target="n22">
+      <data key="e_Dist_mm">24.5</data>
+      <data key="e_SLN_perc">1.69</data>
+    </edge>
+    <edge source="n26" target="n22">
+      <data key="e_Dist_mm">24.9</data>
+      <data key="e_SLN_perc">0.51</data>
+    </edge>
+    <edge source="n27" target="n22">
+      <data key="e_Dist_mm">16.6</data>
+      <data key="e_SLN_perc">20.79</data>
+    </edge>
+    <edge source="n28" target="n22">
+      <data key="e_Dist_mm">14.8</data>
+      <data key="e_SLN_perc">23.47</data>
+    </edge>
+    <edge source="n29" target="n22">
+      <data key="e_Dist_mm">25.5</data>
+      <data key="e_SLN_perc">5.78</data>
+    </edge>
+    <edge source="n30" target="n22">
+      <data key="e_Dist_mm">17.9</data>
+      <data key="e_SLN_perc">32.44</data>
+    </edge>
+    <edge source="n32" target="n22">
+      <data key="e_Dist_mm">14.3</data>
+      <data key="e_SLN_perc">16.51</data>
+    </edge>
+    <edge source="n66" target="n22">
+      <data key="e_Dist_mm">18.7</data>
+    </edge>
+    <edge source="n33" target="n22">
+      <data key="e_Dist_mm">31</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n34" target="n22">
+      <data key="e_Dist_mm">18.3</data>
+      <data key="e_SLN_perc">7.41</data>
+    </edge>
+    <edge source="n35" target="n22">
+      <data key="e_Dist_mm">21.8</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n68" target="n22">
+      <data key="e_Dist_mm">24.3</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n36" target="n22">
+      <data key="e_Dist_mm">18.7</data>
+      <data key="e_SLN_perc">6.67</data>
+    </edge>
+    <edge source="n72" target="n22">
+      <data key="e_Dist_mm">23.7</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n90" target="n22">
+      <data key="e_Dist_mm">23</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n37" target="n22">
+      <data key="e_Dist_mm">20.5</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n38" target="n22">
+      <data key="e_Dist_mm">17</data>
+      <data key="e_SLN_perc">2.63</data>
+    </edge>
+    <edge source="n39" target="n22">
+      <data key="e_Dist_mm">28.5</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n40" target="n22">
+      <data key="e_Dist_mm">28.7</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n41" target="n22">
+      <data key="e_Dist_mm">17.2</data>
+      <data key="e_SLN_perc">16.67</data>
+    </edge>
+    <edge source="n76" target="n22">
+      <data key="e_Dist_mm">36.6</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n43" target="n22">
+      <data key="e_Dist_mm">24.5</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n44" target="n22">
+      <data key="e_Dist_mm">29.1</data>
+      <data key="e_SLN_perc">50</data>
+    </edge>
+    <edge source="n78" target="n22">
+      <data key="e_Dist_mm">25.9</data>
+      <data key="e_SLN_perc">14.29</data>
+    </edge>
+    <edge source="n47" target="n22">
+      <data key="e_Dist_mm">31.3</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n79" target="n22">
+      <data key="e_Dist_mm">33.7</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n51" target="n22">
+      <data key="e_Dist_mm">36.4</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n52" target="n22">
+      <data key="e_Dist_mm">35.6</data>
+      <data key="e_SLN_perc">84.62</data>
+    </edge>
+    <edge source="n54" target="n22">
+      <data key="e_Dist_mm">31.8</data>
+      <data key="e_SLN_perc">67.28</data>
+    </edge>
+    <edge source="n55" target="n22">
+      <data key="e_Dist_mm">31.7</data>
+      <data key="e_SLN_perc">40.76</data>
+    </edge>
+    <edge source="n81" target="n22">
+      <data key="e_Dist_mm">33.4</data>
+      <data key="e_SLN_perc">70.37</data>
+    </edge>
+    <edge source="n56" target="n22">
+      <data key="e_Dist_mm">33.7</data>
+      <data key="e_SLN_perc">45.24</data>
+    </edge>
+    <edge source="n57" target="n22">
+      <data key="e_Dist_mm">35</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n83" target="n22">
+      <data key="e_Dist_mm">30</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n1" target="n16">
+      <data key="e_Dist_mm">28.2</data>
+      <data key="e_SLN_perc">21.43</data>
+    </edge>
+    <edge source="n2" target="n16">
+      <data key="e_Dist_mm">20.8</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n3" target="n16">
+      <data key="e_Dist_mm">25.7</data>
+      <data key="e_SLN_perc">52.04</data>
+    </edge>
+    <edge source="n89" target="n16">
+      <data key="e_Dist_mm">16.1</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n62" target="n16">
+      <data key="e_Dist_mm">14.8</data>
+      <data key="e_SLN_perc">68.97</data>
+    </edge>
+    <edge source="n63" target="n16">
+      <data key="e_Dist_mm">10.2</data>
+      <data key="e_SLN_perc">44.12</data>
+    </edge>
+    <edge source="n4" target="n16">
+      <data key="e_Dist_mm">18.3</data>
+      <data key="e_SLN_perc">37.5</data>
+    </edge>
+    <edge source="n5" target="n16">
+      <data key="e_Dist_mm">10.4</data>
+      <data key="e_SLN_perc">67.1</data>
+    </edge>
+    <edge source="n6" target="n16">
+      <data key="e_Dist_mm">13.3</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n8" target="n16">
+      <data key="e_Dist_mm">16.1</data>
+      <data key="e_SLN_perc">70.52</data>
+    </edge>
+    <edge source="n9" target="n16">
+      <data key="e_Dist_mm">15.2</data>
+      <data key="e_SLN_perc">78.57</data>
+    </edge>
+    <edge source="n11" target="n16">
+      <data key="e_Dist_mm">21.5</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n12" target="n16">
+      <data key="e_Dist_mm">24.5</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n13" target="n16">
+      <data key="e_Dist_mm">19.1</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n14" target="n16">
+      <data key="e_Dist_mm">22.2</data>
+      <data key="e_SLN_perc">15.6</data>
+    </edge>
+    <edge source="n15" target="n16">
+      <data key="e_Dist_mm">12.7</data>
+      <data key="e_SLN_perc">61.14</data>
+    </edge>
+    <edge source="n17" target="n16">
+      <data key="e_Dist_mm">5.9</data>
+      <data key="e_SLN_perc">60.74</data>
+    </edge>
+    <edge source="n18" target="n16">
+      <data key="e_Dist_mm">13.9</data>
+      <data key="e_SLN_perc">46.61</data>
+    </edge>
+    <edge source="n19" target="n16">
+      <data key="e_Dist_mm">20.9</data>
+      <data key="e_SLN_perc">33.83</data>
+    </edge>
+    <edge source="n20" target="n16">
+      <data key="e_Dist_mm">12.2</data>
+      <data key="e_SLN_perc">46.82</data>
+    </edge>
+    <edge source="n21" target="n16">
+      <data key="e_Dist_mm">6</data>
+      <data key="e_SLN_perc">58.22</data>
+    </edge>
+    <edge source="n22" target="n16">
+      <data key="e_Dist_mm">19</data>
+      <data key="e_SLN_perc">42.31</data>
+    </edge>
+    <edge source="n23" target="n16">
+      <data key="e_Dist_mm">24.8</data>
+      <data key="e_SLN_perc">50</data>
+    </edge>
+    <edge source="n24" target="n16">
+      <data key="e_Dist_mm">24.1</data>
+      <data key="e_SLN_perc">15.91</data>
+    </edge>
+    <edge source="n25" target="n16">
+      <data key="e_Dist_mm">25.5</data>
+      <data key="e_SLN_perc">4.26</data>
+    </edge>
+    <edge source="n65" target="n16">
+      <data key="e_Dist_mm">26.3</data>
+      <data key="e_SLN_perc">1.85</data>
+    </edge>
+    <edge source="n26" target="n16">
+      <data key="e_Dist_mm">24.6</data>
+      <data key="e_SLN_perc">3.57</data>
+    </edge>
+    <edge source="n27" target="n16">
+      <data key="e_Dist_mm">20.7</data>
+      <data key="e_SLN_perc">28.07</data>
+    </edge>
+    <edge source="n28" target="n16">
+      <data key="e_Dist_mm">19.4</data>
+      <data key="e_SLN_perc">10.89</data>
+    </edge>
+    <edge source="n29" target="n16">
+      <data key="e_Dist_mm">27.2</data>
+      <data key="e_SLN_perc">13.51</data>
+    </edge>
+    <edge source="n30" target="n16">
+      <data key="e_Dist_mm">20.1</data>
+      <data key="e_SLN_perc">29.63</data>
+    </edge>
+    <edge source="n31" target="n16">
+      <data key="e_Dist_mm">24.6</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n32" target="n16">
+      <data key="e_Dist_mm">21.4</data>
+      <data key="e_SLN_perc">4.55</data>
+    </edge>
+    <edge source="n66" target="n16">
+      <data key="e_Dist_mm">24</data>
+    </edge>
+    <edge source="n33" target="n16">
+      <data key="e_Dist_mm">28.9</data>
+      <data key="e_SLN_perc">3.31</data>
+    </edge>
+    <edge source="n67" target="n16">
+      <data key="e_Dist_mm">13.5</data>
+      <data key="e_SLN_perc">77.91</data>
+    </edge>
+    <edge source="n34" target="n16">
+      <data key="e_Dist_mm">13.7</data>
+      <data key="e_SLN_perc">64.32</data>
+    </edge>
+    <edge source="n35" target="n16">
+      <data key="e_Dist_mm">14.2</data>
+      <data key="e_SLN_perc">66.04</data>
+    </edge>
+    <edge source="n68" target="n16">
+      <data key="e_Dist_mm">21.3</data>
+      <data key="e_SLN_perc">21.09</data>
+    </edge>
+    <edge source="n69" target="n16">
+      <data key="e_Dist_mm">10.6</data>
+      <data key="e_SLN_perc">53.22</data>
+    </edge>
+    <edge source="n70" target="n16">
+      <data key="e_Dist_mm">20.2</data>
+      <data key="e_SLN_perc">12.9</data>
+    </edge>
+    <edge source="n36" target="n16">
+      <data key="e_Dist_mm">20.4</data>
+      <data key="e_SLN_perc">66.62</data>
+    </edge>
+    <edge source="n37" target="n16">
+      <data key="e_Dist_mm">22</data>
+      <data key="e_SLN_perc">20</data>
+    </edge>
+    <edge source="n38" target="n16">
+      <data key="e_Dist_mm">17.9</data>
+      <data key="e_SLN_perc">19.37</data>
+    </edge>
+    <edge source="n40" target="n16">
+      <data key="e_Dist_mm">26.7</data>
+      <data key="e_SLN_perc">42.42</data>
+    </edge>
+    <edge source="n74" target="n16">
+      <data key="e_Dist_mm">32.5</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n41" target="n16">
+      <data key="e_Dist_mm">19</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n42" target="n16">
+      <data key="e_Dist_mm">17.2</data>
+      <data key="e_SLN_perc">10.32</data>
+    </edge>
+    <edge source="n45" target="n16">
+      <data key="e_Dist_mm">24.1</data>
+      <data key="e_SLN_perc">27.45</data>
+    </edge>
+    <edge source="n77" target="n16">
+      <data key="e_Dist_mm">35.4</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n47" target="n16">
+      <data key="e_Dist_mm">28.9</data>
+      <data key="e_SLN_perc">60.27</data>
+    </edge>
+    <edge source="n80" target="n16">
+      <data key="e_Dist_mm">41.8</data>
+      <data key="e_SLN_perc">41.18</data>
+    </edge>
+    <edge source="n48" target="n16">
+      <data key="e_Dist_mm">38.4</data>
+      <data key="e_SLN_perc">50</data>
+    </edge>
+    <edge source="n49" target="n16">
+      <data key="e_Dist_mm">35.3</data>
+      <data key="e_SLN_perc">63.96</data>
+    </edge>
+    <edge source="n50" target="n16">
+      <data key="e_Dist_mm">36.3</data>
+      <data key="e_SLN_perc">58.33</data>
+    </edge>
+    <edge source="n51" target="n16">
+      <data key="e_Dist_mm">34.4</data>
+      <data key="e_SLN_perc">31.48</data>
+    </edge>
+    <edge source="n53" target="n16">
+      <data key="e_Dist_mm">34.5</data>
+      <data key="e_SLN_perc">50</data>
+    </edge>
+    <edge source="n54" target="n16">
+      <data key="e_Dist_mm">28.8</data>
+      <data key="e_SLN_perc">80.56</data>
+    </edge>
+    <edge source="n55" target="n16">
+      <data key="e_Dist_mm">28.9</data>
+      <data key="e_SLN_perc">55.38</data>
+    </edge>
+    <edge source="n81" target="n16">
+      <data key="e_Dist_mm">29.7</data>
+      <data key="e_SLN_perc">51.43</data>
+    </edge>
+    <edge source="n56" target="n16">
+      <data key="e_Dist_mm">30.3</data>
+      <data key="e_SLN_perc">46.3</data>
+    </edge>
+    <edge source="n57" target="n16">
+      <data key="e_Dist_mm">31.2</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n58" target="n16">
+      <data key="e_Dist_mm">31.6</data>
+      <data key="e_SLN_perc">32.99</data>
+    </edge>
+    <edge source="n59" target="n16">
+      <data key="e_Dist_mm">31.4</data>
+      <data key="e_SLN_perc">18.57</data>
+    </edge>
+    <edge source="n1" target="n23">
+      <data key="e_Dist_mm">12.2</data>
+      <data key="e_SLN_perc">93.7</data>
+    </edge>
+    <edge source="n60" target="n23">
+      <data key="e_Dist_mm">11.3</data>
+      <data key="e_SLN_perc">84.25</data>
+    </edge>
+    <edge source="n2" target="n23">
+      <data key="e_Dist_mm">15.3</data>
+      <data key="e_SLN_perc">33.77</data>
+    </edge>
+    <edge source="n3" target="n23">
+      <data key="e_Dist_mm">9.8</data>
+      <data key="e_SLN_perc">66.41</data>
+    </edge>
+    <edge source="n61" target="n23">
+      <data key="e_Dist_mm">9.4</data>
+      <data key="e_SLN_perc">52.02</data>
+    </edge>
+    <edge source="n63" target="n23">
+      <data key="e_Dist_mm">24.6</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n4" target="n23">
+      <data key="e_Dist_mm">28.7</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n5" target="n23">
+      <data key="e_Dist_mm">20.8</data>
+      <data key="e_SLN_perc">30.84</data>
+    </edge>
+    <edge source="n7" target="n23">
+      <data key="e_Dist_mm">27.4</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n8" target="n23">
+      <data key="e_Dist_mm">24.8</data>
+      <data key="e_SLN_perc">48.31</data>
+    </edge>
+    <edge source="n9" target="n23">
+      <data key="e_Dist_mm">21.3</data>
+      <data key="e_SLN_perc">26.37</data>
+    </edge>
+    <edge source="n12" target="n23">
+      <data key="e_Dist_mm">30.4</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n13" target="n23">
+      <data key="e_Dist_mm">25.6</data>
+      <data key="e_SLN_perc">37.5</data>
+    </edge>
+    <edge source="n14" target="n23">
+      <data key="e_Dist_mm">25.5</data>
+      <data key="e_SLN_perc">7.32</data>
+    </edge>
+    <edge source="n15" target="n23">
+      <data key="e_Dist_mm">21.5</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n16" target="n23">
+      <data key="e_Dist_mm">24.8</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n18" target="n23">
+      <data key="e_Dist_mm">16.2</data>
+      <data key="e_SLN_perc">3.95</data>
+    </edge>
+    <edge source="n19" target="n23">
+      <data key="e_Dist_mm">15.5</data>
+      <data key="e_SLN_perc">11.71</data>
+    </edge>
+    <edge source="n20" target="n23">
+      <data key="e_Dist_mm">7.2</data>
+      <data key="e_SLN_perc">37.19</data>
+    </edge>
+    <edge source="n21" target="n23">
+      <data key="e_Dist_mm">23.1</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n22" target="n23">
+      <data key="e_Dist_mm">9.7</data>
+      <data key="e_SLN_perc">42.42</data>
+    </edge>
+    <edge source="n24" target="n23">
+      <data key="e_Dist_mm">7</data>
+      <data key="e_SLN_perc">48.28</data>
+    </edge>
+    <edge source="n25" target="n23">
+      <data key="e_Dist_mm">22.7</data>
+      <data key="e_SLN_perc">3.77</data>
+    </edge>
+    <edge source="n65" target="n23">
+      <data key="e_Dist_mm">19.2</data>
+      <data key="e_SLN_perc">23.38</data>
+    </edge>
+    <edge source="n26" target="n23">
+      <data key="e_Dist_mm">21.2</data>
+      <data key="e_SLN_perc">30.68</data>
+    </edge>
+    <edge source="n27" target="n23">
+      <data key="e_Dist_mm">10.7</data>
+      <data key="e_SLN_perc">34.97</data>
+    </edge>
+    <edge source="n28" target="n23">
+      <data key="e_Dist_mm">10.8</data>
+      <data key="e_SLN_perc">30.44</data>
+    </edge>
+    <edge source="n29" target="n23">
+      <data key="e_Dist_mm">19.6</data>
+      <data key="e_SLN_perc">47.4</data>
+    </edge>
+    <edge source="n30" target="n23">
+      <data key="e_Dist_mm">13.1</data>
+      <data key="e_SLN_perc">30.77</data>
+    </edge>
+    <edge source="n31" target="n23">
+      <data key="e_Dist_mm">24.2</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n32" target="n23">
+      <data key="e_Dist_mm">14.2</data>
+      <data key="e_SLN_perc">2.37</data>
+    </edge>
+    <edge source="n33" target="n23">
+      <data key="e_Dist_mm">30.6</data>
+      <data key="e_SLN_perc">18.37</data>
+    </edge>
+    <edge source="n34" target="n23">
+      <data key="e_Dist_mm">18.3</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n35" target="n23">
+      <data key="e_Dist_mm">23.3</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n68" target="n23">
+      <data key="e_Dist_mm">28.5</data>
+      <data key="e_SLN_perc">25</data>
+    </edge>
+    <edge source="n69" target="n23">
+      <data key="e_Dist_mm">22.3</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n70" target="n23">
+      <data key="e_Dist_mm">29.6</data>
+      <data key="e_SLN_perc">71.43</data>
+    </edge>
+    <edge source="n36" target="n23">
+      <data key="e_Dist_mm">20.3</data>
+      <data key="e_SLN_perc">30</data>
+    </edge>
+    <edge source="n90" target="n23">
+      <data key="e_Dist_mm">26.9</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n37" target="n23">
+      <data key="e_Dist_mm">25.9</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n73" target="n23">
+      <data key="e_Dist_mm">24</data>
+      <data key="e_SLN_perc">21.05</data>
+    </edge>
+    <edge source="n38" target="n23">
+      <data key="e_Dist_mm">23.4</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n39" target="n23">
+      <data key="e_Dist_mm">20.8</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n40" target="n23">
+      <data key="e_Dist_mm">31.2</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n75" target="n23">
+      <data key="e_Dist_mm">31.6</data>
+      <data key="e_SLN_perc">33.33</data>
+    </edge>
+    <edge source="n44" target="n23">
+      <data key="e_Dist_mm">33.6</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n45" target="n23">
+      <data key="e_Dist_mm">37.9</data>
+      <data key="e_SLN_perc">85.71</data>
+    </edge>
+    <edge source="n47" target="n23">
+      <data key="e_Dist_mm">31.4</data>
+      <data key="e_SLN_perc">83.33</data>
+    </edge>
+    <edge source="n79" target="n23">
+      <data key="e_Dist_mm">38.8</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n49" target="n23">
+      <data key="e_Dist_mm">40.1</data>
+      <data key="e_SLN_perc">50</data>
+    </edge>
+    <edge source="n50" target="n23">
+      <data key="e_Dist_mm">40</data>
+      <data key="e_SLN_perc">50</data>
+    </edge>
+    <edge source="n51" target="n23">
+      <data key="e_Dist_mm">38.9</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n52" target="n23">
+      <data key="e_Dist_mm">36.5</data>
+      <data key="e_SLN_perc">67.21</data>
+    </edge>
+    <edge source="n53" target="n23">
+      <data key="e_Dist_mm">38</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n54" target="n23">
+      <data key="e_Dist_mm">32.3</data>
+      <data key="e_SLN_perc">74.92</data>
+    </edge>
+    <edge source="n81" target="n23">
+      <data key="e_Dist_mm">33.8</data>
+      <data key="e_SLN_perc">79.76</data>
+    </edge>
+    <edge source="n56" target="n23">
+      <data key="e_Dist_mm">33.7</data>
+      <data key="e_SLN_perc">50.77</data>
+    </edge>
+    <edge source="n57" target="n23">
+      <data key="e_Dist_mm">34.6</data>
+      <data key="e_SLN_perc">66.67</data>
+    </edge>
+    <edge source="n82" target="n23">
+      <data key="e_Dist_mm">28.4</data>
+      <data key="e_SLN_perc">50</data>
+    </edge>
+    <edge source="n85" target="n23">
+      <data key="e_Dist_mm">41.2</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n58" target="n23">
+      <data key="e_Dist_mm">39.6</data>
+      <data key="e_SLN_perc">37.84</data>
+    </edge>
+    <edge source="n1" target="n27">
+      <data key="e_Dist_mm">19.8</data>
+      <data key="e_SLN_perc">97.14</data>
+    </edge>
+    <edge source="n60" target="n27">
+      <data key="e_Dist_mm">21.9</data>
+      <data key="e_SLN_perc">92.11</data>
+    </edge>
+    <edge source="n2" target="n27">
+      <data key="e_Dist_mm">26.8</data>
+      <data key="e_SLN_perc">91.43</data>
+    </edge>
+    <edge source="n3" target="n27">
+      <data key="e_Dist_mm">16.5</data>
+      <data key="e_SLN_perc">95.3</data>
+    </edge>
+    <edge source="n61" target="n27">
+      <data key="e_Dist_mm">16.6</data>
+      <data key="e_SLN_perc">91.3</data>
+    </edge>
+    <edge source="n89" target="n27">
+      <data key="e_Dist_mm">24.1</data>
+      <data key="e_SLN_perc">10</data>
+    </edge>
+    <edge source="n63" target="n27">
+      <data key="e_Dist_mm">28.3</data>
+      <data key="e_SLN_perc">50.37</data>
+    </edge>
+    <edge source="n5" target="n27">
+      <data key="e_Dist_mm">25.2</data>
+      <data key="e_SLN_perc">72.16</data>
+    </edge>
+    <edge source="n8" target="n27">
+      <data key="e_Dist_mm">29.8</data>
+      <data key="e_SLN_perc">86.36</data>
+    </edge>
+    <edge source="n9" target="n27">
+      <data key="e_Dist_mm">28.8</data>
+      <data key="e_SLN_perc">68.75</data>
+    </edge>
+    <edge source="n14" target="n27">
+      <data key="e_Dist_mm">18.2</data>
+      <data key="e_SLN_perc">20.47</data>
+    </edge>
+    <edge source="n15" target="n27">
+      <data key="e_Dist_mm">16.6</data>
+      <data key="e_SLN_perc">20</data>
+    </edge>
+    <edge source="n16" target="n27">
+      <data key="e_Dist_mm">20.7</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n18" target="n27">
+      <data key="e_Dist_mm">14.7</data>
+      <data key="e_SLN_perc">11.3</data>
+    </edge>
+    <edge source="n19" target="n27">
+      <data key="e_Dist_mm">9.3</data>
+      <data key="e_SLN_perc">17.89</data>
+    </edge>
+    <edge source="n20" target="n27">
+      <data key="e_Dist_mm">12.5</data>
+      <data key="e_SLN_perc">22.54</data>
+    </edge>
+    <edge source="n21" target="n27">
+      <data key="e_Dist_mm">23.1</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n22" target="n27">
+      <data key="e_Dist_mm">16.6</data>
+      <data key="e_SLN_perc">33.33</data>
+    </edge>
+    <edge source="n23" target="n27">
+      <data key="e_Dist_mm">10.7</data>
+      <data key="e_SLN_perc">67.97</data>
+    </edge>
+    <edge source="n24" target="n27">
+      <data key="e_Dist_mm">10.6</data>
+      <data key="e_SLN_perc">70.97</data>
+    </edge>
+    <edge source="n25" target="n27">
+      <data key="e_Dist_mm">18.4</data>
+      <data key="e_SLN_perc">7.55</data>
+    </edge>
+    <edge source="n65" target="n27">
+      <data key="e_Dist_mm">11.2</data>
+      <data key="e_SLN_perc">51.65</data>
+    </edge>
+    <edge source="n26" target="n27">
+      <data key="e_Dist_mm">14</data>
+      <data key="e_SLN_perc">44.9</data>
+    </edge>
+    <edge source="n28" target="n27">
+      <data key="e_Dist_mm">3.6</data>
+      <data key="e_SLN_perc">28.04</data>
+    </edge>
+    <edge source="n29" target="n27">
+      <data key="e_Dist_mm">12.3</data>
+      <data key="e_SLN_perc">36.32</data>
+    </edge>
+    <edge source="n30" target="n27">
+      <data key="e_Dist_mm">4.9</data>
+      <data key="e_SLN_perc">46.51</data>
+    </edge>
+    <edge source="n31" target="n27">
+      <data key="e_Dist_mm">19.3</data>
+      <data key="e_SLN_perc">10.22</data>
+    </edge>
+    <edge source="n32" target="n27">
+      <data key="e_Dist_mm">13.4</data>
+      <data key="e_SLN_perc">3.59</data>
+    </edge>
+    <edge source="n33" target="n27">
+      <data key="e_Dist_mm">24.5</data>
+      <data key="e_SLN_perc">0.86</data>
+    </edge>
+    <edge source="n67" target="n27">
+      <data key="e_Dist_mm">18.8</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n34" target="n27">
+      <data key="e_Dist_mm">16.1</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n35" target="n27">
+      <data key="e_Dist_mm">20.4</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n68" target="n27">
+      <data key="e_Dist_mm">19.9</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n70" target="n27">
+      <data key="e_Dist_mm">21.8</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n36" target="n27">
+      <data key="e_Dist_mm">14.9</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n72" target="n27">
+      <data key="e_Dist_mm">26</data>
+      <data key="e_SLN_perc">22.34</data>
+    </edge>
+    <edge source="n73" target="n27">
+      <data key="e_Dist_mm">23.2</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n38" target="n27">
+      <data key="e_Dist_mm">26.4</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n39" target="n27">
+      <data key="e_Dist_mm">30.2</data>
+      <data key="e_SLN_perc">20.37</data>
+    </edge>
+    <edge source="n40" target="n27">
+      <data key="e_Dist_mm">30.2</data>
+      <data key="e_SLN_perc">14.29</data>
+    </edge>
+    <edge source="n77" target="n27">
+      <data key="e_Dist_mm">37.8</data>
+      <data key="e_SLN_perc">66.67</data>
+    </edge>
+    <edge source="n47" target="n27">
+      <data key="e_Dist_mm">28.7</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n49" target="n27">
+      <data key="e_Dist_mm">38</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n50" target="n27">
+      <data key="e_Dist_mm">37.4</data>
+      <data key="e_SLN_perc">42.94</data>
+    </edge>
+    <edge source="n52" target="n27">
+      <data key="e_Dist_mm">33.2</data>
+      <data key="e_SLN_perc">48.59</data>
+    </edge>
+    <edge source="n54" target="n27">
+      <data key="e_Dist_mm">31</data>
+      <data key="e_SLN_perc">72.5</data>
+    </edge>
+    <edge source="n55" target="n27">
+      <data key="e_Dist_mm">31.5</data>
+      <data key="e_SLN_perc">20</data>
+    </edge>
+    <edge source="n81" target="n27">
+      <data key="e_Dist_mm">32</data>
+      <data key="e_SLN_perc">59.66</data>
+    </edge>
+    <edge source="n56" target="n27">
+      <data key="e_Dist_mm">30.5</data>
+      <data key="e_SLN_perc">67.54</data>
+    </edge>
+    <edge source="n57" target="n27">
+      <data key="e_Dist_mm">31.5</data>
+      <data key="e_SLN_perc">71.28</data>
+    </edge>
+    <edge source="n82" target="n27">
+      <data key="e_Dist_mm">26.5</data>
+      <data key="e_SLN_perc">27.27</data>
+    </edge>
+    <edge source="n83" target="n27">
+      <data key="e_Dist_mm">25.7</data>
+      <data key="e_SLN_perc">12.5</data>
+    </edge>
+    <edge source="n84" target="n27">
+      <data key="e_Dist_mm">26.2</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n85" target="n27">
+      <data key="e_Dist_mm">37.8</data>
+      <data key="e_SLN_perc">14.29</data>
+    </edge>
+    <edge source="n58" target="n27">
+      <data key="e_Dist_mm">35.8</data>
+      <data key="e_SLN_perc">50.48</data>
+    </edge>
+    <edge source="n59" target="n27">
+      <data key="e_Dist_mm">33.6</data>
+      <data key="e_SLN_perc">56.62</data>
+    </edge>
+    <edge source="n88" target="n27">
+      <data key="e_Dist_mm">23.9</data>
+      <data key="e_SLN_perc">37.5</data>
+    </edge>
+    <edge source="n1" target="n0">
+      <data key="e_Dist_mm">9.3</data>
+      <data key="e_SLN_perc">42.08</data>
+    </edge>
+    <edge source="n60" target="n0">
+      <data key="e_Dist_mm">4.5</data>
+      <data key="e_SLN_perc">6.7</data>
+    </edge>
+    <edge source="n2" target="n0">
+      <data key="e_Dist_mm">10.5</data>
+      <data key="e_SLN_perc">0.44</data>
+    </edge>
+    <edge source="n3" target="n0">
+      <data key="e_Dist_mm">14.8</data>
+      <data key="e_SLN_perc">29.65</data>
+    </edge>
+    <edge source="n61" target="n0">
+      <data key="e_Dist_mm">13.9</data>
+      <data key="e_SLN_perc">2.26</data>
+    </edge>
+    <edge source="n62" target="n0">
+      <data key="e_Dist_mm">29</data>
+      <data key="e_SLN_perc">33.33</data>
+    </edge>
+    <edge source="n5" target="n0">
+      <data key="e_Dist_mm">22.7</data>
+      <data key="e_SLN_perc">0.91</data>
+    </edge>
+    <edge source="n8" target="n0">
+      <data key="e_Dist_mm">20.1</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n9" target="n0">
+      <data key="e_Dist_mm">16.5</data>
+      <data key="e_SLN_perc">0.4</data>
+    </edge>
+    <edge source="n15" target="n0">
+      <data key="e_Dist_mm">28.3</data>
+      <data key="e_SLN_perc">8.17</data>
+    </edge>
+    <edge source="n16" target="n0">
+      <data key="e_Dist_mm">29.5</data>
+      <data key="e_SLN_perc">3.62</data>
+    </edge>
+    <edge source="n17" target="n0">
+      <data key="e_Dist_mm">28</data>
+      <data key="e_SLN_perc">50</data>
+    </edge>
+    <edge source="n18" target="n0">
+      <data key="e_Dist_mm">24</data>
+      <data key="e_SLN_perc">0.38</data>
+    </edge>
+    <edge source="n19" target="n0">
+      <data key="e_Dist_mm">26.1</data>
+      <data key="e_SLN_perc">1.75</data>
+    </edge>
+    <edge source="n20" target="n0">
+      <data key="e_Dist_mm">16.7</data>
+      <data key="e_SLN_perc">2.09</data>
+    </edge>
+    <edge source="n21" target="n0">
+      <data key="e_Dist_mm">23.2</data>
+      <data key="e_SLN_perc">0.88</data>
+    </edge>
+    <edge source="n22" target="n0">
+      <data key="e_Dist_mm">12.5</data>
+      <data key="e_SLN_perc">17.32</data>
+    </edge>
+    <edge source="n23" target="n0">
+      <data key="e_Dist_mm">14.9</data>
+      <data key="e_SLN_perc">9.6</data>
+    </edge>
+    <edge source="n24" target="n0">
+      <data key="e_Dist_mm">19.2</data>
+      <data key="e_SLN_perc">0.99</data>
+    </edge>
+    <edge source="n25" target="n0">
+      <data key="e_Dist_mm">40</data>
+      <data key="e_SLN_perc">0.72</data>
+    </edge>
+    <edge source="n65" target="n0">
+      <data key="e_Dist_mm">33.2</data>
+      <data key="e_SLN_perc">0.59</data>
+    </edge>
+    <edge source="n26" target="n0">
+      <data key="e_Dist_mm">36.3</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n27" target="n0">
+      <data key="e_Dist_mm">25.5</data>
+      <data key="e_SLN_perc">2.05</data>
+    </edge>
+    <edge source="n28" target="n0">
+      <data key="e_Dist_mm">23.8</data>
+      <data key="e_SLN_perc">0.19</data>
+    </edge>
+    <edge source="n29" target="n0">
+      <data key="e_Dist_mm">35.5</data>
+      <data key="e_SLN_perc">2.92</data>
+    </edge>
+    <edge source="n30" target="n0">
+      <data key="e_Dist_mm">27.2</data>
+      <data key="e_SLN_perc">2.13</data>
+    </edge>
+    <edge source="n32" target="n0">
+      <data key="e_Dist_mm">24.4</data>
+      <data key="e_SLN_perc">0.59</data>
+    </edge>
+    <edge source="n67" target="n0">
+      <data key="e_Dist_mm">30.3</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n34" target="n0">
+      <data key="e_Dist_mm">27.2</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n35" target="n0">
+      <data key="e_Dist_mm">32.7</data>
+      <data key="e_SLN_perc">6.25</data>
+    </edge>
+    <edge source="n69" target="n0">
+      <data key="e_Dist_mm">33.3</data>
+      <data key="e_SLN_perc">27.76</data>
+    </edge>
+    <edge source="n54" target="n0">
+      <data key="e_Dist_mm">45.6</data>
+      <data key="e_SLN_perc">10.42</data>
+    </edge>
+    <edge source="n14" target="n0">
+      <data key="e_Dist_mm">36.8</data>
+      <data key="e_SLN_perc">4.76</data>
+    </edge>
+    <edge source="n81" target="n0">
+      <data key="e_Dist_mm">46.4</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n0" target="n1">
+      <data key="e_Dist_mm">9.3</data>
+      <data key="e_SLN_perc">73.6</data>
+    </edge>
+    <edge source="n60" target="n1">
+      <data key="e_Dist_mm">10.2</data>
+      <data key="e_SLN_perc">32.14</data>
+    </edge>
+    <edge source="n2" target="n1">
+      <data key="e_Dist_mm">14.9</data>
+      <data key="e_SLN_perc">2.75</data>
+    </edge>
+    <edge source="n3" target="n1">
+      <data key="e_Dist_mm">9.4</data>
+      <data key="e_SLN_perc">25.45</data>
+    </edge>
+    <edge source="n61" target="n1">
+      <data key="e_Dist_mm">10.7</data>
+      <data key="e_SLN_perc">23.76</data>
+    </edge>
+    <edge source="n5" target="n1">
+      <data key="e_Dist_mm">21.4</data>
+      <data key="e_SLN_perc">4.92</data>
+    </edge>
+    <edge source="n6" target="n1">
+      <data key="e_Dist_mm">21</data>
+      <data key="e_SLN_perc">0.76</data>
+    </edge>
+    <edge source="n8" target="n1">
+      <data key="e_Dist_mm">19.9</data>
+      <data key="e_SLN_perc">0.63</data>
+    </edge>
+    <edge source="n9" target="n1">
+      <data key="e_Dist_mm">21.6</data>
+      <data key="e_SLN_perc">7.46</data>
+    </edge>
+    <edge source="n11" target="n1">
+      <data key="e_Dist_mm">22.7</data>
+      <data key="e_SLN_perc">38.1</data>
+    </edge>
+    <edge source="n15" target="n1">
+      <data key="e_Dist_mm">27</data>
+      <data key="e_SLN_perc">7.41</data>
+    </edge>
+    <edge source="n16" target="n1">
+      <data key="e_Dist_mm">28.2</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n17" target="n1">
+      <data key="e_Dist_mm">25.2</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n18" target="n1">
+      <data key="e_Dist_mm">24.6</data>
+      <data key="e_SLN_perc">2.33</data>
+    </edge>
+    <edge source="n19" target="n1">
+      <data key="e_Dist_mm">24.2</data>
+      <data key="e_SLN_perc">37.04</data>
+    </edge>
+    <edge source="n20" target="n1">
+      <data key="e_Dist_mm">16.2</data>
+      <data key="e_SLN_perc">7.05</data>
+    </edge>
+    <edge source="n21" target="n1">
+      <data key="e_Dist_mm">23.4</data>
+      <data key="e_SLN_perc">1.88</data>
+    </edge>
+    <edge source="n22" target="n1">
+      <data key="e_Dist_mm">13.6</data>
+      <data key="e_SLN_perc">26.86</data>
+    </edge>
+    <edge source="n23" target="n1">
+      <data key="e_Dist_mm">12.2</data>
+      <data key="e_SLN_perc">9.1</data>
+    </edge>
+    <edge source="n24" target="n1">
+      <data key="e_Dist_mm">13.2</data>
+      <data key="e_SLN_perc">5.14</data>
+    </edge>
+    <edge source="n25" target="n1">
+      <data key="e_Dist_mm">30</data>
+      <data key="e_SLN_perc">3.5</data>
+    </edge>
+    <edge source="n65" target="n1">
+      <data key="e_Dist_mm">27</data>
+      <data key="e_SLN_perc">1.67</data>
+    </edge>
+    <edge source="n26" target="n1">
+      <data key="e_Dist_mm">29.2</data>
+      <data key="e_SLN_perc">1.42</data>
+    </edge>
+    <edge source="n27" target="n1">
+      <data key="e_Dist_mm">19.8</data>
+      <data key="e_SLN_perc">3.24</data>
+    </edge>
+    <edge source="n28" target="n1">
+      <data key="e_Dist_mm">19.3</data>
+      <data key="e_SLN_perc">1.92</data>
+    </edge>
+    <edge source="n29" target="n1">
+      <data key="e_Dist_mm">28.1</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n30" target="n1">
+      <data key="e_Dist_mm">22.8</data>
+      <data key="e_SLN_perc">5.26</data>
+    </edge>
+    <edge source="n32" target="n1">
+      <data key="e_Dist_mm">19</data>
+      <data key="e_SLN_perc">1</data>
+    </edge>
+    <edge source="n34" target="n1">
+      <data key="e_Dist_mm">26</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n54" target="n1">
+      <data key="e_Dist_mm">40.2</data>
+      <data key="e_SLN_perc">24.25</data>
+    </edge>
+    <edge source="n55" target="n1">
+      <data key="e_Dist_mm">40.3</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n10" target="n1">
+      <data key="e_Dist_mm">20.8</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n14" target="n1">
+      <data key="e_Dist_mm">34.3</data>
+      <data key="e_SLN_perc">40</data>
+    </edge>
+    <edge source="n69" target="n1">
+      <data key="e_Dist_mm">30.2</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n0" target="n3">
+      <data key="e_Dist_mm">14.8</data>
+      <data key="e_SLN_perc">98.17</data>
+    </edge>
+    <edge source="n1" target="n3">
+      <data key="e_Dist_mm">9.4</data>
+      <data key="e_SLN_perc">92.6</data>
+    </edge>
+    <edge source="n60" target="n3">
+      <data key="e_Dist_mm">12.9</data>
+      <data key="e_SLN_perc">65.94</data>
+    </edge>
+    <edge source="n2" target="n3">
+      <data key="e_Dist_mm">12.4</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n61" target="n3">
+      <data key="e_Dist_mm">3.9</data>
+      <data key="e_SLN_perc">43.93</data>
+    </edge>
+    <edge source="n63" target="n3">
+      <data key="e_Dist_mm">22.8</data>
+      <data key="e_SLN_perc">4.35</data>
+    </edge>
+    <edge source="n5" target="n3">
+      <data key="e_Dist_mm">21.4</data>
+      <data key="e_SLN_perc">21.54</data>
+    </edge>
+    <edge source="n8" target="n3">
+      <data key="e_Dist_mm">14.9</data>
+      <data key="e_SLN_perc">14.88</data>
+    </edge>
+    <edge source="n9" target="n3">
+      <data key="e_Dist_mm">15</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n14" target="n3">
+      <data key="e_Dist_mm">34.6</data>
+      <data key="e_SLN_perc">7.41</data>
+    </edge>
+    <edge source="n15" target="n3">
+      <data key="e_Dist_mm">26.9</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n16" target="n3">
+      <data key="e_Dist_mm">25.7</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n18" target="n3">
+      <data key="e_Dist_mm">24.4</data>
+      <data key="e_SLN_perc">2.5</data>
+    </edge>
+    <edge source="n19" target="n3">
+      <data key="e_Dist_mm">25.3</data>
+      <data key="e_SLN_perc">6.21</data>
+    </edge>
+    <edge source="n20" target="n3">
+      <data key="e_Dist_mm">15.5</data>
+      <data key="e_SLN_perc">16.59</data>
+    </edge>
+    <edge source="n21" target="n3">
+      <data key="e_Dist_mm">23.6</data>
+      <data key="e_SLN_perc">4.35</data>
+    </edge>
+    <edge source="n22" target="n3">
+      <data key="e_Dist_mm">9.4</data>
+      <data key="e_SLN_perc">46.08</data>
+    </edge>
+    <edge source="n23" target="n3">
+      <data key="e_Dist_mm">9.8</data>
+      <data key="e_SLN_perc">43.04</data>
+    </edge>
+    <edge source="n24" target="n3">
+      <data key="e_Dist_mm">9.1</data>
+      <data key="e_SLN_perc">24.84</data>
+    </edge>
+    <edge source="n25" target="n3">
+      <data key="e_Dist_mm">29.7</data>
+      <data key="e_SLN_perc">0.04</data>
+    </edge>
+    <edge source="n65" target="n3">
+      <data key="e_Dist_mm">24.2</data>
+      <data key="e_SLN_perc">1.3</data>
+    </edge>
+    <edge source="n26" target="n3">
+      <data key="e_Dist_mm">26.4</data>
+      <data key="e_SLN_perc">2.44</data>
+    </edge>
+    <edge source="n27" target="n3">
+      <data key="e_Dist_mm">16.5</data>
+      <data key="e_SLN_perc">27.47</data>
+    </edge>
+    <edge source="n28" target="n3">
+      <data key="e_Dist_mm">14.8</data>
+      <data key="e_SLN_perc">3.9</data>
+    </edge>
+    <edge source="n29" target="n3">
+      <data key="e_Dist_mm">24.5</data>
+      <data key="e_SLN_perc">3.56</data>
+    </edge>
+    <edge source="n30" target="n3">
+      <data key="e_Dist_mm">17.3</data>
+      <data key="e_SLN_perc">15.52</data>
+    </edge>
+    <edge source="n31" target="n3">
+      <data key="e_Dist_mm">29.3</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n32" target="n3">
+      <data key="e_Dist_mm">19.4</data>
+      <data key="e_SLN_perc">1.21</data>
+    </edge>
+    <edge source="n35" target="n3">
+      <data key="e_Dist_mm">29.6</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n36" target="n3">
+      <data key="e_Dist_mm">29</data>
+      <data key="e_SLN_perc">48.33</data>
+    </edge>
+    <edge source="n52" target="n3">
+      <data key="e_Dist_mm">43.8</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n54" target="n3">
+      <data key="e_Dist_mm">39.5</data>
+      <data key="e_SLN_perc">60.42</data>
+    </edge>
+    <edge source="n56" target="n3">
+      <data key="e_Dist_mm">41.5</data>
+      <data key="e_SLN_perc">25</data>
+    </edge>
+    <edge source="n51" target="n3">
+      <data key="e_Dist_mm">45.9</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n81" target="n3">
+      <data key="e_Dist_mm">41.1</data>
+      <data key="e_SLN_perc">47.37</data>
+    </edge>
+    <edge source="n0" target="n9">
+      <data key="e_Dist_mm">16.5</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n1" target="n9">
+      <data key="e_Dist_mm">21.6</data>
+      <data key="e_SLN_perc">91.5</data>
+    </edge>
+    <edge source="n60" target="n9">
+      <data key="e_Dist_mm">12.9</data>
+      <data key="e_SLN_perc">92.43</data>
+    </edge>
+    <edge source="n2" target="n9">
+      <data key="e_Dist_mm">12</data>
+      <data key="e_SLN_perc">71.9</data>
+    </edge>
+    <edge source="n3" target="n9">
+      <data key="e_Dist_mm">15</data>
+      <data key="e_SLN_perc">50.14</data>
+    </edge>
+    <edge source="n61" target="n9">
+      <data key="e_Dist_mm">14.1</data>
+      <data key="e_SLN_perc">21.92</data>
+    </edge>
+    <edge source="n89" target="n9">
+      <data key="e_Dist_mm">17.2</data>
+      <data key="e_SLN_perc">20.9</data>
+    </edge>
+    <edge source="n63" target="n9">
+      <data key="e_Dist_mm">11.4</data>
+      <data key="e_SLN_perc">34.46</data>
+    </edge>
+    <edge source="n5" target="n9">
+      <data key="e_Dist_mm">11.9</data>
+      <data key="e_SLN_perc">36.81</data>
+    </edge>
+    <edge source="n6" target="n9">
+      <data key="e_Dist_mm">14.9</data>
+      <data key="e_SLN_perc">6.09</data>
+    </edge>
+    <edge source="n7" target="n9">
+      <data key="e_Dist_mm">20.6</data>
+      <data key="e_SLN_perc">25.18</data>
+    </edge>
+    <edge source="n8" target="n9">
+      <data key="e_Dist_mm">5.9</data>
+      <data key="e_SLN_perc">43.73</data>
+    </edge>
+    <edge source="n10" target="n9">
+      <data key="e_Dist_mm">19.4</data>
+      <data key="e_SLN_perc">67.91</data>
+    </edge>
+    <edge source="n11" target="n9">
+      <data key="e_Dist_mm">22.9</data>
+      <data key="e_SLN_perc">58.22</data>
+    </edge>
+    <edge source="n13" target="n9">
+      <data key="e_Dist_mm">21.1</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n14" target="n9">
+      <data key="e_Dist_mm">33.9</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n15" target="n9">
+      <data key="e_Dist_mm">26.6</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n16" target="n9">
+      <data key="e_Dist_mm">15.2</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n17" target="n9">
+      <data key="e_Dist_mm">13.4</data>
+      <data key="e_SLN_perc">8.33</data>
+    </edge>
+    <edge source="n18" target="n9">
+      <data key="e_Dist_mm">23.3</data>
+      <data key="e_SLN_perc">9.29</data>
+    </edge>
+    <edge source="n19" target="n9">
+      <data key="e_Dist_mm">29.3</data>
+      <data key="e_SLN_perc">23.47</data>
+    </edge>
+    <edge source="n20" target="n9">
+      <data key="e_Dist_mm">20.2</data>
+      <data key="e_SLN_perc">26.64</data>
+    </edge>
+    <edge source="n21" target="n9">
+      <data key="e_Dist_mm">13.8</data>
+      <data key="e_SLN_perc">30.21</data>
+    </edge>
+    <edge source="n22" target="n9">
+      <data key="e_Dist_mm">15.6</data>
+      <data key="e_SLN_perc">48.12</data>
+    </edge>
+    <edge source="n23" target="n9">
+      <data key="e_Dist_mm">21.3</data>
+      <data key="e_SLN_perc">15.29</data>
+    </edge>
+    <edge source="n24" target="n9">
+      <data key="e_Dist_mm">20.7</data>
+      <data key="e_SLN_perc">34.95</data>
+    </edge>
+    <edge source="n25" target="n9">
+      <data key="e_Dist_mm">34.4</data>
+      <data key="e_SLN_perc">20</data>
+    </edge>
+    <edge source="n65" target="n9">
+      <data key="e_Dist_mm">36.2</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n26" target="n9">
+      <data key="e_Dist_mm">34.9</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n27" target="n9">
+      <data key="e_Dist_mm">28.8</data>
+      <data key="e_SLN_perc">16.67</data>
+    </edge>
+    <edge source="n28" target="n9">
+      <data key="e_Dist_mm">31.2</data>
+      <data key="e_SLN_perc">43.5</data>
+    </edge>
+    <edge source="n29" target="n9">
+      <data key="e_Dist_mm">37.1</data>
+      <data key="e_SLN_perc">8.6</data>
+    </edge>
+    <edge source="n30" target="n9">
+      <data key="e_Dist_mm">32.1</data>
+      <data key="e_SLN_perc">3.7</data>
+    </edge>
+    <edge source="n31" target="n9">
+      <data key="e_Dist_mm">32.4</data>
+      <data key="e_SLN_perc">5.17</data>
+    </edge>
+    <edge source="n32" target="n9">
+      <data key="e_Dist_mm">33.1</data>
+      <data key="e_SLN_perc">20.49</data>
+    </edge>
+    <edge source="n66" target="n9">
+      <data key="e_Dist_mm">34.5</data>
+    </edge>
+    <edge source="n69" target="n9">
+      <data key="e_Dist_mm">25.5</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n36" target="n9">
+      <data key="e_Dist_mm">25.2</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n38" target="n9">
+      <data key="e_Dist_mm">18.6</data>
+      <data key="e_SLN_perc">18.98</data>
+    </edge>
+    <edge source="n40" target="n9">
+      <data key="e_Dist_mm">33.9</data>
+      <data key="e_SLN_perc">34.21</data>
+    </edge>
+    <edge source="n74" target="n9">
+      <data key="e_Dist_mm">35.7</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n41" target="n9">
+      <data key="e_Dist_mm">19.7</data>
+      <data key="e_SLN_perc">63</data>
+    </edge>
+    <edge source="n42" target="n9">
+      <data key="e_Dist_mm">17.2</data>
+      <data key="e_SLN_perc">32.73</data>
+    </edge>
+    <edge source="n44" target="n9">
+      <data key="e_Dist_mm">32.9</data>
+      <data key="e_SLN_perc">33.07</data>
+    </edge>
+    <edge source="n45" target="n9">
+      <data key="e_Dist_mm">38.6</data>
+      <data key="e_SLN_perc">8.59</data>
+    </edge>
+    <edge source="n78" target="n9">
+      <data key="e_Dist_mm">31.8</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n47" target="n9">
+      <data key="e_Dist_mm">34.3</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+    <edge source="n48" target="n9">
+      <data key="e_Dist_mm">44.5</data>
+      <data key="e_SLN_perc">100</data>
+    </edge>
+    <edge source="n49" target="n9">
+      <data key="e_Dist_mm">41.5</data>
+      <data key="e_SLN_perc">48.95</data>
+    </edge>
+    <edge source="n50" target="n9">
+      <data key="e_Dist_mm">45.1</data>
+      <data key="e_SLN_perc">9.09</data>
+    </edge>
+    <edge source="n51" target="n9">
+      <data key="e_Dist_mm">38.4</data>
+      <data key="e_SLN_perc">36.55</data>
+    </edge>
+    <edge source="n53" target="n9">
+      <data key="e_Dist_mm">40.2</data>
+      <data key="e_SLN_perc">36.04</data>
+    </edge>
+    <edge source="n55" target="n9">
+      <data key="e_Dist_mm">41.3</data>
+      <data key="e_SLN_perc">51.65</data>
+    </edge>
+    <edge source="n81" target="n9">
+      <data key="e_Dist_mm">36.8</data>
+      <data key="e_SLN_perc">42.34</data>
+    </edge>
+    <edge source="n56" target="n9">
+      <data key="e_Dist_mm">37.5</data>
+      <data key="e_SLN_perc">78.82</data>
+    </edge>
+    <edge source="n57" target="n9">
+      <data key="e_Dist_mm">38.4</data>
+      <data key="e_SLN_perc">75</data>
+    </edge>
+    <edge source="n58" target="n9">
+      <data key="e_Dist_mm">45.8</data>
+      <data key="e_SLN_perc">0</data>
+    </edge>
+  </graph>
+</graphml>

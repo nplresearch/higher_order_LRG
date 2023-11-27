@@ -306,3 +306,55 @@ def renormalize_single_step(sc,tau, diff_order =0, int_order = 1, D = None, U = 
 
         
     return new_sc, mapnodes, clusters  
+
+
+
+def renormalize_steps_rescale(sc,lmax,tau, diff_order =0, int_order = 1, VERBOSE = False):
+    # Performs multiple steps of the simplicial renormalization flow
+    # INPUTS
+    # sc: simplicial complex object
+    # lmax: number of renormalization steps
+    # tau: diffusion time for each step
+    # diff_order: order of the diffusing simplices
+    # int_order: order of the interacting simplices
+    # VERBOSE: if True print the number of nodes at each step
+
+    # OUTPUTS
+    # sequence: list of the renormalized simplicial complexes
+
+    if len(np.shape(tau)) == 0:
+        tau = [tau for i in range(lmax)]
+
+
+    sequence = [] 
+    new_sc = sc
+    for l in range(lmax):
+        if l > 0 and new_sc["n0"]>1:
+            L = scomplex.diffusion_laplacian(new_sc, diff_order, int_order)
+            if l > 1:
+                df = D[1]
+            D,U = np.linalg.eigh(L)
+            if l > 1:
+                L = D*(df/D[1])
+            rho  = np.abs(U@np.diag(np.exp(-tau[l]*D))@U.T)
+
+            Gv = nx.Graph()
+            Gv.add_nodes_from([i for i in range(new_sc[f"n{diff_order}"])])
+            for i in range(new_sc[f"n{diff_order}"]):
+                for j in range(i+1,new_sc[f"n{diff_order}"]):
+                    if rho[i,j] >= min(rho[i,i],rho[j,j]):
+                        Gv.add_edge(i,j)
+
+                
+            idx_components = {u:i for i,node_set in enumerate(nx.connected_components(Gv)) for u in node_set}
+            clusters = [idx_components[u] for u in Gv.nodes]
+
+            mapnodes,__ = coarse_grain_interfaces(new_sc,diff_order,clusters,np.max(clusters)+1)
+            new_sc = induce_simplices(new_sc, mapnodes)
+
+        if VERBOSE:
+            print(new_sc["n0"])
+        
+        sequence.append(new_sc)
+                
+    return sequence  
