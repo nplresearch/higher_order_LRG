@@ -332,10 +332,10 @@ def renormalize_steps_rescale(sc,lmax,tau, diff_order =0, int_order = 1, VERBOSE
         if l > 0 and new_sc["n0"]>1:
             L = scomplex.diffusion_laplacian(new_sc, diff_order, int_order)
             if l > 1:
-                df = D[1]
+                df = np.min(D[D>10**-10])
             D,U = np.linalg.eigh(L)
             if l > 1:
-                L = D*(df/D[1])
+                L = D*(df/np.min(D[D>10**-10]))
             rho  = np.abs(U@np.diag(np.exp(-tau[l]*D))@U.T)
 
             Gv = nx.Graph()
