@@ -29,6 +29,21 @@ def plot_complex(
     node_size=10,
     iterations=1000,
 ):
+    # Plots a simplicial complex
+    # INPUTS
+    # sc: simplicial complex object
+    # ax: axis where to plot
+    # node_color: list of the node colors
+    # edge_color: list of the edge colors
+    # face_color: list of the face colors
+    # face_alpha: opacity of the faces
+    # edge_alpha: opacity of the edges
+    # edge_width: width of the edges
+    # layout: the layout of the underlying graph. Can be "spring", "circle", "spectral" or "kamada_kawai"
+    # pos: pre-computed node positions layout
+    # node_size: size of the nodes
+    # itrations: the number of iterations with which the "spring" layout is computed
+
     if sc["n1"] == 0:
         G = nx.Graph()
         G.add_nodes_from(range(sc["n0"]))
@@ -49,6 +64,7 @@ def plot_complex(
             face_color = [face_color[0] for i in range(sc["n2"])]
 
         G = nx.Graph()
+        G.add_nodes_from([i for i in range(sc["n0"])])
         G.add_edges_from(sc["edges"])
         
         if pos == None:

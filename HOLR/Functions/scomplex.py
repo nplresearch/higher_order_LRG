@@ -3,8 +3,6 @@ import numpy as np
 import scipy.sparse as sp
 from scipy.sparse import csr_matrix, lil_matrix, spdiags
 from itertools import combinations
-import xgi
-#import graph_tool.all as gt
 
 def make_dict(sc):
     edge_dict = {}
@@ -296,7 +294,7 @@ def adjacency_of_order(sc,k,l, sparse = False):
 
     return adj + adj.T
 
-def diffusion_laplacian(sc,k,l, sparse = False):
+def XO_laplacian(sc,k,l, sparse = False):
     A = adjacency_of_order(sc,k,l,sparse)
     K = np.sum(A, 0)
     if sparse:
@@ -385,61 +383,3 @@ def import_network_data(f, d):
     sc = convert_graph_to_sc(G,dim = d)
 
     return sc
-
-def import_network_data_xgi(name,d):
-    # Imports a higher-order network from xgi and reuturns the associated 
-    # simplicial complex 
-    # INPUTS
-    # name: name of the dataset 
-    # {"email-enron","email-eu","hospital-lyon”,"contact-high-school”,
-    # “contact-primary-school”,“tags-ask-ubuntu”,“congress-bills”,
-    # “disgenenet”,“diseasome”,"ndc-substances”,“coauth-mag-geology”,
-    # “coauth-mag-history”}
-    # d: maximal dimension of the simplices
-    # OUTPUTS
-    # sc: simplicial complex
-
-    H = xgi.load_xgi_data(name, max_order=d)
-    H.cleanup()
-    H = xgi.SimplicialComplex(H.edges.members())
-    H.close()
-
-    sc = {}
-    sc["nodes"] = np.sort(np.array([H.nodes]).T,0)
-    sc["n0"] = sc["nodes"].shape[0]
-    keys = ["edges","faces","tetrahedra","4-simplices"]
-
-    for k in keys:
-        sc[k] = []
-    for e in H.edges.members():
-        sc[keys[len(e)-2]].append(list(e))
-
-    for i,k in enumerate(keys):
-        if len(sc[k]) == 0:
-            sc[k] = np.zeros((0,i+2))
-        else:
-            sc[k] = np.unique(np.sort(np.array(sc[k]),1),axis =0)
-        
-        sc[f"n{i+1}"] = sc[k].shape[0] 
-    
-    return sc  
-
-def subdivide(G):
-    # Returns the barycentric subdivision of a given graph, i.e. the 
-    # original graph where each edge is replaced with two edges  
-    # INPUTS
-    # G: networkx graph
-    # OUTPUTS
-    # G: subdivided graph
-    
-    n = len(G.nodes) 
-    G2 = G.copy()
-    for e in G2.edges:
-        e0 = e[0]
-        e1 = e[1]
-        G.remove_edge(e0,e1)
-        G.add_edge(e0,n)
-        G.add_edge(n,e1)
-        n += 1
-        
-    return G

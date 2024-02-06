@@ -5,10 +5,10 @@ from itertools import groupby
 
 
 
-def compute_heat(D, exm, exM, n_t):
-    # Computes the Von Neumann entropy and Entropic susceptibility
+def compute_entropic_C(D, exm, exM, n_t):
+    # Computes the Von Neumann entropy and Entropic susceptibility of a given Laplacian
     # INPUTS
-    # D: eigenvalues of the Laplacian matrix considered
+    # D: list of eigenvalues of the Laplacian matrix considered
     # exm, exM, n_t: computes the quantities in n_t logarithmically spaced time points
     #  in the interval [10**exm,10**exM] 
 
@@ -29,10 +29,9 @@ def compute_heat(D, exm, exM, n_t):
 
         mu = mu[mu > 0]
         S[t] = -np.sum(mu * np.log(mu))
-    specific_heat = -(np.diff(S) / np.diff(np.log(tau_space)))
-    # specific_heat = -(np.diff(S) / np.diff(tau_space))
+    entropic_susceptibility = -(np.diff(S) / np.diff(np.log(tau_space)))
     tau_space = tau_space[: n_t - 1]
-    return specific_heat, tau_space, S
+    return entropic_susceptibility, tau_space, S
 
 def compute_spectral_d(D,exm,exM,n_t):
     # Computes the spectral dimension associated to a diffusion process
@@ -51,6 +50,7 @@ def compute_spectral_d(D,exm,exM,n_t):
         Z[t] = np.sum(np.exp(- tau_space[t]*D))
 
     dS = -2*np.diff(np.log(Z))/np.diff(np.log(tau_space))
+
     return dS, tau_space[1:]
 
 
@@ -146,6 +146,7 @@ def induce_simplices(sc, mapnodes):
         new_sc["tetrahedra"] = np.zeros((0, 4), dtype=int)
         new_sc["n3"] = 0
 
+    # Connect supernodes with 4-simplices
     new_4_simplices = []
     for i in range(sc["n4"]):
         nodes = mapnodes[sc["4-simplices"][i, :]]
@@ -163,8 +164,8 @@ def induce_simplices(sc, mapnodes):
     return new_sc
 
 
-def coarse_grain_interfaces(sc, order, comp, ncomp):
-    # Coarse grains the simplicial complex accordin to a partition of the k-simplices
+def coarse_grain(sc, order, comp, ncomp):
+    # Coarse grains the simplicial complex according to a partition of the k-simplices
     # INPUTS
     # sc: simplicial complex object
     # order: order of the simplices which are partitioned
@@ -234,13 +235,9 @@ def renormalize_steps(sc,lmax,tau, diff_order =0, int_order = 1, VERBOSE = False
     new_sc = sc
     for l in range(lmax):
         if l > 0 and new_sc["n0"]>1:
-            L = scomplex.diffusion_laplacian(new_sc, diff_order, int_order)
-            #if l > 1:
-            #    df = D[1]
+            L = scomplex.XO_laplacian(new_sc, diff_order, int_order)
             D,U = np.linalg.eigh(L)
-            #if l > 1:
-            #    L = D*(df/D[1])
-            rho  = np.abs(U@np.diag(np.exp(-tau[l]*D))@U.T)
+            rho  = np.abs(U@np.diag(np.exp(-tau[l]*D))@U.T) # Heat kernel
 
             Gv = nx.Graph()
             Gv.add_nodes_from([i for i in range(new_sc[f"n{diff_order}"])])
@@ -253,7 +250,7 @@ def renormalize_steps(sc,lmax,tau, diff_order =0, int_order = 1, VERBOSE = False
             idx_components = {u:i for i,node_set in enumerate(nx.connected_components(Gv)) for u in node_set}
             clusters = [idx_components[u] for u in Gv.nodes]
 
-            mapnodes,__ = coarse_grain_interfaces(new_sc,diff_order,clusters,np.max(clusters)+1)
+            mapnodes,__ = coarse_grain(new_sc,diff_order,clusters,np.max(clusters)+1)
             new_sc = induce_simplices(new_sc, mapnodes)
 
         if VERBOSE:
@@ -265,15 +262,15 @@ def renormalize_steps(sc,lmax,tau, diff_order =0, int_order = 1, VERBOSE = False
 
 
 def renormalize_single_step(sc,tau, diff_order =0, int_order = 1, D = None, U = None, VERBOSE = True):
-    # Performs a single step of the simplicial renormalization flow
+    # Performs a single step of higher-order Laplacian renormalization 
     # INPUTS
     # sc: simplicial complex object
     # tau: diffusion time
     # diff_order: order of the diffusing simplices
-    # int_order: order of the interacting simplices
-    # D: the list of Laplacian eigenvlaues, if none computes them from scratch
-    # U: the list of Laplacian eigenvectors, if none computes them from scratch 
-    # VERBOSE: if True print the number of nodes at each step
+    # int_order: order of the interaction simplices
+    # D: the list of Laplacian eigenvlaues, if None computes them from scratch
+    # U: the list of Laplacian eigenvectors, if None computes them from scratch 
+    # VERBOSE: if True print the number of nodes after the coarse-graining
 
     # OUTPUTS
     # new_sc: renormalized simplicial complex
@@ -282,7 +279,7 @@ def renormalize_single_step(sc,tau, diff_order =0, int_order = 1, D = None, U = 
   
 
     if (D is None) or (U is None):
-        L = scomplex.diffusion_laplacian(sc, diff_order, int_order)
+        L = scomplex.XO_laplacian(sc, diff_order, int_order)
         D,U = np.linalg.eigh(L)
 
     rho  = np.abs(U@np.diag(np.exp(-tau*D))@U.T)
@@ -298,7 +295,7 @@ def renormalize_single_step(sc,tau, diff_order =0, int_order = 1, D = None, U = 
     idx_components = {u:i for i,node_set in enumerate(nx.connected_components(Gv)) for u in node_set}
     clusters = [idx_components[u] for u in Gv.nodes]
 
-    mapnodes,__ = coarse_grain_interfaces(sc,diff_order,clusters,np.max(clusters)+1)
+    mapnodes,__ = coarse_grain(sc,diff_order,clusters,np.max(clusters)+1)
     new_sc = induce_simplices(sc, mapnodes)
 
     if VERBOSE:
@@ -307,54 +304,3 @@ def renormalize_single_step(sc,tau, diff_order =0, int_order = 1, D = None, U = 
         
     return new_sc, mapnodes, clusters  
 
-
-
-def renormalize_steps_rescale(sc,lmax,tau, diff_order =0, int_order = 1, VERBOSE = False):
-    # Performs multiple steps of the simplicial renormalization flow
-    # INPUTS
-    # sc: simplicial complex object
-    # lmax: number of renormalization steps
-    # tau: diffusion time for each step
-    # diff_order: order of the diffusing simplices
-    # int_order: order of the interacting simplices
-    # VERBOSE: if True print the number of nodes at each step
-
-    # OUTPUTS
-    # sequence: list of the renormalized simplicial complexes
-
-    if len(np.shape(tau)) == 0:
-        tau = [tau for i in range(lmax)]
-
-
-    sequence = [] 
-    new_sc = sc
-    for l in range(lmax):
-        if l > 0 and new_sc["n0"]>1:
-            L = scomplex.diffusion_laplacian(new_sc, diff_order, int_order)
-            if l > 1:
-                df = np.min(D[D>10**-10])
-            D,U = np.linalg.eigh(L)
-            if l > 1:
-                L = D*(df/np.min(D[D>10**-10]))
-            rho  = np.abs(U@np.diag(np.exp(-tau[l]*D))@U.T)
-
-            Gv = nx.Graph()
-            Gv.add_nodes_from([i for i in range(new_sc[f"n{diff_order}"])])
-            for i in range(new_sc[f"n{diff_order}"]):
-                for j in range(i+1,new_sc[f"n{diff_order}"]):
-                    if rho[i,j] >= min(rho[i,i],rho[j,j]):
-                        Gv.add_edge(i,j)
-
-                
-            idx_components = {u:i for i,node_set in enumerate(nx.connected_components(Gv)) for u in node_set}
-            clusters = [idx_components[u] for u in Gv.nodes]
-
-            mapnodes,__ = coarse_grain_interfaces(new_sc,diff_order,clusters,np.max(clusters)+1)
-            new_sc = induce_simplices(new_sc, mapnodes)
-
-        if VERBOSE:
-            print(new_sc["n0"])
-        
-        sequence.append(new_sc)
-                
-    return sequence  
