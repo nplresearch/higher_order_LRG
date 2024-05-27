@@ -111,7 +111,7 @@ def induce_simplices(sc, mapnodes):
         new_sc["edges"] = np.zeros((0, 2), dtype=int)
         new_sc["n1"] = 0
 
-    # Connect supernodes with faces
+    # Connect supernodes with triangles
     new_faces = []
     for i in range(sc["n2"]):
         node1 = mapnodes[sc["faces"][i][0]]
