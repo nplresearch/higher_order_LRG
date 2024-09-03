@@ -2,6 +2,9 @@
 
 Code implementation for the paper *Nurisso, M., Morandini, M., Lucas, M., Vaccarino, F., Gili, T., & Petri, G. (2024). Higher-order Laplacian Renormalization. arXiv preprint arXiv:2401.11298.*
 
+<img src="Figures/renormalizeNGF.png" width="650" />
+
+
 ## Contents
 - ``Scripts``
   - ``plotting.py``: functions to plot 2-dimensional simplicial complexes;
