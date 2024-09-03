@@ -1,0 +1,8 @@
+matplotlib==3.9.0
+networkx==3.3 
+numpy==1.26.4
+pickle
+scipy==1.13.1
+seaborn==0.13.2
+tqdm
+xgi==0.8.6
