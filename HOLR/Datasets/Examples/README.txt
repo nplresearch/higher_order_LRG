@@ -1,1 +1,0 @@
-All datasets are taken from the KONECT Project (http://konect.cc/networks/)
