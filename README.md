@@ -1,6 +1,8 @@
 # Higher-order Laplacian Renormalization
 
-Code implementation for the paper *Nurisso, M., Morandini, M., Lucas, M., Vaccarino, F., Gili, T., & Petri, G. (2024). Higher-order Laplacian Renormalization. arXiv preprint arXiv:2401.11298.*
+Code implementation for the paper *Nurisso, M., Morandini, M., Lucas, M., Vaccarino, F., Gili, T., & Petri, G. (2024). Higher-order Laplacian Renormalization. arXiv preprint [arXiv:2401.11298](
+https://doi.org/10.48550/arXiv.2401.11298
+).*
 
 <img src="Figures/renormalizeNGF.png" width="650" />
 
