@@ -1,8 +1,9 @@
-import networkx as nx
-import numpy as np
-from Scripts import scomplex
 from itertools import groupby
 
+import networkx as nx
+import numpy as np
+
+from Scripts import scomplex
 
 
 def compute_entropic_C(D, exm, exM, n_t):
@@ -15,15 +16,15 @@ def compute_entropic_C(D, exm, exM, n_t):
       List of eigenvalues of the Laplacian matrix considered
     exm, exM: floats
     n_t: int
-      Computes the quantities in n_t logarithmically spaced time points in the interval [10**exm,10**exM] 
+      Computes the quantities in n_t logarithmically spaced time points in the interval [10**exm,10**exM]
 
     Returns
     ----------
-    specific_heat: numpy array 
+    specific_heat: numpy array
       Entropic susceptibility values
-    tau_space: numpy array 
-      n_t - 1 logarithmically spaced time points 
-    S: numpy array 
+    tau_space: numpy array
+      n_t - 1 logarithmically spaced time points
+    S: numpy array
       Von Neumann entropy
     """
 
@@ -43,7 +44,8 @@ def compute_entropic_C(D, exm, exM, n_t):
     tau_space = tau_space[: n_t - 1]
     return entropic_susceptibility, tau_space, S
 
-def compute_spectral_d(D,exm,exM,n_t):
+
+def compute_spectral_d(D, exm, exM, n_t):
     """
     Computes the spectral dimension associated to a diffusion process
 
@@ -53,36 +55,35 @@ def compute_spectral_d(D,exm,exM,n_t):
       eigenvalues of the Laplacian matrix considered
     exm, exM: floats
     n_t: int
-      Computes the quantities in n_t logarithmically spaced time points in the interval [10**exm,10**exM] 
+      Computes the quantities in n_t logarithmically spaced time points in the interval [10**exm,10**exM]
 
     Returns
     ----------
-    dS: numpy array 
+    dS: numpy array
       Spectral dimension values
-    tau_space: numpy array 
+    tau_space: numpy array
       n_t - 1 logarithmically spaced time points
     """
 
     tau_space = np.logspace(exm, exM, num=n_t)
     Z = np.zeros(n_t)
     for t in range(n_t):
-        Z[t] = np.sum(np.exp(- tau_space[t]*D))
+        Z[t] = np.sum(np.exp(-tau_space[t] * D))
 
-    dS = -2*np.diff(np.log(Z))/np.diff(np.log(tau_space))
+    dS = -2 * np.diff(np.log(Z)) / np.diff(np.log(tau_space))
 
     return dS, tau_space[1:]
 
 
-
-def measure_SI(tau_space,sp_heat, epsilon = 0.1,ymin = -5,ymax = 1, ny = 70):
+def measure_SI(tau_space, sp_heat, epsilon=0.1, ymin=-5, ymax=1, ny=70):
     """
     Computes the scale-invariance parameter of an entropic susceptibility curve.
 
     Parameters
     ----------
-    tau_space: numpy array 
+    tau_space: numpy array
       Times in which the entropic susceptibility has been computed
-    sp_heat: numpy array 
+    sp_heat: numpy array
       Entropic susceptibility curve
     epsilon: float
       Plateau threshold
@@ -91,24 +92,25 @@ def measure_SI(tau_space,sp_heat, epsilon = 0.1,ymin = -5,ymax = 1, ny = 70):
       Respectively, the minimum and maximum value of log C to scan for plateaus
     ny: int
       Number of points in the interval [ymin,ymax] to scan for plateaus
-  
+
     Returns
     ----------
     SIP: scale-invariance parameter
     """
 
     max_plateau = 0
-    sp_heat =  np.log(sp_heat)
-    for y in np.linspace(ymin,ymax,ny):
-        mask = np.abs(sp_heat-y)<epsilon
-        list_s = [[a,len(list(k))] for a,k in groupby(mask)]
+    sp_heat = np.log(sp_heat)
+    for y in np.linspace(ymin, ymax, ny):
+        mask = np.abs(sp_heat - y) < epsilon
+        list_s = [[a, len(list(k))] for a, k in groupby(mask)]
         for j in range(len(list_s)):
             if list_s[j][0]:
                 if list_s[j][1] > max_plateau:
                     max_plateau = list_s[j][1]
 
-    SIP = max_plateau*np.log(tau_space[1]/tau_space[0])
+    SIP = max_plateau * np.log(tau_space[1] / tau_space[0])
     return SIP
+
 
 def induce_simplices(sc, mapnodes):
     """
@@ -120,7 +122,7 @@ def induce_simplices(sc, mapnodes):
       Simplicial complex object
     mapnodes: list of ints
       Mapping from each node in sc to the label of its signature
-  
+
     Returns
     ----------
     new_sc: dict
@@ -221,7 +223,7 @@ def coarse_grain(sc, order, comp, ncomp):
     ----------
     mapnodes: list of ints
       Mapping from each node in sc to the label of its signature
-    nodesclusters: list of sets 
+    nodesclusters: list of sets
       Mapping from each node to its signature
     """
 
@@ -244,7 +246,7 @@ def coarse_grain(sc, order, comp, ncomp):
             nodesclusters[i] = nodesclusters[i].union({id})
             id += 1
 
-    #for i in range(len(nodesclusters)):
+    # for i in range(len(nodesclusters)):
     for i in range(sc["n0"]):
         nodesclusters[i] = np.array2string(np.sort(list(nodesclusters[i])))
 
@@ -254,15 +256,14 @@ def coarse_grain(sc, order, comp, ncomp):
     mapnodes = np.zeros(
         sc["n0"], dtype=int
     )  # Maps each node to its image in the renormalized simplicial complex
-    
+
     for i in range(sc["n0"]):
         mapnodes[i] = d[nodesclusters[i]]
 
     return mapnodes, nodesclusters
 
 
-
-def renormalize_steps(sc,lmax,tau, diff_order =0, int_order = 1, VERBOSE = False):
+def renormalize_steps(sc, lmax, tau, diff_order=0, int_order=1, VERBOSE=False):
     """
     Performs multiple steps of the simplicial renormalization flow.
 
@@ -290,41 +291,47 @@ def renormalize_steps(sc,lmax,tau, diff_order =0, int_order = 1, VERBOSE = False
     if len(np.shape(tau)) == 0:
         tau = [tau for i in range(lmax)]
 
-
-    sequence = [] 
+    sequence = []
     new_sc = sc
     for l in range(lmax):
-        if l > 0 and new_sc["n0"]>1:
+        if l > 0 and new_sc["n0"] > 1:
             L = scomplex.XO_laplacian(new_sc, diff_order, int_order)
-            D,U = np.linalg.eigh(L)
-            rho  = np.abs(U@np.diag(np.exp(-tau[l]*D))@U.T) # Heat kernel
+            D, U = np.linalg.eigh(L)
+            rho = np.abs(U @ np.diag(np.exp(-tau[l] * D)) @ U.T)  # Heat kernel
 
             Gv = nx.Graph()
             Gv.add_nodes_from([i for i in range(new_sc[f"n{diff_order}"])])
             for i in range(new_sc[f"n{diff_order}"]):
-                for j in range(i+1,new_sc[f"n{diff_order}"]):
-                    if rho[i,j] >= min(rho[i,i],rho[j,j]):
-                        Gv.add_edge(i,j)
+                for j in range(i + 1, new_sc[f"n{diff_order}"]):
+                    if rho[i, j] >= min(rho[i, i], rho[j, j]):
+                        Gv.add_edge(i, j)
 
-                
-            idx_components = {u:i for i,node_set in enumerate(nx.connected_components(Gv)) for u in node_set}
+            idx_components = {
+                u: i
+                for i, node_set in enumerate(nx.connected_components(Gv))
+                for u in node_set
+            }
             clusters = [idx_components[u] for u in Gv.nodes]
 
-            mapnodes,__ = coarse_grain(new_sc,diff_order,clusters,np.max(clusters)+1)
+            mapnodes, __ = coarse_grain(
+                new_sc, diff_order, clusters, np.max(clusters) + 1
+            )
             new_sc = induce_simplices(new_sc, mapnodes)
 
         if VERBOSE:
             print(new_sc["n0"])
-        
+
         sequence.append(new_sc)
-                
-    return sequence  
+
+    return sequence
 
 
-def renormalize_single_step(sc,tau, diff_order =0, int_order = 1, D = None, U = None, VERBOSE = True):
+def renormalize_single_step(
+    sc, tau, diff_order=0, int_order=1, D=None, U=None, VERBOSE=True
+):
     """
     Performs a single step of higher-order Laplacian renormalization.
-     
+
     Parameters
     ----------
     sc: dict
@@ -338,7 +345,7 @@ def renormalize_single_step(sc,tau, diff_order =0, int_order = 1, D = None, U = 
     D: list of floats
       The list of Laplacian eigenvlaues, if None computes them from scratch
     U: numpy array of size (len(D),len(D))
-      Matrix of Laplacian eigenvectors, if None computes them from scratch 
+      Matrix of Laplacian eigenvectors, if None computes them from scratch
     VERBOSE: bool
       If True print the number of nodes after the coarse-graining
 
@@ -354,32 +361,33 @@ def renormalize_single_step(sc,tau, diff_order =0, int_order = 1, D = None, U = 
 
     if (D is None) or (U is None):
         L = scomplex.XO_laplacian(sc, diff_order, int_order)
-        D,U = np.linalg.eigh(L)
+        D, U = np.linalg.eigh(L)
 
-    rho  = np.abs(U@np.diag(np.exp(-tau*D))@U.T)
+    rho = np.abs(U @ np.diag(np.exp(-tau * D)) @ U.T)
 
     Gv = nx.Graph()
     Gv.add_nodes_from([i for i in range(sc[f"n{diff_order}"])])
     for i in range(sc[f"n{diff_order}"]):
-        for j in range(i+1,sc[f"n{diff_order}"]):
-            if rho[i,j] >= min(rho[i,i],rho[j,j]):
-                Gv.add_edge(i,j)
+        for j in range(i + 1, sc[f"n{diff_order}"]):
+            if rho[i, j] >= min(rho[i, i], rho[j, j]):
+                Gv.add_edge(i, j)
 
-        
-    idx_components = {u:i for i,node_set in enumerate(nx.connected_components(Gv)) for u in node_set}
+    idx_components = {
+        u: i for i, node_set in enumerate(nx.connected_components(Gv)) for u in node_set
+    }
     clusters = [idx_components[u] for u in Gv.nodes]
 
-    mapnodes,__ = coarse_grain(sc,diff_order,clusters,np.max(clusters)+1)
+    mapnodes, __ = coarse_grain(sc, diff_order, clusters, np.max(clusters) + 1)
     new_sc = induce_simplices(sc, mapnodes)
 
     if VERBOSE:
         print(new_sc["n0"])
 
-        
-    return new_sc, mapnodes, clusters  
+    return new_sc, mapnodes, clusters
 
 
 # Hypergraph functions
+
 
 def induce_simplices_hg(sc, mapnodes):
     """
@@ -391,7 +399,7 @@ def induce_simplices_hg(sc, mapnodes):
       Hypergraph object
     mapnodes: list of ints
       Mapping from each node in sc to the label of its signature
-  
+
     Returns
     ----------
     new_sc: dict
@@ -414,7 +422,7 @@ def induce_simplices_hg(sc, mapnodes):
             un = np.unique(nodes)
             lun = len(un)
             if lun > 1:
-                new_sc[keys[lun-2]].append(un)
+                new_sc[keys[lun - 2]].append(un)
 
     # Remove duplicate hyperedges
     for order, key in enumerate(keys):
@@ -424,12 +432,15 @@ def induce_simplices_hg(sc, mapnodes):
             )
             new_sc[f"n{order+1}"] = new_sc[key].shape[0]
         else:
-            new_sc[key] = np.zeros((0, order+2), dtype=int)
+            new_sc[key] = np.zeros((0, order + 2), dtype=int)
             new_sc[f"n{order+1}"] = 0
 
     return new_sc
 
-def renormalize_single_step_hg(sc,tau, diff_order =0, int_order = 1, D = None, U = None, VERBOSE = True):
+
+def renormalize_single_step_hg(
+    sc, tau, diff_order=0, int_order=1, D=None, U=None, VERBOSE=True
+):
     """
     Performs a single step of higher-order Laplacian renormalization for a hypergraph.
 
@@ -446,7 +457,7 @@ def renormalize_single_step_hg(sc,tau, diff_order =0, int_order = 1, D = None, U
     D: list
       List of Laplacian eigenvlaues, if None computes them from scratch
     U: numpy array
-      Matrix of Laplacian eigenvectors, if None computes them from scratch 
+      Matrix of Laplacian eigenvectors, if None computes them from scratch
     VERBOSE: bool
       If True print the number of nodes after the coarse-graining
 
@@ -462,26 +473,26 @@ def renormalize_single_step_hg(sc,tau, diff_order =0, int_order = 1, D = None, U
 
     if (D is None) or (U is None):
         L = scomplex.XO_laplacian_hg(sc, diff_order, int_order)
-        D,U = np.linalg.eigh(L)
+        D, U = np.linalg.eigh(L)
 
-    rho  = np.abs(U@np.diag(np.exp(-tau*D))@U.T)
+    rho = np.abs(U @ np.diag(np.exp(-tau * D)) @ U.T)
 
     Gv = nx.Graph()
     Gv.add_nodes_from([i for i in range(sc[f"n{diff_order}"])])
     for i in range(sc[f"n{diff_order}"]):
-        for j in range(i+1,sc[f"n{diff_order}"]):
-            if rho[i,j] >= min(rho[i,i],rho[j,j]):
-                Gv.add_edge(i,j)
+        for j in range(i + 1, sc[f"n{diff_order}"]):
+            if rho[i, j] >= min(rho[i, i], rho[j, j]):
+                Gv.add_edge(i, j)
 
-
-    idx_components = {u:i for i,node_set in enumerate(nx.connected_components(Gv)) for u in node_set}
+    idx_components = {
+        u: i for i, node_set in enumerate(nx.connected_components(Gv)) for u in node_set
+    }
     clusters = [idx_components[u] for u in Gv.nodes]
 
-    mapnodes,__ = coarse_grain(sc,diff_order,clusters,np.max(clusters)+1)
+    mapnodes, __ = coarse_grain(sc, diff_order, clusters, np.max(clusters) + 1)
     new_sc = induce_simplices_hg(sc, mapnodes)
 
     if VERBOSE:
         print(new_sc["n0"])
 
-        
-    return new_sc, mapnodes, clusters  
+    return new_sc, mapnodes, clusters

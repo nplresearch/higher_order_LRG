@@ -1,11 +1,13 @@
+from itertools import combinations
+
 import networkx as nx
 import numpy as np
 import scipy.sparse as sp
 from scipy.sparse import csr_matrix, lil_matrix, spdiags
-from itertools import combinations
+
 
 def make_dict(sc):
-    """ 
+    """
     Create dictionaries which associate the simplices to indices.
 
     Parameters
@@ -47,8 +49,7 @@ def make_dict(sc):
     return edge_dict, face_dict, tet_dict
 
 
-
-def convert_graph_to_sc(G, dim = 2):
+def convert_graph_to_sc(G, dim=2):
     """
     Converts a graph G to its clique complex of a given dimension.
 
@@ -116,7 +117,7 @@ def import_network_data(f, d):
     for line in f:
         if i != 0:
             words = line.split()
-            edges.append((words[0],words[1]))
+            edges.append((words[0], words[1]))
         else:
             i += 1
     f.close()
@@ -125,12 +126,12 @@ def import_network_data(f, d):
     G.remove_edges_from(nx.selfloop_edges(G))
     Gcc = sorted(nx.connected_components(G), key=len, reverse=True)
     G = G.subgraph(Gcc[0])
-    sc = convert_graph_to_sc(G,dim = d)
+    sc = convert_graph_to_sc(G, dim=d)
 
     return sc
 
 
-def adjacency_of_order(sc,k,l, sparse = False):
+def adjacency_of_order(sc, k, l, sparse=False):
     """
     Computes the (k,l)-adjacency matrix of a simplicial complex.
 
@@ -148,46 +149,45 @@ def adjacency_of_order(sc,k,l, sparse = False):
     Returns
     ----------
     adj: numpy array
-      (k,l)-adjacency matrix 
+      (k,l)-adjacency matrix
     """
 
     keys = ["nodes", "edges", "faces", "tetrahedra", "4-simplices"]
     nk = sc[f"n{k}"]
     if sparse:
-        adj = lil_matrix((nk,nk), dtype = int)
+        adj = lil_matrix((nk, nk), dtype=int)
     else:
-        adj = np.zeros((nk,nk),dtype = int)
-    
-    assert l != k, "The interaction order should be different from the order of the diffusing simplices"
+        adj = np.zeros((nk, nk), dtype=int)
+
+    assert (l != k), "The interaction order should be different from the order of the diffusing simplices"
     assert l >= 0, "The interaction order should be greater or equal than 0"
-    assert k >= 0, "The order of the diffusing simplices should be greater or equal than 0"
+    assert (k >= 0), "The order of the diffusing simplices should be greater or equal than 0"
     assert (l <= 4) and (k <= 4), "Simplices of order greater than 4 are not supported"
 
-
-    if l < k: 
+    if l < k:
         diff_units = sc[keys[k]]
         for i in range(nk):
-            for j in range(i+1,nk):
-                intersection = (set(diff_units[i,:]) & set(diff_units[j,:]))
+            for j in range(i + 1, nk):
+                intersection = set(diff_units[i, :]) & set(diff_units[j, :])
                 if len(intersection) == l + 1:
-                    adj[i,j] += 1
+                    adj[i, j] += 1
 
     elif l > k:
         edge_dict, face_dict, tet_dict = make_dict(sc)
-        dicts = [{(i,):i for i in range(sc["n0"])},edge_dict,face_dict,tet_dict]
+        dicts = [{(i,): i for i in range(sc["n0"])}, edge_dict, face_dict, tet_dict]
         int_simplices = sc[keys[l]]
 
         for i in range(sc[f"n{l}"]):
-            simp = int_simplices[i,:]
-            combs = list(combinations(simp, k+1))
+            simp = int_simplices[i, :]
+            combs = list(combinations(simp, k + 1))
             ncombs = len(combs)
-            combs_ids = np.zeros(ncombs,dtype=int)
+            combs_ids = np.zeros(ncombs, dtype=int)
             for n in range(ncombs):
                 combs_ids[n] = dicts[k][combs[n]]
             combs_ids = np.sort(combs_ids)
             for n in range(ncombs):
-                for m in range(n+1,ncombs):
-                    adj[combs_ids[n],combs_ids[m]] += 1
+                for m in range(n + 1, ncombs):
+                    adj[combs_ids[n], combs_ids[m]] += 1
 
     if sparse:
         adj = csr_matrix(adj)
@@ -195,10 +195,10 @@ def adjacency_of_order(sc,k,l, sparse = False):
     return adj + adj.T
 
 
-def adjacency_of_order_hg(sc,k,l):
+def adjacency_of_order_hg(sc, k, l):
     """
     Computes the (k,l)-adjacency matrix of a hypergraph.
-    
+
     Parameters
     ----------
     sc: dict
@@ -211,45 +211,44 @@ def adjacency_of_order_hg(sc,k,l):
     Returns
     ----------
     adj: numpy array
-      (k,l)-adjacency matrix 
+      (k,l)-adjacency matrix
     """
 
     keys = ["nodes", "edges", "faces", "tetrahedra", "4-simplices"]
     nk = sc[f"n{k}"]
-    adj = np.zeros((nk,nk),dtype = int)
+    adj = np.zeros((nk, nk), dtype=int)
 
-    assert l != k, "The interaction order should be different from the order of the diffusing simplices"
+    assert (l != k), "The interaction order should be different from the order of the diffusing simplices"
     assert l >= 0, "The interaction order should be greater or equal than 0"
-    assert k >= 0, "The order of the diffusing simplices should be greater or equal than 0"
+    assert (k >= 0), "The order of the diffusing simplices should be greater or equal than 0"
     assert (l <= 4) and (k <= 4), "Simplices of order greater than 4 are not supported"
 
-    if l < k: 
-       
+    if l < k:
+
         diff_units = sc[keys[k]]
-        
+
         if l == 0:
             for i in range(nk):
-                for j in range(i+1,nk):
-                    intersection = (set(diff_units[i,:]) & set(diff_units[j,:]))
-                    adj[i,j] = 2*len(intersection)
-                    
-        else: 
+                for j in range(i + 1, nk):
+                    intersection = set(diff_units[i, :]) & set(diff_units[j, :])
+                    adj[i, j] = 2 * len(intersection)
+
+        else:
             edge_dict, face_dict, tet_dict = make_dict(sc)
-            dicts = [{(i,):i for i in range(sc["n0"])},edge_dict,face_dict,tet_dict]
+            dicts = [{(i,): i for i in range(sc["n0"])}, edge_dict, face_dict, tet_dict]
             for i in range(nk):
-                for j in range(i+1,nk):
-                    intersection = (set(diff_units[i,:]) & set(diff_units[j,:]))
-                    combs = list(combinations(intersection, l+1))
+                for j in range(i + 1, nk):
+                    intersection = set(diff_units[i, :]) & set(diff_units[j, :])
+                    combs = list(combinations(intersection, l + 1))
                     for c in combs:
                         if c in dicts[l]:
-                            adj[i,j] += 2
-                
+                            adj[i, j] += 2
 
     elif l > k:
         edge_dict, face_dict, tet_dict = make_dict(sc)
-        dicts = [{(i,):i for i in range(sc["n0"])},edge_dict,face_dict,tet_dict]
-        for i,simp in enumerate(sc[keys[l]]):
-            combs = list(combinations(simp, k+1))
+        dicts = [{(i,): i for i in range(sc["n0"])}, edge_dict, face_dict, tet_dict]
+        for i, simp in enumerate(sc[keys[l]]):
+            combs = list(combinations(simp, k + 1))
             ncombs = len(combs)
             combs_present = []
             for c in range(ncombs):
@@ -259,12 +258,12 @@ def adjacency_of_order_hg(sc,k,l):
             for c1 in combs_present:
                 for c2 in combs_present:
                     if c2 != c1:
-                        adj[c1,c2] += 1
+                        adj[c1, c2] += 1
 
-    return (adj + adj.T)//2
+    return (adj + adj.T) // 2
 
 
-def XO_laplacian(sc,k,l, sparse = False):
+def XO_laplacian(sc, k, l, sparse=False):
     """
     Computes the (k,l)-cross-order Laplacian matrix of a simplicial complex.
 
@@ -282,19 +281,20 @@ def XO_laplacian(sc,k,l, sparse = False):
     Returns
     ----------
     L: numpy array
-      (k,l)-cross-order Laplacian matrix 
+      (k,l)-cross-order Laplacian matrix
     """
 
-    A = adjacency_of_order(sc,k,l,sparse)
+    A = adjacency_of_order(sc, k, l, sparse)
     K = np.sum(A, 0)
     if sparse:
         lenK = K.shape[1]
-        L = spdiags(K,0,lenK,lenK) - A
+        L = spdiags(K, 0, lenK, lenK) - A
     else:
         L = np.diag(K) - A
     return L
 
-def XO_laplacian_hg(sc,k,l):
+
+def XO_laplacian_hg(sc, k, l):
     """
     Computes the (k,l)-cross-order Laplacian matrix of a hypergraph.
 
@@ -310,18 +310,19 @@ def XO_laplacian_hg(sc,k,l):
     Returns
     ----------
     L: numpy array
-      (k,l)-cross-order Laplacian matrix 
+      (k,l)-cross-order Laplacian matrix
     """
 
-    A = adjacency_of_order_hg(sc,k,l)
+    A = adjacency_of_order_hg(sc, k, l)
     K = np.sum(A, 0)
     L = np.diag(K) - A
     return L
 
+
 def pseudofractal_d2(steps):
     """
     Generates a 2-dimensional pseudofractal simplicial complex.
-    
+
     Parameters
     ----------
     steps: int
@@ -333,23 +334,24 @@ def pseudofractal_d2(steps):
       Simplicial complex object
     """
 
-    edges = [(0,1),(1,2),(0,2)]
+    edges = [(0, 1), (1, 2), (0, 2)]
     n = 3
     for s in range(steps):
         boundary = edges.copy()
         for ed in boundary:
-            edges.append((ed[0],n))
-            edges.append((ed[1],n))
+            edges.append((ed[0], n))
+            edges.append((ed[1], n))
             n += 1
 
     G = nx.from_edgelist(edges)
-    sc = convert_graph_to_sc(G,dim = 2)
+    sc = convert_graph_to_sc(G, dim=2)
     return sc
+
 
 def pseudofractal_d3(steps):
     """
     Generates a 3-dimensional pseudofractal simplicial complex.
-    
+
     Parameters
     ----------
     steps: int
@@ -361,29 +363,30 @@ def pseudofractal_d3(steps):
       Simplicial complex object
     """
 
-    edges = [(0,1),(0,2),(0,3),(1,2),(1,3),(2,3)]
-    faces = [(0,1,2),(0,1,3),(0,2,3),(1,2,3)]
+    edges = [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)]
+    faces = [(0, 1, 2), (0, 1, 3), (0, 2, 3), (1, 2, 3)]
     n = 4
     for s in range(steps):
         boundary = faces.copy()
         for fa in boundary:
-            edges.append((fa[0],n))
-            edges.append((fa[1],n))
-            edges.append((fa[2],n))
-            faces.append((fa[0],fa[1],n))
-            faces.append((fa[0],fa[2],n))
-            faces.append((fa[1],fa[2],n))
+            edges.append((fa[0], n))
+            edges.append((fa[1], n))
+            edges.append((fa[2], n))
+            faces.append((fa[0], fa[1], n))
+            faces.append((fa[0], fa[2], n))
+            faces.append((fa[1], fa[2], n))
             n += 1
 
     G = nx.from_edgelist(edges)
-    sc = convert_graph_to_sc(G,dim = 3)
+    sc = convert_graph_to_sc(G, dim=3)
 
     return sc
+
 
 def apollonian_d2(steps):
     """
     Generates a 2-dimensional apollonian simplicial complex
-    
+
     Parameters
     ----------
     steps: int
@@ -395,31 +398,32 @@ def apollonian_d2(steps):
       Simplicial complex object
     """
 
-    edges = [(0,1),(1,2),(0,2)]
+    edges = [(0, 1), (1, 2), (0, 2)]
     new_boundary = edges.copy()
     n = 3
     for s in range(steps):
         boundary = new_boundary
         new_boundary = []
         for ed in boundary:
-            edges.append((ed[0],n))
-            edges.append((ed[1],n))
-            new_boundary.append((ed[0],n))
-            new_boundary.append((ed[1],n))
+            edges.append((ed[0], n))
+            edges.append((ed[1], n))
+            new_boundary.append((ed[0], n))
+            new_boundary.append((ed[1], n))
             n += 1
 
     G = nx.from_edgelist(edges)
-    sc = convert_graph_to_sc(G, dim = 2)
+    sc = convert_graph_to_sc(G, dim=2)
 
     return sc
 
 
-def NGF(d, N, s, beta, M = 1):
+def NGF(d, N, s, beta, M=1):
     """
-    Generates a Nework Geometry with Flavour (NGF) simplicial complex, as described in 
-    G. Bianconi and C. Rahmede "Network geometry with flavor: from complexity to quantum geometry" Physical Review E 93, 032315 (2016). 
+    Generates a Nework Geometry with Flavour (NGF) simplicial complex, as described in
+    G. Bianconi and C. Rahmede "Network geometry with flavor: from complexity to quantum
+     geometry" Physical Review E 93, 032315 (2016).
     The code is adapted from https://github.com/ginestrab/Network-Geometry-with-Flavor.
-    
+
     Parameters
     ----------
     d: int
@@ -465,7 +469,7 @@ def NGF(d, N, s, beta, M = 1):
                 node[nt, j] = i
                 at[nt] = at[nt] * np.exp(-beta * epsilon[i])
 
-    it = d  
+    it = d
 
     while it < N - 1:
         it += 1
@@ -478,18 +482,18 @@ def NGF(d, N, s, beta, M = 1):
             for nj1 in range(len(V)):
                 x -= V[nj1]
                 if x < 0:
-                    nj = J[nj1] # Index of the d-1 simplex where the next simplex is attached
+                    nj = J[nj1]  # Index of the d-1 simplex where the next simplex is attached
                     break
 
             a_occ[nj] = a_occ[nj] + s
 
             # Attach the next simplex
-            for n1 in range(d): 
+            for n1 in range(d):
                 j = node[nj, n1]
                 a[it, j] = 1
                 a[j, it] = 1
 
-        for n1 in range(d): # d (d-1)-simplices are added
+        for n1 in range(d):  # d (d-1)-simplices are added
             nt += 1
             at = np.append(at, 1)
             a_occ = np.append(a_occ, 1)

@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 
-
 SMALL_SIZE = 10
 MEDIUM_SIZE = 12
 BIGGER_SIZE = 13
@@ -25,7 +24,7 @@ def plot_complex(
     edge_alpha=1,
     edge_width=1,
     layout="spring",
-    pos = None,
+    pos=None,
     node_size=10,
     iterations=1000,
 ):
@@ -36,7 +35,7 @@ def plot_complex(
     ----------
     sc: dict
       Simplicial complex object
-    ax: matplotlib axis 
+    ax: matplotlib axis
       Axis where to plot
     node_color: list
       List of the node colors
@@ -82,7 +81,7 @@ def plot_complex(
         G = nx.Graph()
         G.add_nodes_from([i for i in range(sc["n0"])])
         G.add_edges_from(sc["edges"])
-        
+
         if pos == None:
             if layout == "spring":
                 pos = nx.spring_layout(G, iterations=iterations)
@@ -92,7 +91,7 @@ def plot_complex(
                 pos = nx.spectral_layout(G)
             elif layout == "kamada_kawai":
                 pos = nx.kamada_kawai_layout(G)
-                    
+
         for i in range(sc["n2"]):
             f = sc["faces"][i, :]
             pf0 = pos[f[0]]
@@ -117,4 +116,3 @@ def plot_complex(
         # plt.hold(True)
         ax.axis("off")
         # ax.draw()
-
