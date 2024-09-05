@@ -82,7 +82,7 @@ def plot_complex(
         G.add_nodes_from([i for i in range(sc["n0"])])
         G.add_edges_from(sc["edges"])
 
-        if pos == None:
+        if pos is None:
             if layout == "spring":
                 pos = nx.spring_layout(G, iterations=iterations)
             elif layout == "circle":
