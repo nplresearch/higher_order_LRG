@@ -11,15 +11,20 @@ def compute_entropic_C(D, exm, exM, n_t):
 
     Parameters
     ----------
-    D: list of eigenvalues of the Laplacian matrix considered
-    exm, exM, n_t: computes the quantities in n_t logarithmically spaced time points
-     in the interval [10**exm,10**exM] 
+    D: list of floats
+      List of eigenvalues of the Laplacian matrix considered
+    exm, exM: floats
+    n_t: int
+      Computes the quantities in n_t logarithmically spaced time points in the interval [10**exm,10**exM] 
 
     Returns
     ----------
-    specific_heat: numpy array containing the entropic susceptibility values
-    tau_space: numpy array containing n_t - 1 logarithmically spaced time points
-    S: numpy array containing the Von Neumann entropy
+    specific_heat: numpy array 
+      Entropic susceptibility values
+    tau_space: numpy array 
+      n_t - 1 logarithmically spaced time points 
+    S: numpy array 
+      Von Neumann entropy
     """
 
     N = len(D)
@@ -44,14 +49,18 @@ def compute_spectral_d(D,exm,exM,n_t):
 
     Parameters
     ----------
-    D: eigenvalues of the Laplacian matrix considered
-    exm, exM, n_t: computes the spectral dimension in n_t logarithmically spaced time points
-     in the interval [10**exm,10**exM] 
+    D: list
+      eigenvalues of the Laplacian matrix considered
+    exm, exM: floats
+    n_t: int
+      Computes the quantities in n_t logarithmically spaced time points in the interval [10**exm,10**exM] 
 
     Returns
     ----------
-    dS: numpy array containing the spectral dimension values
-    tau_space: numpy array containing n_t - 1 logarithmically spaced time points
+    dS: numpy array 
+      Spectral dimension values
+    tau_space: numpy array 
+      n_t - 1 logarithmically spaced time points
     """
 
     tau_space = np.logspace(exm, exM, num=n_t)
@@ -71,11 +80,17 @@ def measure_SI(tau_space,sp_heat, epsilon = 0.1,ymin = -5,ymax = 1, ny = 70):
 
     Parameters
     ----------
-    tau_space: numpy array containing the times in which the entropic susc. has been computed
-    sp_heat: numpy array entropic susc. curve
-    epsilon: pleateau threshold
-    ymin, ymax: respectively, the minimum and maximum value of log C to scan for plateaus
-    ny: number of points in the interval [ymin,ymax] to scan for plateaus
+    tau_space: numpy array 
+      Times in which the entropic susceptibility has been computed
+    sp_heat: numpy array 
+      Entropic susceptibility curve
+    epsilon: float
+      Plateau threshold
+    ymin: float
+    ymax: float
+      Respectively, the minimum and maximum value of log C to scan for plateaus
+    ny: int
+      Number of points in the interval [ymin,ymax] to scan for plateaus
   
     Returns
     ----------
@@ -101,12 +116,15 @@ def induce_simplices(sc, mapnodes):
 
     Parameters
     ----------
-    sc: simplicial complex object
-    mapnodes: mapping from each node in sc to the label of its signature
+    sc: dict
+      Simplicial complex object
+    mapnodes: list of ints
+      Mapping from each node in sc to the label of its signature
   
     Returns
     ----------
-    new_sc: coarse grained simplicial complex object
+    new_sc: dict
+      Coarse grained simplicial complex object
     """
 
     new_sc = {
@@ -190,15 +208,21 @@ def coarse_grain(sc, order, comp, ncomp):
 
     Parameters
     ----------
-    sc: simplicial complex object
-    order: order of the simplices which are partitioned
-    comp: list of labels specifying the partition of the order-simplices
-    ncomp: total number of labels
+    sc: dict
+      Simplicial complex object
+    order: int
+      Order of the simplices which are partitioned
+    comp: list of ints
+      List of labels specifying the partition of the order-simplices
+    ncomp: int
+      Total number of labels
 
     Returns
     ----------
-    mapnodes: mapping from each node in sc to the label of its signature
-    nodesclusters: mapping from each node to its signature
+    mapnodes: list of ints
+      Mapping from each node in sc to the label of its signature
+    nodesclusters: list of sets 
+      Mapping from each node to its signature
     """
 
     name = f"n{order}"
@@ -244,16 +268,23 @@ def renormalize_steps(sc,lmax,tau, diff_order =0, int_order = 1, VERBOSE = False
 
     Parameters
     ----------
-    sc: simplicial complex object
-    lmax: number of renormalization steps
-    tau: diffusion time for each step
-    diff_order: order of the diffusing simplices
-    int_order: order of the interacting simplices
-    VERBOSE: if True print the number of nodes at each step
+    sc: dict
+      Simplicial complex object
+    lmax: int
+      Number of renormalization steps
+    tau: float
+      Diffusion time for each step
+    diff_order: int
+      Order of the diffusing simplices
+    int_order: int
+      Order of the interacting simplices
+    VERBOSE: bool
+      If True print the number of nodes at each step
 
     Returns
     ----------
-    sequence: list of the renormalized simplicial complexes
+    sequence: list
+      List of the renormalized simplicial complexes
     """
 
     if len(np.shape(tau)) == 0:
@@ -296,19 +327,29 @@ def renormalize_single_step(sc,tau, diff_order =0, int_order = 1, D = None, U = 
      
     Parameters
     ----------
-    sc: simplicial complex object
-    tau: diffusion time
-    diff_order: order of the diffusing simplices
-    int_order: order of the interaction simplices
-    D: the list of Laplacian eigenvlaues, if None computes them from scratch
-    U: the list of Laplacian eigenvectors, if None computes them from scratch 
-    VERBOSE: if True print the number of nodes after the coarse-graining
+    sc: dict
+      Simplicial complex object
+    tau: float
+      Diffusion time
+    diff_order: int
+      Order of the diffusing simplices
+    int_order: int
+      Order of the interaction simplices
+    D: list of floats
+      The list of Laplacian eigenvlaues, if None computes them from scratch
+    U: numpy array of size (len(D),len(D))
+      Matrix of Laplacian eigenvectors, if None computes them from scratch 
+    VERBOSE: bool
+      If True print the number of nodes after the coarse-graining
 
     Returns
     ----------
-    new_sc: renormalized simplicial complex
-    mapnodes: array associating to each node in sc the node in new_sc it is mapped to
-    clusters: cluster label of each simplex of order diff_order
+    new_sc: dict
+      Renormalized simplicial complex
+    mapnodes: list of ints
+      List associating to each node in sc the node in new_sc it is mapped to
+    clusters: list of ints
+      Cluster label of each simplex of order diff_order
     """
 
     if (D is None) or (U is None):
@@ -346,12 +387,15 @@ def induce_simplices_hg(sc, mapnodes):
 
     Parameters
     ----------
-    sc: hypergraph object
-    mapnodes: mapping from each node in sc to the label of its signature
+    sc: dict
+      Hypergraph object
+    mapnodes: list of ints
+      Mapping from each node in sc to the label of its signature
   
     Returns
     ----------
-    new_sc: coarse grained hypergraph
+    new_sc: dict
+      Coarse grained hypergraph
     """
 
     keys = ["edges", "faces", "tetrahedra", "4-simplices"]
@@ -391,19 +435,29 @@ def renormalize_single_step_hg(sc,tau, diff_order =0, int_order = 1, D = None, U
 
     Parameters
     ----------
-    sc: hypergraph object
-    tau: diffusion time
-    diff_order: order of the diffusing hyperedges
-    int_order: order of the interaction hyperedges
-    D: the list of Laplacian eigenvlaues, if None computes them from scratch
-    U: the list of Laplacian eigenvectors, if None computes them from scratch 
-    VERBOSE: if True print the number of nodes after the coarse-graining
+    sc: dict
+      Hypergraph object
+    tau: float
+      Diffusion time
+    diff_order: int
+      Order of the diffusing hyperedges
+    int_order: int
+      Order of the interaction hyperedges
+    D: list
+      List of Laplacian eigenvlaues, if None computes them from scratch
+    U: numpy array
+      Matrix of Laplacian eigenvectors, if None computes them from scratch 
+    VERBOSE: bool
+      If True print the number of nodes after the coarse-graining
 
     Returns
     ----------
-    new_sc: renormalized hypergraph
-    mapnodes: array associating to each node in sc the node in new_sc it is mapped to
-    clusters: cluster label of each simplex of order diff_order
+    new_sc: dict
+      Renormalized hypergraph
+    mapnodes: list of ints
+      List associating to each node in sc the node in new_sc it is mapped to
+    clusters: list of ints
+      Cluster label of each simplex of order diff_order
     """
 
     if (D is None) or (U is None):

@@ -10,13 +10,17 @@ def make_dict(sc):
 
     Parameters
     ----------
-    sc: simplicial complex object
+    sc: dict
+      Simplicial complex object
 
     Returns
     ----------
-    edge_dict: dictionary with keys given by the edges
-    face_dict: dictionary with keys given by the triangles
-    tet_dict: dictionary with keys given by the tetrahedra
+    edge_dict: dict
+      Dictionary with keys given by the edges
+    face_dict: dict
+      Dictionary with keys given by the triangles
+    tet_dict: dict
+      Dictionary with keys given by the tetrahedra
     """
 
     edge_dict = {}
@@ -51,11 +55,13 @@ def convert_graph_to_sc(G, dim = 2):
     Parameters
     ----------
     G: networkx graph object
-    dim: dimension of the output simplicial complex
+    dim: int
+      Dimension of the output simplicial complex
 
     Returns
     ----------
-    sc: simplicial complex object
+    sc: dict
+      Simplicial complex object
     """
 
     G = nx.convert_node_labels_to_integers(G)
@@ -94,12 +100,15 @@ def import_network_data(f, d):
 
     Parameters
     ----------
-    f: network file in edge list format
-    d: maximal dimension of the cliques
+    f: file
+      Network file in edge list format
+    d: int
+      Maximal dimension of the cliques
 
     Returns
     ----------
-    sc: clique complex
+    sc: dict
+      Clique complex
     """
 
     i = 0
@@ -127,14 +136,19 @@ def adjacency_of_order(sc,k,l, sparse = False):
 
     Parameters
     ----------
-    sc: simplicial complex object
-    k: order of the diffusing simplices
-    l: order of the interaction simplices
-    sparse: if True, return a sparse matrix
+    sc: dict
+      Simplicial complex object
+    k: int
+      Order of the diffusing simplices
+    l: int
+      Order of the interaction simplices
+    sparse: bool
+      If True, return a sparse matrix
 
     Returns
     ----------
-    adj: (k,l)-adjacency matrix 
+    adj: numpy array
+      (k,l)-adjacency matrix 
     """
 
     keys = ["nodes", "edges", "faces", "tetrahedra", "4-simplices"]
@@ -187,13 +201,17 @@ def adjacency_of_order_hg(sc,k,l):
     
     Parameters
     ----------
-    sc: simplicial complex object
-    k: order of the diffusing simplices
-    l: order of the interaction simplices
+    sc: dict
+      Simplicial complex object
+    k: int
+      Order of the diffusing simplices
+    l: int
+      Order of the interaction simplices
 
     Returns
     ----------
-    adj: (k,l)-adjacency matrix 
+    adj: numpy array
+      (k,l)-adjacency matrix 
     """
 
     keys = ["nodes", "edges", "faces", "tetrahedra", "4-simplices"]
@@ -252,14 +270,19 @@ def XO_laplacian(sc,k,l, sparse = False):
 
     Parameters
     ----------
-    sc: simplicial complex object
-    k: order of the diffusing simplices
-    l: order of the interaction simplices
-    sparse: if True, return a sparse matrix
+    sc: dict
+      Simplicial complex object
+    k: int
+      Order of the diffusing simplices
+    l: int
+      Order of the interaction simplices
+    sparse: bool
+      If True, return a sparse matrix
 
     Returns
     ----------
-    L: (k,l)-cross-order Laplacian matrix 
+    L: numpy array
+      (k,l)-cross-order Laplacian matrix 
     """
 
     A = adjacency_of_order(sc,k,l,sparse)
@@ -277,13 +300,17 @@ def XO_laplacian_hg(sc,k,l):
 
     Parameters
     ----------
-    sc: simplicial complex object
-    k: order of the diffusing simplices
-    l: order of the interaction simplices
+    sc: dict
+      Simplicial complex object
+    k: int
+      Order of the diffusing simplices
+    l: int
+      Order of the interaction simplices
 
     Returns
     ----------
-    L: (k,l)-cross-order Laplacian matrix 
+    L: numpy array
+      (k,l)-cross-order Laplacian matrix 
     """
 
     A = adjacency_of_order_hg(sc,k,l)
@@ -297,11 +324,13 @@ def pseudofractal_d2(steps):
     
     Parameters
     ----------
-    steps: number of construction iterations
+    steps: int
+      Number of construction iterations
 
     Returns
     ----------
-    sc: simplicial complex object
+    sc: dict
+      Simplicial complex object
     """
 
     edges = [(0,1),(1,2),(0,2)]
@@ -323,11 +352,13 @@ def pseudofractal_d3(steps):
     
     Parameters
     ----------
-    steps: number of construction iterations
+    steps: int
+      Number of construction iterations
 
     Returns
     ----------
-    sc: simplicial complex object
+    sc: dict
+      Simplicial complex object
     """
 
     edges = [(0,1),(0,2),(0,3),(1,2),(1,3),(2,3)]
@@ -355,11 +386,13 @@ def apollonian_d2(steps):
     
     Parameters
     ----------
-    steps: number of construction iterations
+    steps: int
+      Number of construction iterations
 
     Returns
     ----------
-    sc: simplicial complex object
+    sc: dict
+      Simplicial complex object
     """
 
     edges = [(0,1),(1,2),(0,2)]
@@ -389,15 +422,21 @@ def NGF(d, N, s, beta, M = 1):
     
     Parameters
     ----------
-    d: dimension of the simplicial complex
-    N: number of nodes
-    s: flavour of the NGF. Can be -1, 0 or 1
-    beta: inverse temperature of the construction process
-    M: number of simplices to attach at each step
+    d: int
+      Dimension of the simplicial complex
+    N: int
+      Number of nodes
+    s: int
+      Flavour of the NGF. Can be -1, 0 or 1
+    beta: float
+      Inverse temperature of the construction process
+    M: int
+      Number of simplices to attach at each step
 
     Returns
     ----------
-    sc: simplicial complex object
+    sc: dict
+      Simplicial complex object
     """
 
     if d > 4:

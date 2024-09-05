@@ -34,18 +34,30 @@ def plot_complex(
 
     Parameters
     ----------
-    sc: simplicial complex object
-    ax: axis where to plot
-    node_color: list of the node colors
-    edge_color: list of the edge colors
-    face_color: list of the face colors
-    face_alpha: opacity of the faces
-    edge_alpha: opacity of the edges
-    edge_width: width of the edges
-    layout: the layout of the underlying graph. Can be "spring", "circle", "spectral" or "kamada_kawai"
-    pos: pre-computed node positions layout
-    node_size: size of the nodes
-    iterations: the number of iterations with which the "spring" layout is computed
+    sc: dict
+      Simplicial complex object
+    ax: matplotlib axis 
+      Axis where to plot
+    node_color: list
+      List of the node colors
+    edge_color: list
+      List of the edge colors
+    face_color: list
+      List of the face colors
+    face_alpha: float
+      Opacity of the faces
+    edge_alpha: float
+      Opacity of the edges
+    edge_width: float
+      Width of the edges
+    layout: string
+      Layout of the underlying graph. Can be "spring", "circle", "spectral" or "kamada_kawai"
+    pos: numpy array of size (number of points, 2)
+      Pre-computed node positions layout
+    node_size: int
+      Size of the nodes
+    iterations: int
+      Number of iterations with which the "spring" layout is computed
     """
 
     if sc["n1"] == 0:
